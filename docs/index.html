@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flame in Freefall</title>
+<meta name="description" content="What decades of NASA microgravity combustion experiments tell us about fire safety on the Moon and Mars.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout idea: a dark star field with glass panels; each chapter is one experiment, read top to bottom like a mission log. */
+  --bg:#04060d;
+  --panel:rgba(14,22,44,.62);
+  --line:rgba(130,170,255,.16);
+  --text:#e9eefb;
+  --muted:#97a3c2;
+  --accent:#6aa8ff;   /* interface blue */
+  --hot:#ff8a3d;      /* visible hot flame */
+  --cool:#45e0ff;     /* invisible cool flame */
+  --model:#c4cbe0;    /* simulations */
+  --font-display:"Syncopate","Arial Black",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --radius:18px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.65 var(--font-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.glow{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(900px 600px at 85% -10%,rgba(69,224,255,.10),transparent 60%),
+             radial-gradient(800px 600px at -10% 40%,rgba(106,168,255,.08),transparent 60%),
+             radial-gradient(700px 500px at 100% 100%,rgba(255,138,61,.07),transparent 60%)}
+main,header,footer{position:relative;z-index:1}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--cool);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1120px,100% - 40px);margin-inline:auto}
+
+/* nav */
+header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(4,6,13,.6);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font:700 13px/1 var(--font-display);letter-spacing:.18em}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+.nav ul a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+.nav ul a:hover{color:var(--text)}
+.nav .badge{border:1px solid var(--line);padding:7px 12px;border-radius:999px;font:500 12px/1 var(--font-mono);color:var(--muted)}
+
+/* type */
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:700 clamp(34px,6.4vw,72px)/1.04 var(--font-display);letter-spacing:.02em;text-transform:uppercase}
+h2{font:700 clamp(24px,3.6vw,38px)/1.15 var(--font-display);text-transform:uppercase;letter-spacing:.02em}
+h3{font:600 19px/1.3 var(--font-body)}
+.eyebrow{display:flex;align-items:center;gap:10px;color:var(--accent);font:500 12.5px/1.3 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.eyebrow::before{content:"";width:28px;height:1px;background:currentColor}
+.lede{color:var(--muted);max-width:64ch;font-size:18px;margin:18px 0 0}
+p{max-width:66ch}
+.hot{color:var(--hot)} .cool{color:var(--cool)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:72px 0 40px}
+.hero p.lede{font-size:19px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:12px;font:600 15px/1 var(--font-body);text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#4f8dff,#45c6ff);color:#04101f;box-shadow:0 8px 30px rgba(69,180,255,.25)}
+.btn-ghost{border-color:var(--line);color:var(--text);background:rgba(255,255,255,.02)}
+.btn:hover{filter:brightness(1.08)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding-bottom:32px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 18px;backdrop-filter:blur(8px)}
+.stat .num{font:700 clamp(26px,3vw,34px)/1 var(--font-display);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.stat .lab{margin-top:10px;color:var(--text);font-weight:500;font-size:15px;line-height:1.35}
+.stat .src{margin-top:8px;color:var(--muted);font:500 11.5px/1.3 var(--font-mono)}
+
+/* chapters */
+section.chapter{padding:84px 0 20px;scroll-margin-top:70px}
+.chapter-head{display:grid;grid-template-columns:1fr;gap:4px;margin-bottom:28px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;backdrop-filter:blur(8px)}
+.chart{width:100%;height:400px}
+.chart-note{color:var(--muted);font-size:13.5px;margin:10px 4px 0;max-width:none}
+.split{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;align-items:start}
+.meaning{border-inline-start:3px solid var(--cool);padding-block:4px;padding-inline-start:18px}
+.meaning.hotline{border-inline-start-color:var(--hot)}
+.meaning h3{margin-bottom:8px}
+.meaning p{color:var(--muted);margin:0 0 12px}
+.legend-key{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 12px;font-size:13.5px;color:var(--muted)}
+.legend-key span{display:inline-flex;align-items:center;gap:7px}
+.legend-key i{width:14px;height:3px;border-radius:2px;display:inline-block}
+
+/* tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tab{background:transparent;border:1px solid var(--line);color:var(--muted);padding:9px 14px;border-radius:10px;font:500 14px/1 var(--font-body);cursor:pointer}
+.tab[aria-selected="true"]{background:rgba(106,168,255,.14);border-color:rgba(106,168,255,.5);color:var(--text)}
+
+/* saffire */
+.bars{display:grid;gap:14px;margin-top:6px}
+.bar-row{display:grid;grid-template-columns:150px 1fr 70px;gap:12px;align-items:center;font-size:14.5px}
+.bar-track{height:16px;border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden}
+.bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#ff5f2e,var(--hot));transform-origin:left;animation:grow 1.4s cubic-bezier(.2,.8,.2,1) both}
+.bar-fill.short{background:linear-gradient(90deg,#3f7cff,var(--accent))}
+@keyframes grow{from{transform:scaleX(.02)}}
+.bar-row b{font:500 14px/1 var(--font-mono);text-align:right;font-variant-numeric:tabular-nums}
+.materials{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+.mat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:10px}
+.mat h3{font-size:16.5px}
+.mat .thick{color:var(--muted);font:500 12px/1.3 var(--font-mono)}
+.verdict{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:14px;align-items:baseline}
+.verdict dt{color:var(--muted);font:500 11.5px/1.3 var(--font-mono);text-transform:uppercase;letter-spacing:.05em}
+.verdict dd{margin:0}
+.pill{display:inline-block;padding:3px 9px;border-radius:999px;font:600 11.5px/1.4 var(--font-body);letter-spacing:.02em}
+.pill.safe{background:rgba(80,220,160,.14);color:#69e3b0}
+.pill.warn{background:rgba(255,190,80,.14);color:#ffc86b}
+.pill.bad{background:rgba(255,100,80,.15);color:#ff8a76}
+.mat p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+
+
+/* replay */
+.replay{display:grid;grid-template-columns:1.55fr 1fr;gap:22px;align-items:center}
+.replay-stage{position:relative;aspect-ratio:16/11;border-radius:14px;overflow:hidden;background:radial-gradient(ellipse at center,#0b1124 0%,#03050b 70%);border:1px solid var(--line)}
+#replay-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hud{position:absolute;left:16px;top:14px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.phase{align-self:flex-start;padding:5px 11px;border-radius:999px;font:600 12px/1.3 var(--font-body);letter-spacing:.03em;background:rgba(255,138,61,.16);color:var(--hot);border:1px solid rgba(255,138,61,.4);transition:all .3s}
+.phase.cool{background:rgba(69,224,255,.12);color:var(--cool);border-color:rgba(69,224,255,.4)}
+.phase.out{background:rgba(255,255,255,.06);color:var(--muted);border-color:var(--line)}
+.clock{font:700 clamp(26px,4vw,40px)/1 var(--font-display);font-variant-numeric:tabular-nums}
+.clock small{font:500 14px var(--font-mono);color:var(--muted)}
+.scale{position:absolute;right:16px;bottom:14px;display:flex;align-items:center;gap:8px;font:500 11.5px var(--font-mono);color:var(--muted)}
+.scale i{display:block;height:2px;background:var(--muted);border-radius:2px}
+.replay-side{display:flex;flex-direction:column;gap:18px}
+.readouts{display:grid;gap:10px;margin:0}
+.readouts div{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px}
+.readouts dt{color:var(--muted);font-size:14px}
+.readouts dd{margin:0;font:500 18px/1 var(--font-mono);font-variant-numeric:tabular-nums}
+.switch{display:flex;align-items:center;gap:12px;cursor:pointer;font-size:15px;user-select:none}
+.switch input{position:absolute;opacity:0;width:1px;height:1px}
+.switch .knob{flex:none;width:46px;height:26px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid var(--line);position:relative;transition:background .25s}
+.switch .knob::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--muted);transition:transform .25s,background .25s}
+.switch input:checked+.knob{background:rgba(69,224,255,.25);border-color:rgba(69,224,255,.6)}
+.switch input:checked+.knob::after{transform:translateX(20px);background:var(--cool)}
+.switch input:focus-visible+.knob{outline:2px solid var(--cool);outline-offset:3px}
+.controls{display:flex;gap:10px}
+.timeline{position:relative;display:block;padding-bottom:18px}
+.timeline input{width:100%;accent-color:var(--accent)}
+.ticks{position:absolute;left:0;right:0;bottom:0;height:16px;font:500 10.5px var(--font-mono);color:var(--muted)}
+.ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:960px){.replay{grid-template-columns:1fr}}
+
+
+/* worlds */
+.worlds{position:relative;padding:0;overflow:hidden}
+#worlds-canvas{display:block;width:100%;height:340px}
+.worlds-labels{position:absolute;left:0;right:0;bottom:14px;display:grid;grid-template-columns:1fr 1fr;text-align:center;font:500 12px/1.3 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--hot)}
+/* glossary */
+.term{border-bottom:1px dashed currentColor;cursor:help;outline-offset:2px}
+#tip{position:fixed;z-index:80;max-width:280px;padding:10px 12px;border-radius:10px;background:#0e1630;border:1px solid rgba(130,170,255,.35);color:var(--text);font:400 13.5px/1.45 var(--font-body);box-shadow:0 12px 30px rgba(0,0,0,.5);pointer-events:none;opacity:0;transition:opacity .15s}
+#tip.on{opacity:1}
+#tip b{display:block;color:var(--cool);font-weight:600;margin-bottom:3px}
+/* drill */
+.drill{padding:26px}
+.drill-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;color:var(--muted);font:500 12.5px var(--font-mono)}
+.dots{display:flex;gap:6px}.dots i{width:28px;height:4px;border-radius:2px;background:rgba(255,255,255,.1)}
+.dots i.ok{background:#69e3b0}.dots i.no{background:#ff8a76}.dots i.now{background:var(--accent)}
+.drill h3{font-size:clamp(18px,2.2vw,22px);margin-bottom:16px;max-width:60ch}
+.choices{display:grid;gap:10px}
+.choice{text-align:left;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font:500 15.5px/1.4 var(--font-body);cursor:pointer}
+.choice:hover:not(:disabled){border-color:rgba(106,168,255,.6);background:rgba(106,168,255,.08)}
+.choice.right{border-color:#69e3b0;background:rgba(80,220,160,.1)}
+.choice.wrong{border-color:#ff8a76;background:rgba(255,100,80,.1)}
+.choice:disabled{cursor:default}
+.feedback{margin-top:16px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.04);border-inline-start:3px solid var(--accent)}
+.feedback.ok{border-inline-start-color:#69e3b0}.feedback.no{border-inline-start-color:#ff8a76}
+.feedback p{margin:0 0 6px;color:var(--text)}.feedback .src{color:var(--muted);font:500 12px var(--font-mono)}
+.drill .next{margin-top:16px}
+.score{font:700 clamp(40px,6vw,64px)/1 var(--font-display);margin:6px 0 10px}
+/* calculator */
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.calc fieldset{border:0;margin:0 0 16px;padding:0}
+.calc legend{color:var(--muted);font:500 12px var(--font-mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{position:relative}
+.chips input{position:absolute;opacity:0;width:1px;height:1px}
+.chips span{display:inline-block;padding:8px 13px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font:500 14px/1.2 var(--font-body);cursor:pointer}
+.chips input:checked+span{background:rgba(106,168,255,.16);border-color:rgba(106,168,255,.6);color:var(--text)}
+.chips input:focus-visible+span{outline:2px solid var(--cool);outline-offset:2px}
+.calc-out{display:grid;gap:12px;align-content:start}
+.risk{display:grid;grid-template-columns:120px 1fr;gap:4px 14px;padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.risk h4{margin:0;font:600 14px var(--font-body);color:var(--muted)}
+.risk .lvl{grid-row:span 2;align-self:center}
+.risk p{margin:0;font-size:14px;color:var(--muted);grid-column:2}
+.risk .lvl .pill{font-size:12.5px;padding:5px 11px}
+.pill.na{background:rgba(255,255,255,.07);color:var(--muted)}
+@media (max-width:960px){.calc{grid-template-columns:1fr}}
+@media (max-width:640px){#worlds-canvas{height:260px}.risk{grid-template-columns:1fr}.risk .lvl{grid-row:auto}.risk p{grid-column:1}}
+
+
+/* language */
+.lang-btn{background:transparent;border:1px solid var(--line);color:var(--text);padding:7px 12px;border-radius:999px;font:600 13px/1 "IBM Plex Sans Arabic",var(--font-body);cursor:pointer;margin-inline-start:8px}
+.lang-btn:hover{border-color:rgba(106,168,255,.6)}
+.nav-end{display:flex;align-items:center}
+html[lang="ar"] body{font-family:"IBM Plex Sans Arabic",var(--font-body)}
+html[lang="ar"] h1,html[lang="ar"] h2{font-family:"IBM Plex Sans Arabic",var(--font-body);font-weight:700;letter-spacing:0;text-transform:none;line-height:1.25}
+html[lang="ar"] .eyebrow,html[lang="ar"] .chips span,html[lang="ar"] .calc legend,html[lang="ar"] .worlds-labels,html[lang="ar"] .drill-top,html[lang="ar"] .evidence,html[lang="ar"] .feedback .src{font-family:"IBM Plex Sans Arabic",var(--font-mono);letter-spacing:0}
+html[lang="ar"] .chart,html[lang="ar"] .replay-stage,html[lang="ar"] #worlds-canvas,html[lang="ar"] .timeline{direction:ltr}
+html[lang="ar"] .choice{text-align:right}
+
+
+/* ask */
+.ask{display:grid;grid-template-columns:1.4fr 1fr;gap:26px}
+.ask-main{display:flex;flex-direction:column;gap:14px;min-width:0}
+.ask-form{display:flex;gap:10px}
+.ask-form input{flex:1;min-width:0;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--text);font:400 16px var(--font-body)}
+.ask-form input:focus{outline:2px solid var(--cool);outline-offset:1px}
+.samples{display:flex;flex-wrap:wrap;gap:8px}
+.sample{background:rgba(106,168,255,.08);border:1px solid rgba(106,168,255,.3);color:var(--text);padding:8px 12px;border-radius:999px;font:500 13.5px/1.3 var(--font-body);cursor:pointer;text-align:start}
+.answer{min-height:150px;padding:18px;border-radius:14px;background:rgba(0,0,0,.3);border:1px solid var(--line)}
+.answer .q{color:var(--muted);font-size:14px;margin:0 0 8px}
+.answer .a{margin:0;white-space:pre-wrap;line-height:1.6}
+.answer .tag{display:inline-block;margin-bottom:10px;font:500 11.5px var(--font-mono);color:var(--amber,#ffc86b);letter-spacing:.04em}
+.cites{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.cite{font:500 12px/1.3 var(--font-mono);padding:4px 9px;border-radius:999px;background:rgba(69,224,255,.1);color:var(--cool);border:1px solid rgba(69,224,255,.3)}
+.ask-side{display:flex;flex-direction:column;gap:12px;font-size:14px;color:var(--muted)}
+.ask-side label{color:var(--text);font-weight:500}
+.ask-side input,.ask-side select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--text);font:400 14px var(--font-body)}
+.ask-side details{border-top:1px solid var(--line);padding-top:10px}
+.ask-side summary{cursor:pointer;color:var(--text)}
+.kb{max-height:260px;overflow:auto;margin-top:8px;font-size:12.5px;line-height:1.5}
+.kb p{margin:0 0 8px}
+.dots3::after{content:"...";animation:dots 1s steps(3) infinite}
+@keyframes dots{0%{content:"."}33%{content:".."}66%{content:"..."}}
+@media (max-width:960px){.ask{grid-template-columns:1fr}}
+
+/* insights */
+.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.insight{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 18px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.insight::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--stripe,var(--accent))}
+.insight .n{font:700 13px/1 var(--font-display);color:var(--muted);letter-spacing:.1em}
+.insight p{margin:0;color:var(--muted);font-size:15px;line-height:1.55}
+.insight .evidence{margin-top:auto;padding-top:8px;font:500 12px/1.4 var(--font-mono);color:var(--muted)}
+.insight .evidence a{color:var(--accent);text-decoration:none}
+
+/* sources */
+.sources{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.sources ul{margin:0;padding-left:18px;color:var(--muted);font-size:14.5px}
+.sources li{margin-bottom:8px}
+footer{border-top:1px solid var(--line);margin-top:80px;padding:28px 0 40px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+
+.hero-photo{position:relative;margin:0 auto;width:100%;max-width:460px;aspect-ratio:1}
+.hero-photo img{position:absolute;inset:6%;width:88%;height:88%;object-fit:cover;object-position:46% 52%;border-radius:50%;
+  -webkit-mask-image:radial-gradient(circle,#000 42%,transparent 70%);mask-image:radial-gradient(circle,#000 42%,transparent 70%);transform:scale(1.25)}
+.hero-photo .rings{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.spin{transform-origin:200px 200px;animation:spin 38s linear infinite}
+.spin.rev{animation-duration:60s;animation-direction:reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-photo figcaption,.band figcaption{font:500 11.5px/1.3 var(--font-mono);color:var(--muted);letter-spacing:.04em}
+.hero-photo figcaption{position:absolute;left:0;right:0;bottom:-6px;text-align:center}
+.band{position:relative;margin:0 0 26px;height:220px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#000}
+.band.tall{height:300px}
+.band img{width:100%;height:100%;object-fit:cover;object-position:var(--pos,center);display:block}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,6,13,.75),rgba(4,6,13,0) 45%),linear-gradient(0deg,rgba(4,6,13,.7),rgba(4,6,13,0) 40%)}
+.band figcaption{position:absolute;left:18px;bottom:14px;z-index:1;color:#d5ddf0}
+.side-photo{margin:0 0 18px;position:relative;aspect-ratio:3/2;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#000}
+.side-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.side-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(4,6,13,.75),rgba(4,6,13,0) 45%)}
+.side-photo figcaption{position:absolute;left:12px;bottom:10px;z-index:1;font:500 11px/1.3 var(--font-mono);color:#d5ddf0;letter-spacing:.04em}
+.band.tall{width:100vw;margin-left:calc(50% - 50vw);height:clamp(220px,34vw,460px);border-radius:0;border-left:0;border-right:0;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent)}
+.band.tall img{object-position:center 85%}
+.band.tall figcaption{left:max(20px,calc(50vw - 560px));bottom:9%}
+.ribbon{position:relative;height:150px;margin:10px 0 -40px;overflow:hidden;pointer-events:none}
+.ribbon svg{position:absolute;left:-10%;width:120%;height:100%;animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(6%)}}
+@media (max-width:640px){.band{height:170px}.ribbon{height:100px}}
+@media (prefers-reduced-motion:reduce){.spin,.ribbon svg{animation:none}}
+
+@media (max-width:960px){
+  .hero{grid-template-columns:1fr;padding-top:48px}
+  .hero-photo{max-width:320px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .split{grid-template-columns:1fr}
+  .materials{grid-template-columns:repeat(2,1fr)}
+  .insights{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .nav ul{display:none}
+  .chart{height:330px}
+  .card{padding:14px}
+  .materials,.insights,.sources{grid-template-columns:1fr}
+  .bar-row{grid-template-columns:96px 1fr 56px;font-size:13px}
+  section.chapter{padding-top:64px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .bar-fill{animation:none}
+}
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div id="tip" role="tooltip"></div>
+<div class="glow" aria-hidden="true"></div>
+
+<header>
+  <nav class="wrap nav" aria-label="Main">
+    <a class="brand" href="#top">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="none" stroke="#45e0ff" stroke-opacity=".55"/><circle cx="16" cy="16" r="9" fill="none" stroke="#ff8a3d" stroke-width="2"/><circle cx="16" cy="16" r="3.2" fill="#e9eefb"/></svg>
+      FLAME IN FREEFALL
+    </a>
+    <ul>
+      <li><a data-i18n="k0" href="#vanishing">Story</a></li>
+      <li><a data-i18n="k1" href="#spacecraft">Spacecraft fires</a></li>
+      <li><a data-i18n="k2" href="#drill">Fire drill</a></li>
+      <li><a data-i18n="k3" href="#safety">Safety</a></li>
+      <li><a data-i18n="ask0" href="#ask">Ask AI</a></li>
+      <li><a data-i18n="k4" href="#sources">Data</a></li>
+    </ul>
+    <div class="nav-end"><span class="badge">Space Apps 2026</span><button class="lang-btn" id="lang-btn" type="button" lang="ar">عربي</button></div>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <div data-i18n="k5" class="eyebrow">NASA Space Apps 2026 · Flame in Freefall</div>
+        <h1 data-i18n="k6">Fire behaves differently in space</h1>
+        <p data-i18n="k7" class="lede">On the International Space Station, NASA has lit hundreds of fires on purpose. We turned the published results into one story: how flames hide, return and poison the air without gravity, and what crews on the Moon and Mars should do about it.</p>
+        <div class="hero-cta">
+          <a data-i18n="k8" class="btn btn-primary" href="#replay">Watch a droplet burn</a>
+          <a data-i18n="k9" class="btn btn-ghost" href="#safety">Jump to safety insights</a>
+        </div>
+      </div>
+      <figure class="hero-photo">
+        <img src="img/bass-blue-shell.jpg" alt="A real flame photographed on the International Space Station: a blue shell with a glowing pink core around a burning plastic sample">
+        <svg class="rings" viewBox="0 0 400 400" aria-hidden="true">
+          <g class="spin"><ellipse cx="200" cy="200" rx="192" ry="70" fill="none" stroke="#45e0ff" stroke-opacity=".35" stroke-width="1"/><circle cx="392" cy="200" r="5" fill="#45e0ff"/></g>
+          <g class="spin rev"><ellipse cx="200" cy="200" rx="175" ry="120" fill="none" stroke="#6aa8ff" stroke-opacity=".22" stroke-dasharray="3 8" transform="rotate(-24 200 200)"/><circle cx="41" cy="128" r="3.5" fill="#ff8a3d"/></g>
+          <circle cx="200" cy="200" r="198" fill="none" stroke="#ffffff" stroke-opacity=".06"/>
+        </svg>
+        <figcaption data-i18n="k10">Real flame on the ISS · NASA BASS experiment</figcaption>
+      </figure>
+    </section>
+
+    <div class="stats" id="stats">
+      <div class="stat"><div class="num hot" data-key="visible">12.6 s</div><div data-i18n="k11" class="lab">of visible flame around a 4 mm fuel droplet</div><div class="src">PSI-117 · ISS</div></div>
+      <div class="stat"><div class="num cool" data-key="invisible">33 s</div><div data-i18n="k12" class="lab">more burning after that flame looked “out”</div><div class="src">PSI-117 · ISS</div></div>
+      <div class="stat"><div class="num" data-key="saffire">6×</div><div data-i18n="k13" class="lab">longer fabric fire when airflow pushed the flame forward</div><div class="src">Saffire-1 · Cygnus</div></div>
+      <div class="stat"><div class="num" data-key="co">21×</div><div data-i18n="k14" class="lab">more carbon monoxide from thick plastic than thin film</div><div class="src">BASS-II · ISS</div></div>
+    </div>
+  </div>
+
+<div class="ribbon" aria-hidden="true"><svg viewBox="0 0 1200 150" preserveAspectRatio="none" class="ribbon-svg"></svg></div>
+  <!-- earth vs space -->
+  <section class="chapter wrap" id="two-worlds">
+    <div class="chapter-head">
+      <div data-i18n="k15" class="eyebrow">Start here · why fire is different without gravity</div>
+      <h2 data-i18n="k16">Same candle, two worlds</h2>
+      <p data-i18n="k17" class="lede">On Earth, hot gas rises and pulls fresh air in from below, stretching the flame into a tall, bright teardrop. In orbit nothing rises. Oxygen reaches the flame only by slow diffusion, so it becomes a dim, round, often blue ball.</p>
+    </div>
+    <div class="card worlds">
+      <canvas id="worlds-canvas" aria-label="Side-by-side animation: a tall teardrop candle flame on Earth and a small round blue flame in microgravity"></canvas>
+      <div class="worlds-labels"><span data-i18n="k18">On Earth · gravity 1 g</span><span data-i18n="k19" class="cool">In orbit · microgravity</span></div>
+    </div>
+    <p data-i18n="k20" class="chart-note">BASS and BASS-II burned real wax candles on the ISS (PSI-25, PSI-26). Illustration, not to scale.</p>
+  </section>
+
+  <!-- replay -->
+  <section class="chapter wrap" id="replay">
+    <div class="chapter-head">
+      <div data-i18n="k21" class="eyebrow">Replay · driven by ISS measurements (PSI-117)</div>
+      <h2 data-i18n="k22">Watch a droplet burn</h2>
+      <p data-i18n="k23" class="lede">A 4 mm drop of dodecane, ignited on the space station. Sizes and timing come straight from the measured data, sped up 4×. Turn on the infrared view to see what a crew member could not.</p>
+    </div>
+    <div class="replay card">
+      <div class="replay-stage">
+        <canvas id="replay-canvas" aria-label="Animation of a burning droplet; the readouts beside it give the same information"></canvas>
+        <div class="hud">
+          <span class="phase" id="r-phase">Visible hot flame</span>
+          <div class="clock"><span id="r-time">0.0</span><small> s</small></div>
+        </div>
+        <div class="scale" aria-hidden="true"><i id="r-scale"></i><span>5 mm</span></div>
+      </div>
+      <div class="replay-side">
+        <dl class="readouts">
+          <div><dt data-i18n="k24">Fuel droplet</dt><dd><span id="r-drop">4.00</span> mm</dd></div>
+          <div><dt data-i18n="k25">Hot flame</dt><dd class="hot"><span id="r-hot">0.0</span> mm</dd></div>
+          <div><dt data-i18n="k26">Cool flame</dt><dd class="cool"><span id="r-cool">none</span></dd></div>
+        </dl>
+        <label class="switch"><input type="checkbox" id="r-ir"><span class="knob" aria-hidden="true"></span><span data-i18n="k27" class="sw-text">Infrared view: reveal the cool flame</span></label>
+        <div class="controls">
+          <button class="btn btn-primary" type="button" id="r-play" aria-pressed="false">Play</button>
+          <button data-i18n="k28" class="btn btn-ghost" type="button" id="r-restart">Restart</button>
+        </div>
+        <label class="timeline" for="r-slider"><span class="sr">Time since ignition</span>
+          <input type="range" id="r-slider" min="0" max="48" step="0.1" value="6">
+          <span class="ticks" id="r-ticks"></span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 -->
+  <section class="chapter wrap" id="vanishing">
+    <div class="chapter-head">
+      <div data-i18n="k29" class="eyebrow">01 · PSI-117 · droplet combustion on the ISS</div>
+      <h2 data-i18n="k30">The flame that vanishes</h2>
+      <p data-i18n="k31" class="lede">Without gravity, hot gas does not rise, so a burning droplet wraps itself in a perfect sphere of flame. Watch what happens at about 13 seconds.</p>
+    </div>
+    <div class="split">
+      <div class="card">
+        <div class="legend-key"><span data-i18n="k32"><i style="background:var(--hot)"></i>Flame diameter (measured)</span><span data-i18n="k33"><i style="background:var(--model)"></i>Flame diameter (model)</span><span data-i18n="k34"><i style="background:#fff"></i>Fuel droplet diameter</span></div>
+        <div id="c-vanish" class="chart" role="img" aria-label="Chart of flame and droplet diameter over time"></div>
+        <p data-i18n="k35" class="chart-note">n-dodecane, 4 mm initial diameter, air at 1 atm. Source: MST 2024 analysis of ISS data (PSI-117).</p>
+      </div>
+      <div class="meaning">
+        <figure class="side-photo"><img src="img/bass-rod-tip.jpg" alt="A blue flame cap glowing orange at the tip of a burning plastic rod"><figcaption>Real flame on the ISS · NASA BASS-II</figcaption></figure>
+        
+        <h3>What it means</h3>
+        <p data-i18n="k36">The bright <span class="hot">hot flame</span> collapses at <b data-fill="burn.t_hot_out">12.6</b> s. To a crew member it would look extinguished.</p>
+        <p data-i18n="k37">But the droplet keeps shrinking at the same pace for another <b class="cool" data-fill="burn.invisible_seconds">33</b> s. It is still burning, inside a <span class="cool">cool flame</span>: a faint, low-temperature flame the eye cannot see.</p>
+        <p data-i18n="k38">The fuel kept reacting for <b data-fill="burn.ratio">2.6</b>× longer than the visible fire lasted.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="chapter wrap" id="extinction">
+    <div class="chapter-head">
+      <div data-i18n="k39" class="eyebrow">02 · PSI-117 · three fuels compared</div>
+      <h2 data-i18n="k40">When does a flame really die?</h2>
+      <p data-i18n="k41" class="lede">For every droplet, scientists recorded the size it had shrunk to when each flame went out. Pick a fuel.</p>
+    </div>
+    <div class="split">
+      <div class="card">
+        <div class="tabs" role="tablist" aria-label="Fuel" id="fuel-tabs"></div>
+        <div id="c-fuel" class="chart" role="img" aria-label="Chart of extinction diameter against starting diameter"></div>
+        <p data-i18n="k42" class="chart-note">Dots: ISS experiments. Dashed lines: models. Air at 1 atm. Source: Proceedings of the Combustion Institute 2023 (PSI-117).</p>
+      </div>
+      <div class="meaning hotline">
+        <figure class="side-photo"><img src="img/bass-gold-flame.jpg" alt="A bright gold flame with a blue edge wrapped around a fuel sample in microgravity"><figcaption>Real flame on the ISS · NASA BASS</figcaption></figure>
+        
+        <h3>What it means</h3>
+        <p data-i18n="k43">The <span class="hot">hot flame</span> gives up early, while most of the droplet is still left: its points sit near the top of the chart.</p>
+        <p data-i18n="k44">The <span class="cool">cool flame</span> keeps going until the droplet is about 1 mm or less. Seeing the flame die is not proof that the fuel has stopped burning.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="chapter wrap" id="pulsing">
+    <div class="chapter-head">
+      <div data-i18n="k45" class="eyebrow">03 · PSI-117 · simulation of a 0.5 mm heptane droplet</div>
+      <h2 data-i18n="k46">Cool flames that pulse</h2>
+      <p data-i18n="k47" class="lede">The same droplet, simulated in two atmospheres. At 21% oxygen the cool flame burns steadily. At 10% oxygen it starts to beat like a heart.</p>
+    </div>
+    <div class="split">
+      <div class="card">
+        <div class="legend-key"><span data-i18n="k48"><i style="background:var(--cool)"></i>21% oxygen: steady</span><span data-i18n="k49"><i style="background:#ffc86b"></i>10% oxygen: pulsing</span></div>
+        <div id="c-pulse" class="chart" role="img" aria-label="Chart of peak flame temperature over time for two oxygen levels"></div>
+        <p data-i18n="k50" class="chart-note">Peak gas temperature around the droplet (simulation). The brief hot ignition spike near 1,150 K at the start is off the top of the chart. Source: PROCI 2019 (PSI-117).</p>
+      </div>
+      <div class="meaning">
+        <h3>What it means</h3>
+        <p data-i18n="k51">At 10% oxygen the cool flame flares up <b data-fill="cool.pulsing.pulses">6</b> times in under a second, dimming and recovering each time.</p>
+        <p data-i18n="k52">A fire that seems to be dying can keep coming back. Detectors should watch temperature over time, not a single reading.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="chapter wrap" id="pressure">
+    <div class="chapter-head">
+      <div data-i18n="k53" class="eyebrow">04 · PSI-117 · dodecane from 0.5 to 5 atm</div>
+      <h2 data-i18n="k54">Pressure changes the fire</h2>
+      <p data-i18n="k55" class="lede">Future Moon and Mars habitats may not keep Earth’s sea-level pressure. These ISS runs tested how pressure reshapes a flame.</p>
+    </div>
+    <div class="split">
+      <div class="card">
+        <div class="tabs" role="tablist" aria-label="Pressure view" id="p-tabs">
+          <button data-i18n="k56" class="tab" role="tab" aria-selected="true" data-view="ext">When flames go out</button>
+          <button data-i18n="k57" class="tab" role="tab" aria-selected="false" data-view="rate">How fast fuel burns</button>
+          <button data-i18n="k58" class="tab" role="tab" aria-selected="false" data-view="rad">Heat radiated</button>
+        </div>
+        <div id="c-pressure" class="chart" role="img" aria-label="Chart of flame behaviour against pressure"></div>
+        <p class="chart-note" id="p-note"></p>
+      </div>
+      <div class="meaning">
+        <h3>What it means</h3>
+        <p data-i18n="k59">Higher pressure makes droplets burn faster and, at 5 atm, radiate more heat.</p>
+        <p data-i18n="k60">Cool flames react strongly: at 0.5 atm they died while the droplet was still about 2 mm across, at 1 atm they survived until it was about 0.5 mm or smaller, and at 3 atm none were seen at all.</p>
+        <p data-i18n="k61">Fire rules learned at one pressure do not carry over to another. Test materials at the habitat’s real pressure.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="chapter wrap" id="return">
+    <div class="chapter-head">
+      <div data-i18n="k62" class="eyebrow">05 · PSI-117 · dodecane at 2.75 atm with helium</div>
+      <h2 data-i18n="k63">The fire that comes back</h2>
+      <p data-i18n="k64" class="lede">In this run the flame went through three stages. The measured heat tells the story.</p>
+    </div>
+    <div class="split">
+      <div class="card">
+        <div class="legend-key"><span data-i18n="k65"><i style="background:var(--hot)"></i>Heat radiated (measured)</span><span data-i18n="k66"><i style="background:var(--model)"></i>Heat radiated (model)</span><span data-i18n="k67"><i style="background:#fff"></i>Droplet size remaining</span></div>
+        <div id="c-three" class="chart" role="img" aria-label="Chart of radiated heat over time showing three burning stages"></div>
+        <p data-i18n="k68" class="chart-note">Time converted from the paper’s scaled time (t ÷ d₀²) using d₀ = 4.5 mm. Source: PROCI 2019 (PSI-117).</p>
+      </div>
+      <div class="meaning hotline">
+        <figure class="side-photo"><img src="img/bass-orange-sphere.jpg" alt="An orange flame curling around a dark spherical fuel sample in microgravity"><figcaption>Real flame on the ISS · NASA BASS</figcaption></figure>
+        
+        <h3>What it means</h3>
+        <p data-i18n="k69"><b>Stage 1:</b> a <span class="hot">hot flame</span> burns, then dies at about <b data-fill="threeStage.first_out_s">8</b> s.</p>
+        <p data-i18n="k70"><b>Stage 2:</b> a <span class="cool">cool flame</span> quietly keeps the droplet burning.</p>
+        <p data-i18n="k71"><b>Stage 3:</b> at about <b data-fill="threeStage.reignite_s">26</b> s the heat output jumps to its highest value of the whole test, <b data-fill="threeStage.reignite_peak_w">62.8</b> W. The hot flame has come back on its own.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="chapter wrap" id="spacecraft">
+    <div class="chapter-head">
+      <div data-i18n="k72" class="eyebrow">06 · Saffire-1 and Saffire-2 · fires inside a Cygnus cargo ship</div>
+      <h2 data-i18n="k73">From a droplet to a spacecraft fire</h2>
+      <p data-i18n="k74" class="lede">After leaving the ISS, Cygnus cargo ships became flying fire labs. Large fabric and plastic samples were burned inside, far from any crew.</p>
+    </div>
+    <figure class="band tall" ><img src="img/saffire-fabric-fire.jpg" alt="A row of yellow flames spreading along a fabric sample inside a spacecraft"><figcaption data-i18n="k75">Saffire: fire spreading across fabric inside a Cygnus spacecraft · NASA</figcaption></figure>
+    
+    <div class="split">
+      <div class="card">
+        <h3 data-i18n="k76" style="margin-bottom:6px">Same fabric, same air, different direction</h3>
+        <p data-i18n="k77" class="chart-note" style="margin:0 0 16px">Saffire-1: two 40.6 × 94 cm cotton-fiberglass (SIBAL) sheets, airflow 20 cm/s, about 21.5% oxygen.</p>
+        <div class="bars" id="saffire-bars"></div>
+      </div>
+      <div class="meaning hotline">
+        <h3>What it means</h3>
+        <p data-i18n="k78">When the airflow pushed the flame forward over unburned fabric, the fire lasted <b>7 minutes</b>. When it blew against the flame, it lasted just over 1 minute.</p>
+        <p data-i18n="k79">Ventilation can feed a fire. BASS-II on the ISS saw the other side: <b data-fill="bass2.extinguished_by_low_flow">15</b> of its test logs record the flame going out as the airflow was turned down.</p>
+      </div>
+    </div>
+    <h3 data-i18n="k80" style="margin-top:34px">Saffire-2: which materials burned in space?</h3>
+    <p data-i18n="k81" class="chart-note" style="margin:6px 0 0">Nine 5 × 29 cm samples, airflow 20 cm/s, about 22% oxygen, compared with the same test on Earth.</p>
+    <div class="materials" id="materials"></div>
+  </section>
+
+  <!-- 07 -->
+  <section class="chapter wrap" id="smoke">
+    <div class="chapter-head">
+      <div data-i18n="k82" class="eyebrow">07 · BASS-II · solid fuels burned on the ISS</div>
+      <h2 data-i18n="k83">The invisible danger: toxic gas</h2>
+      <p data-i18n="k84" class="lede">BASS-II recorded the carbon monoxide inside its sealed test box before and after each burn. The rise shows how much toxic gas each material released.</p>
+    </div>
+    <div class="split">
+      <div class="card">
+        <div id="c-co" class="chart" role="img" aria-label="Chart of carbon monoxide increase per test by material"></div>
+        <p data-i18n="k85" class="chart-note">Each dot is one test: CO after the burn minus CO before, in ppm, inside the experiment box (not the station cabin). Boxes show the middle half of tests. Source: BASS-II experiment table (PSI-25).</p>
+      </div>
+      <div class="meaning hotline">
+        <figure class="side-photo"><img src="img/bass-rod-flame.jpg" alt="A plastic rod burning with a blue and pink flame in microgravity"><figcaption>Burning plastic rod on the ISS · NASA BASS-II</figcaption></figure>
+        
+        <h3>What it means</h3>
+        <p data-i18n="k86">Thick plastic sheets raised CO by a median <b data-fill="co.sheet">335</b> ppm per test, about <b data-fill="co.ratio">21</b>× the thin film of the same plastic.</p>
+        <p data-i18n="k87">Nomex released almost none. Thick plastics burn slowly and stay alight longer (Saffire-2 saw one burn for 15 minutes), so they keep producing gas.</p>
+        <p data-i18n="k88">A small, steady flame can be more dangerous to a crew than a big, short one.</p>
+      </div>
+    </div>
+  </section>
+
+<div class="ribbon" aria-hidden="true"><svg viewBox="0 0 1200 150" preserveAspectRatio="none" class="ribbon-svg"></svg></div>
+  <!-- drill -->
+  <section class="chapter wrap" id="drill">
+    <div class="chapter-head">
+      <div data-i18n="k89" class="eyebrow">Interactive · test yourself</div>
+      <h2 data-i18n="k90">Fire drill: lunar habitat</h2>
+      <p data-i18n="k91" class="lede">You are the commander. Four decisions, each answered with what the ISS experiments showed.</p>
+    </div>
+    <div class="card drill" id="drill-box" aria-live="polite"></div>
+  </section>
+
+  <!-- 08 -->
+  <section class="chapter wrap" id="safety">
+    <div class="chapter-head">
+      <div data-i18n="k92" class="eyebrow">08 · What the data says crews should do</div>
+      <h2 data-i18n="k93">Fire safety insights</h2>
+      <p data-i18n="k94" class="lede">Every recommendation below points to the experiment that supports it.</p>
+    </div>
+    <div class="insights">
+      <article class="insight" style="--stripe:var(--cool)"><span class="n">01</span><h3 data-i18n="k95">“Out” is not out</h3><p data-i18n="k96">Confirm a fire is over with temperature and gas sensors, not by sight. Cool flames kept fuel burning 2.6× longer than the visible flame.</p><div data-i18n="k97" class="evidence">Evidence: <a href="#vanishing">PSI-117 burn history</a></div></article>
+      <article class="insight" style="--stripe:var(--hot)"><span class="n">02</span><h3 data-i18n="k98">Watch for the comeback</h3><p data-i18n="k99">Keep monitoring after extinction. One droplet re-ignited into its hottest flame 18 s after the first flame died.</p><div data-i18n="k100" class="evidence">Evidence: <a href="#return">PSI-117 three-stage run</a></div></article>
+      <article class="insight" style="--stripe:var(--accent)"><span class="n">03</span><h3 data-i18n="k101">Cut the airflow first</h3><p data-i18n="k102">Shut down ventilation fans at the first sign of fire. Airflow along a flame made a fabric fire last 6× longer.</p><div data-i18n="k103" class="evidence">Evidence: <a href="#spacecraft">Saffire-1, BASS-II</a></div></article>
+      <article class="insight" style="--stripe:#69e3b0"><span class="n">04</span><h3 data-i18n="k104">Choose materials that refuse to burn</h3><p data-i18n="k105">Prefer Nomex-type fabrics and flame-resistant silicones near crew areas. Nomex did not ignite even next to burning plastic.</p><div data-i18n="k106" class="evidence">Evidence: <a href="#spacecraft">Saffire-2</a></div></article>
+      <article class="insight" style="--stripe:#ff8a76"><span class="n">05</span><h3 data-i18n="k107">Plan for toxic gas</h3><p data-i18n="k108">Carry CO sensors and masks ready to use. Thick plastics released about 21× more carbon monoxide than thin film.</p><div data-i18n="k109" class="evidence">Evidence: <a href="#smoke">BASS-II gas readings</a></div></article>
+      <article class="insight" style="--stripe:#ffc86b"><span class="n">06</span><h3 data-i18n="k110">Test at mission conditions</h3><p data-i18n="k111">Qualify materials at the habitat’s real pressure, oxygen and airflow. Silicone burned on Earth but not in orbit, and cool flames changed with pressure.</p><div data-i18n="k112" class="evidence">Evidence: <a href="#pressure">PSI-117</a>, <a href="#spacecraft">Saffire-2</a></div></article>
+    </div>
+  </section>
+
+  <!-- calculator -->
+  <section class="chapter wrap" id="risk">
+    <div class="chapter-head">
+      <div data-i18n="k113" class="eyebrow">Interactive · material check</div>
+      <h2 data-i18n="k114">Material risk check</h2>
+      <p data-i18n="k115" class="lede">Pick a material and cabin conditions. The verdict is built only from what these experiments measured, and says where the data runs out.</p>
+    </div>
+    <div class="card calc">
+      <form id="calc-form" class="calc-inputs" onsubmit="return false">
+        <fieldset><legend data-i18n="k116">Material</legend><div class="chips" data-name="mat"></div></fieldset>
+        <fieldset><legend data-i18n="k117">Airflow at the fire</legend><div class="chips" data-name="flow"></div></fieldset>
+        <fieldset><legend data-i18n="k118">Cabin oxygen</legend><div class="chips" data-name="o2"></div></fieldset>
+      </form>
+      <div class="calc-out" id="calc-out" aria-live="polite"></div>
+    </div>
+    <p data-i18n="k119" class="chart-note">A rule of thumb from PSI-117, Saffire and BASS-II results, not an engineering certification.</p>
+  </section>
+
+  <!-- ask -->
+  <section class="chapter wrap" id="ask">
+    <div class="chapter-head">
+      <div class="eyebrow" data-i18n="ask1">AI · grounded in NASA data</div>
+      <h2 data-i18n="ask2">Ask the data</h2>
+      <p class="lede" data-i18n="ask3">Ask anything about fire in space. Gemini answers only from the knowledge base built from these NASA experiments, cites every claim, and says so when the data does not cover your question.</p>
+    </div>
+    <div class="card ask" id="ask-box"></div>
+  </section>
+
+  <!-- 09 -->
+  <section class="chapter wrap" id="sources">
+    <div class="chapter-head">
+      <div data-i18n="k120" class="eyebrow">09 · Open data</div>
+      <h2 data-i18n="k121">Data and sources</h2>
+      <p data-i18n="k122" class="lede">All data comes from NASA’s Physical Sciences Informatics (PSI) repository. A Python script cleans the raw files and builds every chart on this page.</p>
+    </div>
+    <div class="sources card">
+      <div>
+        <h3 data-i18n="k123" style="margin-bottom:10px">NASA PSI datasets</h3>
+        <ul>
+          <li><b>PSI-117</b>: droplet combustion on the ISS, analyzed data</li>
+          <li><b>PSI-98</b>: Saffire-1 experiment table</li>
+          <li><b>PSI-99</b>: Saffire-2 experiment table</li>
+          <li><b>PSI-100</b>: Saffire-3 (repeated Saffire-1 at <span data-fill="saffire.saffire3_flow">30 cm/s</span>; no results in the table)</li>
+          <li><b>PSI-25</b>: BASS-II experiment table, 129 tests</li>
+          <li><a href="https://psi.nasa.gov/physci/repo/search?q=combustion">psi.nasa.gov combustion search</a></li>
+          <li>Photos: NASA BASS, BASS-II and Saffire experiments, via <a href="https://images.nasa.gov">images.nasa.gov</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-i18n="k124" style="margin-bottom:10px">Papers behind PSI-117</h3>
+        <ul>
+          <li>Cool flames, steady and pulsing: <a href="https://doi.org/10.1016/j.proci.2018.05.151">PROCI 2019</a></li>
+          <li>Three-stage burning: <a href="https://doi.org/10.1016/j.proci.2018.09.015">PROCI 2019</a></li>
+          <li>Extinction size and pressure: <a href="https://doi.org/10.1016/j.proci.2022.07.094">PROCI 2023</a></li>
+          <li>Burn history, burning rate, radiation: <a href="https://doi.org/10.1007/s12217-024-10115-x">Microgravity Sci. Tech. 2024</a></li>
+          <li>Flame spread, microgravity and scale (Saffire): <a href="https://doi.org/10.1016/j.combustflame.2018.10.012">Combust. Flame 2019</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Flame in Freefall · NASA Space Apps Challenge 2026</span>
+    <span data-i18n="k125">Data and photos: NASA · Charts: Plotly</span>
+  </div>
+</footer>
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="data.js"></script>
+<script>
+(function(){
+"use strict";
+const D = window.FLAME_DATA;
+const AR={"k0": "القصة", "k1": "حرائق المركبات", "k2": "تدريب الطوارئ", "k3": "السلامة", "k4": "البيانات", "k5": "ناسا Space Apps 2026 · Flame in Freefall", "k6": "النار تتصرف بشكل مختلف في الفضاء", "k7": "على متن محطة الفضاء الدولية، أشعلت ناسا مئات الحرائق عن عمد. حوّلنا النتائج المنشورة إلى قصة واحدة: كيف تختبئ النيران وتعود وتسمّم الهواء في غياب الجاذبية، وما الذي يجب أن يفعله الرواد على القمر والمريخ.", "k8": "شاهد قطرة تحترق", "k9": "انتقل إلى إرشادات السلامة", "k10": "لهب حقيقي على محطة الفضاء · تجربة BASS من ناسا", "k11": "من اللهب المرئي حول قطرة وقود قطرها 4 مم", "k12": "من الاحتراق الإضافي بعد أن بدا اللهب «منطفئًا»", "k13": "أطول عمرًا لحريق القماش عندما دفع الهواء اللهب للأمام", "k14": "أكثر من أول أكسيد الكربون من البلاستيك السميك مقارنة بالرقيق", "k15": "ابدأ هنا · لماذا تختلف النار دون جاذبية", "k16": "شمعة واحدة، عالمان", "k17": "على الأرض، يرتفع الغاز الساخن ويسحب هواءً جديدًا من الأسفل، فيتمدد اللهب على شكل دمعة طويلة ساطعة. أما في المدار فلا شيء يرتفع؛ يصل الأكسجين إلى اللهب بالانتشار البطيء فقط، فيصبح كرة خافتة مستديرة، غالبًا زرقاء.", "k18": "على الأرض · جاذبية 1 g", "k19": "في المدار · جاذبية شبه منعدمة", "k20": "أحرقت تجربتا BASS و BASS-II شموعًا حقيقية على محطة الفضاء (PSI-25، PSI-26). رسم توضيحي، ليس بمقياس حقيقي.", "k21": "إعادة تشغيل · مبنية على قياسات محطة الفضاء (PSI-117)", "k22": "شاهد قطرة تحترق", "k23": "قطرة دوديكان قطرها 4 مم أُشعلت على محطة الفضاء. الأحجام والتوقيتات مأخوذة مباشرة من البيانات المقاسة، بسرعة 4 أضعاف. شغّل عرض الأشعة تحت الحمراء لترى ما لم يكن يراه أي رائد فضاء.", "k24": "قطرة الوقود", "k25": "اللهب الساخن", "k26": "اللهب البارد", "k27": "عرض الأشعة تحت الحمراء: اكشف اللهب البارد", "k28": "إعادة", "k29": "01 · PSI-117 · احتراق القطرات على محطة الفضاء", "k30": "اللهب الذي يختفي", "k31": "دون جاذبية لا يرتفع الغاز الساخن، فتحيط القطرة المحترقة نفسها بكرة لهب مثالية. راقب ما يحدث عند الثانية 13 تقريبًا.", "k32": "<i style=\"background:var(--hot)\"></i>قطر اللهب (مقاس)", "k33": "<i style=\"background:var(--model)\"></i>قطر اللهب (نموذج)", "k34": "<i style=\"background:#fff\"></i>قطر قطرة الوقود", "k35": "دوديكان، قطر ابتدائي 4 مم، هواء عند 1 ضغط جوي. المصدر: تحليل MST 2024 لبيانات محطة الفضاء (PSI-117).", "k36": "ينهار <span class=\"hot\">اللهب الساخن</span> الساطع عند الثانية <b data-fill=\"burn.t_hot_out\">12.6</b>. بالنسبة لرائد الفضاء، سيبدو وكأنه انطفأ.", "k37": "لكن القطرة تستمر في الانكماش بنفس المعدل لمدة <b class=\"cool\" data-fill=\"burn.invisible_seconds\">33</b> ثانية أخرى. ما زالت تحترق داخل <span class=\"cool\">لهب بارد</span>: لهب خافت منخفض الحرارة لا تراه العين.", "k38": "استمر تفاعل الوقود مدة أطول بـ <b data-fill=\"burn.ratio\">2.6</b> مرة من عمر النار المرئية.", "k39": "02 · PSI-117 · مقارنة ثلاثة أنواع وقود", "k40": "متى يموت اللهب حقًا؟", "k41": "لكل قطرة، سجّل العلماء الحجم الذي انكمشت إليه عندما انطفأ كل لهب. اختر نوع الوقود.", "k42": "النقاط: تجارب محطة الفضاء. الخطوط المتقطعة: نماذج. هواء عند 1 ضغط جوي. المصدر: Proceedings of the Combustion Institute 2023 (PSI-117).", "k43": "<span class=\"hot\">اللهب الساخن</span> يستسلم مبكرًا بينما معظم القطرة ما زال موجودًا: نقاطه تقع قرب أعلى الرسم.", "k44": "أما <span class=\"cool\">اللهب البارد</span> فيستمر حتى يصبح قطر القطرة نحو 1 مم أو أقل. رؤية اللهب ينطفئ ليست دليلًا على أن الوقود توقف عن الاحتراق.", "k45": "03 · PSI-117 · محاكاة قطرة هيبتان 0.5 مم", "k46": "لهب بارد ينبض", "k47": "نفس القطرة في محاكاة داخل جوّين مختلفين. عند 21% أكسجين يحترق اللهب البارد بثبات، وعند 10% أكسجين يبدأ بالنبض مثل القلب.", "k48": "<i style=\"background:var(--cool)\"></i>21% أكسجين: ثابت", "k49": "<i style=\"background:#ffc86b\"></i>10% أكسجين: نابض", "k50": "أعلى درجة حرارة للغاز حول القطرة (محاكاة). القفزة القصيرة عند الاشتعال قرب 1,150 كلفن في البداية خارج حدود الرسم. المصدر: PROCI 2019 (PSI-117).", "k51": "عند 10% أكسجين يتوهج اللهب البارد <b data-fill=\"cool.pulsing.pulses\">6</b> مرات في أقل من ثانية، يخفت ثم يعود في كل مرة.", "k52": "الحريق الذي يبدو أنه يحتضر قد يعود مرارًا. يجب أن تراقب أجهزة الكشف درجة الحرارة على مدى الوقت، لا قراءة واحدة.", "k53": "04 · PSI-117 · دوديكان من 0.5 إلى 5 ضغط جوي", "k54": "الضغط يغيّر النار", "k55": "قد لا تحافظ مساكن القمر والمريخ المستقبلية على ضغط سطح البحر الأرضي. اختبرت هذه التجارب على محطة الفضاء كيف يعيد الضغط تشكيل اللهب.", "k56": "متى ينطفئ اللهب", "k57": "سرعة احتراق الوقود", "k58": "الحرارة المنبعثة", "k59": "الضغط الأعلى يجعل القطرات تحترق أسرع، وعند 5 ضغط جوي تبعث حرارة أكثر.", "k60": "اللهب البارد يتأثر بشدة: عند 0.5 ضغط جوي انطفأ والقطرة ما زال قطرها نحو 2 مم، وعند 1 ضغط جوي استمر حتى صار قطرها نحو 0.5 مم أو أقل، وعند 3 ضغط جوي لم يُرصد إطلاقًا.", "k61": "قواعد الحريق المستفادة عند ضغط معين لا تنطبق على ضغط آخر. اختبر المواد عند الضغط الحقيقي للمسكن.", "k62": "05 · PSI-117 · دوديكان عند 2.75 ضغط جوي مع الهيليوم", "k63": "النار التي تعود", "k64": "في هذه التجربة مرّ اللهب بثلاث مراحل، والحرارة المقاسة تحكي القصة.", "k65": "<i style=\"background:var(--hot)\"></i>الحرارة المنبعثة (مقاسة)", "k66": "<i style=\"background:var(--model)\"></i>الحرارة المنبعثة (نموذج)", "k67": "<i style=\"background:#fff\"></i>حجم القطرة المتبقي", "k68": "تم تحويل الزمن من الزمن المُقاس في البحث (t ÷ d₀²) باستخدام d₀ = 4.5 مم. المصدر: PROCI 2019 (PSI-117).", "k69": "<b>المرحلة 1:</b> يحترق <span class=\"hot\">لهب ساخن</span> ثم ينطفئ عند الثانية <b data-fill=\"threeStage.first_out_s\">8</b> تقريبًا.", "k70": "<b>المرحلة 2:</b> يواصل <span class=\"cool\">لهب بارد</span> حرق القطرة بهدوء.", "k71": "<b>المرحلة 3:</b> عند الثانية <b data-fill=\"threeStage.reignite_s\">26</b> تقريبًا تقفز الحرارة المنبعثة إلى أعلى قيمة في التجربة كلها، <b data-fill=\"threeStage.reignite_peak_w\">62.8</b> واط. لقد عاد اللهب الساخن من تلقاء نفسه.", "k72": "06 · Saffire-1 و Saffire-2 · حرائق داخل مركبة شحن Cygnus", "k73": "من قطرة إلى حريق داخل مركبة فضاء", "k74": "بعد مغادرة محطة الفضاء، تحولت مركبات الشحن Cygnus إلى مختبرات حريق طائرة. أُحرقت بداخلها عينات كبيرة من القماش والبلاستيك، بعيدًا عن أي طاقم.", "k75": "Saffire: نار تنتشر على قماش داخل مركبة Cygnus · ناسا", "k76": "نفس القماش، نفس الهواء، اتجاه مختلف", "k77": "Saffire-1: لوحان من قماش القطن والألياف الزجاجية (SIBAL) بمقاس 40.6 × 94 سم، سرعة الهواء 20 سم/ث، ونحو 21.5% أكسجين.", "k78": "عندما دفع الهواء اللهب إلى الأمام فوق القماش غير المحترق، استمر الحريق <b>7 دقائق</b>. وعندما هبّ الهواء عكس اللهب، استمر أكثر من دقيقة بقليل.", "k79": "التهوية قد تغذي الحريق. ورأت تجربة BASS-II على محطة الفضاء الجانب الآخر: <b data-fill=\"bass2.extinguished_by_low_flow\">15</b> من سجلات اختباراتها تُظهر انطفاء اللهب عند خفض تدفق الهواء.", "k80": "Saffire-2: أي المواد احترقت في الفضاء؟", "k81": "تسع عينات بمقاس 5 × 29 سم، سرعة الهواء 20 سم/ث، ونحو 22% أكسجين، مقارنة بنفس الاختبار على الأرض.", "k82": "07 · BASS-II · وقود صلب احترق على محطة الفضاء", "k83": "الخطر غير المرئي: الغاز السام", "k84": "سجّلت BASS-II أول أكسيد الكربون داخل صندوق الاختبار المغلق قبل كل احتراق وبعده. الزيادة تُظهر كمية الغاز السام التي أطلقتها كل مادة.", "k85": "كل نقطة اختبار واحد: CO بعد الاحتراق ناقص CO قبله، بوحدة ppm، داخل صندوق التجربة (وليس مقصورة المحطة). الصناديق تُظهر النصف الأوسط من الاختبارات. المصدر: جدول تجربة BASS-II (PSI-25).", "k86": "رفعت ألواح البلاستيك السميكة CO بوسيط <b data-fill=\"co.sheet\">335</b> ppm في كل اختبار، أي نحو <b data-fill=\"co.ratio\">21</b> ضعف الغشاء الرقيق من نفس البلاستيك.", "k87": "لم يُطلق Nomex تقريبًا أي غاز. البلاستيك السميك يحترق ببطء ويبقى مشتعلًا مدة أطول (في Saffire-2 استمر أحدها 15 دقيقة)، فيستمر في إنتاج الغاز.", "k88": "قد يكون اللهب الصغير الثابت أخطر على الطاقم من لهب كبير قصير.", "k89": "تفاعلي · اختبر نفسك", "k90": "تدريب طوارئ: مسكن على القمر", "k91": "أنت القائد. أربعة قرارات، وكل إجابة مبنية على ما أظهرته تجارب محطة الفضاء.", "k92": "08 · ما تقوله البيانات للرواد", "k93": "إرشادات السلامة من الحرائق", "k94": "كل توصية هنا تشير إلى التجربة التي تدعمها.", "k95": "«منطفئ» لا يعني منطفئًا", "k96": "تأكد من انتهاء الحريق بأجهزة استشعار الحرارة والغاز، لا بالنظر. أبقى اللهب البارد الوقود مشتعلًا 2.6 مرة أطول من اللهب المرئي.", "k97": "الدليل: <a href=\"#vanishing\">سجل الاحتراق PSI-117</a>", "k98": "احذر من العودة", "k99": "واصل المراقبة بعد الانطفاء. في إحدى التجارب عادت القطرة للاشتعال بأشد لهب لها بعد 18 ثانية من انطفاء اللهب الأول.", "k100": "الدليل: <a href=\"#return\">تجربة المراحل الثلاث PSI-117</a>", "k101": "أوقف تدفق الهواء أولًا", "k102": "أطفئ مراوح التهوية عند أول علامة حريق. جعل الهواء الموازي للهب حريق القماش يستمر 6 مرات أطول.", "k103": "الدليل: <a href=\"#spacecraft\">Saffire-1، BASS-II</a>", "k104": "اختر مواد ترفض الاحتراق", "k105": "فضّل أقمشة مثل Nomex والسيليكون المقاوم للهب قرب أماكن الطاقم. لم يشتعل Nomex حتى بجوار بلاستيك يحترق.", "k106": "الدليل: <a href=\"#spacecraft\">Saffire-2</a>", "k107": "استعد للغاز السام", "k108": "احمل أجهزة استشعار CO وأقنعة جاهزة للاستخدام. أطلق البلاستيك السميك نحو 21 ضعفًا من أول أكسيد الكربون مقارنة بالغشاء الرقيق.", "k109": "الدليل: <a href=\"#smoke\">قراءات الغاز في BASS-II</a>", "k110": "اختبر في ظروف المهمة", "k111": "اعتمد المواد عند الضغط والأكسجين وتدفق الهواء الحقيقي للمسكن. احترق السيليكون على الأرض لكن ليس في المدار، وتغيّر اللهب البارد مع الضغط.", "k112": "الدليل: <a href=\"#pressure\">PSI-117</a>، <a href=\"#spacecraft\">Saffire-2</a>", "k113": "تفاعلي · فحص المواد", "k114": "فحص خطورة المواد", "k115": "اختر مادة وظروف المقصورة. الحكم مبني فقط على ما قاسته هذه التجارب، ويوضح أين تنتهي البيانات.", "k116": "المادة", "k117": "تدفق الهواء عند الحريق", "k118": "أكسجين المقصورة", "k119": "قاعدة تقريبية من نتائج PSI-117 و Saffire و BASS-II، وليست اعتمادًا هندسيًا.", "k120": "09 · بيانات مفتوحة", "k121": "البيانات والمصادر", "k122": "كل البيانات من مستودع Physical Sciences Informatics (PSI) التابع لناسا. سكريبت Python ينظف الملفات الخام ويبني كل رسم في هذه الصفحة.", "k123": "مجموعات بيانات PSI من ناسا", "k124": "الأبحاث وراء PSI-117", "k125": "البيانات والصور: ناسا · الرسوم: Plotly"};
+const TR={"Time since ignition (s)": "الزمن منذ الاشتعال (ث)", "Diameter (mm)": "القطر (مم)", "VISIBLE FLAME": "لهب مرئي", "INVISIBLE COOL FLAME": "لهب بارد غير مرئي", "Flame (model)": "اللهب (نموذج)", "Flame (measured)": "اللهب (مقاس)", "Droplet": "القطرة", "Hot flame (model)": "لهب ساخن (نموذج)", "Cool flame (model)": "لهب بارد (نموذج)", "Hot flame out (ISS)": "انطفاء اللهب الساخن (المحطة)", "Cool flame out (ISS)": "انطفاء اللهب البارد (المحطة)", "Cool flame out (ISS, 2024)": "انطفاء اللهب البارد (المحطة، 2024)", "Cool-flame range": "نطاق اللهب البارد", "Starting droplet diameter (mm)": "قطر القطرة الابتدائي (مم)", "Droplet diameter when flame went out (mm)": "قطر القطرة عند انطفاء اللهب (مم)", "21% O₂ (steady)": "21% O₂ (ثابت)", "10% O₂ (pulsing)": "10% O₂ (نابض)", "Time (s)": "الزمن (ث)", "Peak gas temperature (K)": "أعلى حرارة للغاز (كلفن)", "Pressure (atm)": "الضغط (ضغط جوي)", "Model": "نموذج", "ISS experiments": "تجارب المحطة", "Burning-rate constant K (mm²/s)": "ثابت معدل الاحتراق K (مم²/ث)", "0.5 atm (model)": "0.5 ضغط جوي (نموذج)", "5 atm (model)": "5 ضغط جوي (نموذج)", "0.5 atm (ISS)": "0.5 ضغط جوي (المحطة)", "5 atm (ISS)": "5 ضغط جوي (المحطة)", "Heat radiated (W)": "الحرارة المنبعثة (واط)", "Heat radiated (measured)": "الحرارة المنبعثة (مقاسة)", "Droplet size remaining": "حجم القطرة المتبقي", "Droplet size (d/d₀)²": "حجم القطرة (d/d₀)²", "1 · HOT": "1 · ساخن", "2 · COOL FLAME": "2 · لهب بارد", "3 · HOT AGAIN": "3 · ساخن مجددًا", "CO increase per test (ppm)": "زيادة CO لكل اختبار (ppm)", "PMMA film (0.1-0.4 mm)": "غشاء PMMA (0.1-0.4 مم)", "Cotton-fiberglass fabric": "قماش قطن وألياف زجاجية", "PMMA rod (6-13 mm)": "قضيب PMMA (6-13 مم)", "PMMA sheet (1-5 mm)": "لوح PMMA (1-5 مم)", "Visible hot flame": "لهب ساخن مرئي", "Cool flame (invisible to the eye)": "لهب بارد (غير مرئي للعين)", "Looks out... but still burning": "يبدو منطفئًا... لكنه ما زال يحترق", "Burned out": "احترق بالكامل", "Play": "تشغيل", "Pause": "إيقاف", "none": "لا يوجد", "What it means": "ماذا يعني ذلك", "Real flame on the ISS · NASA BASS": "لهب حقيقي على محطة الفضاء · NASA BASS", "Real flame on the ISS · NASA BASS-II": "لهب حقيقي على محطة الفضاء · NASA BASS-II", "Burning plastic rod on the ISS · NASA BASS-II": "قضيب بلاستيكي يحترق على محطة الفضاء · NASA BASS-II"};
+let LANG='en';
+const tr = en => (LANG==='ar' && TR[en]) ? TR[en] : en;
+const pick = (en,ar) => LANG==='ar' ? ar : en;
+const RR = [];
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C = {hot:css('--hot'),cool:css('--cool'),model:css('--model'),muted:css('--muted'),text:css('--text'),accent:css('--accent'),amber:'#ffc86b'};
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const small = () => innerWidth < 640;
+
+/* ---------- stars ---------- */
+const cv = document.getElementById('stars'), ctx = cv.getContext('2d');
+let stars = [];
+function sizeStars(){
+  const dpr = Math.min(devicePixelRatio||1,2);
+  cv.width = innerWidth*dpr; cv.height = innerHeight*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  const n = Math.round(innerWidth*innerHeight/5200);
+  stars = Array.from({length:n},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.25+.2,p:Math.random()*6.28,s:.4+Math.random()*1.4,v:.02+Math.random()*.06}));
+}
+function drawStars(t){
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  for(const s of stars){
+    const a = .35+.45*Math.sin(s.p+t/1000*s.s);
+    ctx.globalAlpha = Math.max(.08,a);
+    ctx.fillStyle = s.r>1.2 ? '#cfe6ff' : '#ffffff';
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill();
+    if(!reduce){ s.y -= s.v; if(s.y<-2){ s.y = innerHeight+2; s.x = Math.random()*innerWidth; } }
+  }
+  if(!reduce) requestAnimationFrame(drawStars);
+}
+sizeStars(); requestAnimationFrame(drawStars);
+addEventListener('resize',()=>{ sizeStars(); if(reduce) drawStars(0); });
+
+
+/* ---------- light ribbons ---------- */
+document.querySelectorAll('.ribbon-svg').forEach((svg,k)=>{
+  const ns='http://www.w3.org/2000/svg', id='rg'+k;
+  svg.innerHTML='<defs><linearGradient id="'+id+'" x1="0" x2="1"><stop offset="0" stop-color="#6aa8ff" stop-opacity="0"/><stop offset=".3" stop-color="#45e0ff" stop-opacity=".9"/><stop offset=".7" stop-color="#6aa8ff" stop-opacity=".9"/><stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/></linearGradient></defs>';
+  for(let i=0;i<16;i++){
+    let d='';
+    for(let x=0;x<=1200;x+=20){
+      const y=75+Math.sin(x/190+i*.13+k)*(26+i*1.6)+Math.sin(x/70+i*.4)*4;
+      d+=(x?'L':'M')+x+' '+y.toFixed(1);
+    }
+    const p=document.createElementNS(ns,'path');
+    p.setAttribute('d',d); p.setAttribute('fill','none'); p.setAttribute('stroke','url(#'+id+')');
+    p.setAttribute('stroke-width',i%5?'.7':'1.4'); p.setAttribute('opacity',(.15+i/40).toFixed(2));
+    svg.appendChild(p);
+  }
+});
+
+/* ---------- numbers from the data ---------- */
+const get = path => path.split('.').reduce((o,k)=>o && o[k], D);
+const coGroups = D.bass2.groups;
+const film = coGroups.find(g=>g.group.startsWith('PMMA film')).median;
+const sheet = coGroups.find(g=>g.group.startsWith('PMMA sheet')).median;
+const s1 = D.saffire.saffire1;
+const derived = {
+  'co.sheet': Math.round(sheet), 'co.ratio': Math.round(sheet/film),
+  'saffire.saffire3_flow': D.saffire.saffire3_flow.join(', ')
+};
+function fillAll(){ document.querySelectorAll('[data-fill]').forEach(el=>{
+  const k = el.dataset.fill, v = k in derived ? derived[k] : get(k);
+  if(v!==undefined && v!==null) el.textContent = typeof v==='number' && !Number.isInteger(v) ? v.toFixed(1) : v;
+}); }
+fillAll();
+const statVals = {
+  visible:{v:D.burn.t_hot_out,dec:1,suf:' s'},
+  invisible:{v:Math.round(D.burn.invisible_seconds),dec:0,suf:' s'},
+  saffire:{v:Math.round(s1[0].burn_s/s1[1].burn_s),dec:0,suf:'×'},
+  co:{v:Math.round(sheet/film),dec:0,suf:'×'}
+};
+document.querySelectorAll('.stat .num').forEach(el=>{
+  const s = statVals[el.dataset.key]; if(!s) return;
+  el.textContent = s.v.toFixed(s.dec)+s.suf;
+  if(reduce) return;
+  const t0 = performance.now(), dur = 1400;
+  (function step(now){
+    const p = Math.min(1,(now-t0)/dur), e = 1-Math.pow(1-p,3);
+    el.textContent = (s.v*e).toFixed(s.dec)+s.suf;
+    if(p<1) requestAnimationFrame(step);
+  })(t0);
+});
+
+/* ---------- chart helpers ---------- */
+function base(extra){
+  const m = small();
+  return Object.assign({
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
+    font:{family:'IBM Plex Sans, system-ui, sans-serif',color:C.muted,size:m?11:12.5},
+    margin:{l:m?46:58,r:m?12:22,t:16,b:m?44:52},
+    showlegend:false, hovermode:'closest',
+    hoverlabel:{bgcolor:'#0e1630',bordercolor:'rgba(130,170,255,.35)',font:{color:C.text,family:'IBM Plex Sans'}},
+  }, extra);
+}
+function axis(title, extra){
+  return Object.assign({title:{text:tr(title),standoff:10},gridcolor:'rgba(255,255,255,.06)',zerolinecolor:'rgba(255,255,255,.12)',linecolor:'rgba(255,255,255,.14)',tickcolor:'rgba(255,255,255,.14)',ticks:'outside',ticklen:4}, extra||{});
+}
+const cfg = {displayModeBar:false,responsive:true};
+const line = (d,name,color,o) => (name=tr(name), Object.assign({x:d.x,y:d.y,name,type:'scatter',mode:'lines',line:{color,width:2.4,shape:'spline',smoothing:.6},hovertemplate:'%{x:.2f}, %{y:.2f}<extra>'+name+'</extra>'},o||{}));
+const dots = (d,name,color,o) => (name=tr(name), Object.assign({x:d.x,y:d.y,name,type:'scatter',mode:'markers',marker:{color,size:7,line:{color:'rgba(4,6,13,.8)',width:1}},hovertemplate:'%{x:.2f}, %{y:.2f}<extra>'+name+'</extra>'},o||{}));
+const band = (x0,x1,color) => ({type:'rect',xref:'x',yref:'paper',x0,x1,y0:0,y1:1,fillcolor:color,line:{width:0},layer:'below'});
+const note = (x,y,text,color,o) => Object.assign({x,y,xref:'x',yref:'paper',text:tr(text),showarrow:false,font:{color,size:small()?10.5:12},xanchor:'left',yanchor:'top'},o||{});
+const draw = (id,traces,layout) => Plotly.react(id,traces,layout,cfg);
+
+/* 01 vanishing flame */
+function chartVanish(){
+  const b = D.burn;
+  draw('c-vanish',[
+    line(b.model,'Flame (model)',C.model,{line:{color:C.model,width:1.6,dash:'dash'}}),
+    line(b.flame,'Flame (measured)',C.hot,{mode:'lines+markers',marker:{size:5,color:C.hot},line:{color:C.hot,width:2.2}}),
+    line(b.droplet,'Droplet',C.text,{line:{color:'#ffffff',width:2.2}})
+  ], base({
+    xaxis:axis('Time since ignition (s)',{range:[0,50]}),
+    yaxis:axis('Diameter (mm)',{range:[0,34]}),
+    shapes:[band(0,b.t_hot_out,'rgba(255,138,61,.08)'),band(b.t_hot_out,b.t_end,'rgba(69,224,255,.07)'),
+      {type:'line',xref:'x',yref:'paper',x0:b.t_hot_out,x1:b.t_hot_out,y0:0,y1:1,line:{color:C.hot,width:1,dash:'dot'}}],
+    annotations:[note(1,.98,'VISIBLE FLAME',C.hot),note(b.t_hot_out+1,.98,tr('INVISIBLE COOL FLAME')+' · '+Math.round(b.invisible_seconds)+pick(' s',' ث'),C.cool)]
+  }));
+}
+
+/* 02 extinction by fuel */
+const fuels = Object.keys(D.extinction.fuels);
+let fuel = fuels.includes('n-decane') ? 'n-decane' : fuels[0];
+const ft = document.getElementById('fuel-tabs');
+fuels.forEach(f=>{
+  const b = document.createElement('button');
+  b.className='tab'; b.type='button'; b.setAttribute('role','tab'); b.textContent=f; b.id='fuel-'+f;
+  b.setAttribute('aria-selected', f===fuel);
+  b.addEventListener('click',()=>{ fuel=f; ft.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t===b)); chartFuel(); });
+  ft.appendChild(b);
+});
+function chartFuel(){
+  const f = D.extinction.fuels[fuel], trs = [];
+  if(f.model){
+    trs.push(line(f.model.hot,'Hot flame (model)',C.hot,{line:{color:C.hot,width:1.6,dash:'dash'}}));
+    trs.push(line(f.model.cool,'Cool flame (model)',C.cool,{line:{color:C.cool,width:1.6,dash:'dash'}}));
+  }
+  if(f.expt){
+    trs.push(dots(f.expt.hot,'Hot flame out (ISS)',C.hot,{marker:{color:C.hot,size:10,line:{color:'#04060d',width:1}}}));
+    trs.push(dots(f.expt.cool,'Cool flame out (ISS)',C.cool,{marker:{color:C.cool,size:10,symbol:'diamond',line:{color:'#04060d',width:1}}}));
+  }
+  draw('c-fuel',trs,base({
+    showlegend:true, legend:{orientation:'h',y:1.12,x:0,font:{size:small()?10.5:12}},
+    margin:Object.assign(base().margin,{t:40}),
+    xaxis:axis('Starting droplet diameter (mm)',{range:[1.8,7.2]}),
+    yaxis:axis('Droplet diameter when flame went out (mm)',{range:[0,7.2]})
+  }));
+}
+
+/* 03 pulsing cool flames */
+function chartPulse(){
+  const c = D.cool;
+  draw('c-pulse',[
+    line(c.stable.tmax,'21% O₂ (steady)',C.cool,{line:{color:C.cool,width:2.4}}),
+    line(c.pulsing.tmax,'10% O₂ (pulsing)',C.amber,{line:{color:C.amber,width:2.2,shape:'linear'}})
+  ], base({
+    xaxis:axis('Time (s)',{range:[0,1.05]}),
+    yaxis:axis('Peak gas temperature (K)',{range:[645,790]}),
+  }));
+}
+
+/* 04 pressure */
+const pNotes = {
+  ext:'Dots and diamonds: ISS experiments; dashed lines: models; vertical bars: reported cool-flame range. Source: PROCI 2023 and MST 2024 (PSI-117).',
+  rate:'Burning-rate constant K: how fast the droplet surface area shrinks. Dots: ISS experiments; line: model. Source: MST 2024 (PSI-117).',
+  rad:'Heat radiated by the flame over time at 0.5 atm and 5 atm. Dots: ISS experiments; lines: models. Source: MST 2024 (PSI-117).'
+};
+const pNotesAr = {ext:'النقاط والمعيّنات: تجارب محطة الفضاء؛ الخطوط المتقطعة: نماذج؛ الأشرطة العمودية: نطاق اللهب البارد المنشور. المصدر: PROCI 2023 و MST 2024 (PSI-117).',rate:'ثابت معدل الاحتراق K: سرعة تقلص مساحة سطح القطرة. النقاط: تجارب المحطة؛ الخط: نموذج. المصدر: MST 2024 (PSI-117).',rad:'الحرارة المنبعثة من اللهب مع الوقت عند 0.5 و5 ضغط جوي. النقاط: تجارب المحطة؛ الخطوط: نماذج. المصدر: MST 2024 (PSI-117).'};
+let pView = 'ext';
+document.querySelectorAll('#p-tabs .tab').forEach(b=>b.addEventListener('click',()=>{
+  pView = b.dataset.view;
+  document.querySelectorAll('#p-tabs .tab').forEach(t=>t.setAttribute('aria-selected',t===b));
+  chartPressure();
+}));
+function chartPressure(){
+  const P = D.pressure;
+  document.getElementById('p-note').textContent = LANG==='ar' ? pNotesAr[pView] : pNotes[pView];
+  const lg = {showlegend:true,legend:{orientation:'h',y:1.14,x:0,font:{size:small()?10.5:12}},margin:Object.assign(base().margin,{t:44})};
+  if(pView==='ext'){
+    const e = P.extinction;
+    const ranges = {x:[],y:[]};
+    e.cool_ranges.forEach(r=>{ ranges.x.push(r.p,r.p,null); ranges.y.push(r.lo,r.hi,null); });
+    draw('c-pressure',[
+      line(e.hot_model,'Hot flame (model)',C.hot,{line:{color:C.hot,width:1.6,dash:'dash'}}),
+      line(e.cool_model,'Cool flame (model)',C.cool,{line:{color:C.cool,width:1.6,dash:'dash'}}),
+      {x:ranges.x,y:ranges.y,type:'scatter',mode:'lines',line:{color:'rgba(69,224,255,.45)',width:6},name:'Cool-flame range',hoverinfo:'skip'},
+      dots(e.hot_expt,'Hot flame out (ISS)',C.hot,{marker:{color:C.hot,size:10,line:{color:'#04060d',width:1}}}),
+      dots(e.cool_expt,'Cool flame out (ISS)',C.cool,{marker:{color:C.cool,size:10,symbol:'diamond',line:{color:'#04060d',width:1}}}),
+      dots(e.cool_expt_mst,'Cool flame out (ISS, 2024)',C.cool,{marker:{color:'rgba(0,0,0,0)',size:9,symbol:'diamond-open',line:{color:C.cool,width:1.6}}})
+    ], base(Object.assign({},lg,{
+      xaxis:axis('Pressure (atm)',{range:[0.35,3.2]}),
+      yaxis:axis('Droplet diameter when flame went out (mm)',{range:[0,4.4]}),
+      annotations:e.no_cool_flame_at.map(p=>({x:p,y:.6,xref:'x',yref:'y',text:pick('no cool flame<br>seen at '+p+' atm','لم يُرصد لهب بارد<br>عند '+p+' ضغط جوي'),showarrow:true,arrowhead:0,ax:-50,ay:-40,arrowcolor:C.cool,font:{color:C.cool,size:11.5}}))
+    })));
+  } else if(pView==='rate'){
+    draw('c-pressure',[
+      line(P.burning_rate.model,'Model',C.model,{line:{color:C.model,width:1.8,dash:'dash'},mode:'lines+markers',marker:{size:5,color:C.model}}),
+      dots(P.burning_rate.expt,'ISS experiments',C.hot,{marker:{color:C.hot,size:10,line:{color:'#04060d',width:1}}})
+    ], base(Object.assign({},lg,{
+      xaxis:axis('Pressure (atm)',{range:[0,5.4]}),
+      yaxis:axis('Burning-rate constant K (mm²/s)',{range:[0.25,0.6]})
+    })));
+  } else {
+    const r = P.radiance;
+    draw('c-pressure',[
+      line(r.low.model,'0.5 atm (model)',C.cool,{line:{color:C.cool,width:1.6,dash:'dash'}}),
+      line(r.high.model,'5 atm (model)',C.hot,{line:{color:C.hot,width:1.6,dash:'dash'}}),
+      dots(r.low.expt,'0.5 atm (ISS)',C.cool,{marker:{color:C.cool,size:8}}),
+      dots(r.high.expt,'5 atm (ISS)',C.hot,{marker:{color:C.hot,size:8}})
+    ], base(Object.assign({},lg,{
+      xaxis:axis('Time (s)',{range:[0,52]}),
+      yaxis:axis('Heat radiated (W)',{rangemode:'tozero'})
+    })));
+  }
+}
+
+/* 05 three stages */
+function chartThree(){
+  const t = D.threeStage, k = t.d0_mm*t.d0_mm;
+  const sec = d => ({x:d.x.map(v=>+(v*k).toFixed(2)),y:d.y});
+  const r = sec(t.radiance), mr = sec(t.model_radiance), dr = sec(t.droplet);
+  const a = t.first_out_s, b = t.reignite_s, end = Math.max(...r.x);
+  draw('c-three',[
+    line(mr,'Model',C.model,{line:{color:C.model,width:1.5,dash:'dash'}}),
+    line(r,'Heat radiated (measured)',C.hot,{line:{color:C.hot,width:2,shape:'linear'}}),
+    line(dr,'Droplet size remaining',C.text,{yaxis:'y2',line:{color:'#ffffff',width:1.8},hovertemplate:'%{x:.1f} s · %{y:.2f}<extra>droplet (d/d₀)²</extra>'})
+  ], base({
+    xaxis:axis('Time since ignition (s)',{range:[0,end+1]}),
+    yaxis:axis('Heat radiated (W)',{range:[0,70]}),
+    yaxis2:axis('Droplet size (d/d₀)²',{overlaying:'y',side:'right',range:[0,1.05],showgrid:false,title:{text:small()?'':'Droplet size (d/d₀)²'}}),
+    margin:Object.assign(base().margin,{r:small()?30:62}),
+    shapes:[band(0,a,'rgba(255,138,61,.08)'),band(a,b-1.2,'rgba(69,224,255,.07)'),band(b-1.2,end+1,'rgba(255,138,61,.08)')],
+    annotations:[note(.6,.98,'1 · HOT',C.hot),note(a+.8,.98,'2 · COOL FLAME',C.cool),note(b-0.6,.98,'3 · HOT AGAIN',C.hot)]
+  }));
+}
+
+/* 06 Saffire */
+const bars = document.getElementById('saffire-bars');
+function renderBars(){ bars.innerHTML='';
+const maxB = Math.max(...s1.map(r=>r.burn_s));
+s1.forEach(r=>{
+  const row = document.createElement('div'); row.className='bar-row';
+  const label = r.direction.trim().toLowerCase()==='concurrent' ? pick('Airflow with the flame','الهواء مع اتجاه اللهب') : pick('Airflow against the flame','الهواء عكس اتجاه اللهب');
+  row.innerHTML = '<span>'+label+'</span><div class="bar-track"><div class="bar-fill'+(r.burn_s<maxB?' short':'')+'" style="width:'+(r.burn_s/maxB*100)+'%"></div></div><b>'+r.burn_s+pick(' s',' ث')+'</b>';
+  bars.appendChild(row);
+}); }
+renderBars(); RR.push(renderBars);
+const mats = [
+  {name:'Silicone',ids:['2-1','2-2','2-3','2-4'],space:['safe','Did not spread'],earth:['bad','Burned (thin samples)'],text:'All four samples, 0.27 to 1.03 mm, barely burned in orbit, while thin samples burned completely on Earth.'},
+  {name:'Cotton-fiberglass fabric',ids:['2-5','2-6'],space:['bad','Burned fully'],earth:['bad','Burned fully'],text:'Flames crossed the full 29 cm in 115 to 145 s, spreading 2.1 to 2.6 mm per second.'},
+  {name:'Nomex next to plastic',ids:['2-7'],space:['safe','Nomex never lit'],earth:['safe','Nomex never lit'],text:'The PMMA plastic piece burned away completely, but the Nomex fabric beside it did not ignite.'},
+  {name:'Thick PMMA plastic',ids:['2-8','2-9'],space:['warn','Small flame, 10 to 15 min'],earth:['bad','Burned fully'],text:'The flame stayed anchored at the base and burned for 600 to 900 s, slowly eating 0.01 to 0.04 mm/s.'}
+];
+const matsAr = [
+  {name:'سيليكون',space:'لم ينتشر',earth:'احترق (العينات الرقيقة)',text:'العينات الأربع من 0.27 إلى 1.03 مم بالكاد احترقت في المدار، بينما احترقت العينات الرقيقة بالكامل على الأرض.'},
+  {name:'قماش قطن وألياف زجاجية',space:'احترق بالكامل',earth:'احترق بالكامل',text:'قطع اللهب العينة كاملة بطول 29 سم في 115 إلى 145 ثانية، بسرعة 2.1 إلى 2.6 مم في الثانية.'},
+  {name:'Nomex بجوار البلاستيك',space:'لم يشتعل Nomex',earth:'لم يشتعل Nomex',text:'احترقت قطعة بلاستيك PMMA بالكامل، لكن قماش Nomex بجوارها لم يشتعل.'},
+  {name:'بلاستيك PMMA سميك',space:'لهب صغير، 10 إلى 15 دقيقة',earth:'احترق بالكامل',text:'بقي اللهب مثبتًا عند القاعدة واستمر 600 إلى 900 ثانية، يأكل المادة ببطء بمعدل 0.01 إلى 0.04 مم/ث.'}
+];
+const matBox = document.getElementById('materials');
+function renderMats(){ matBox.innerHTML='';
+mats.forEach((m0,mi)=>{
+  const a=matsAr[mi], m = LANG==='ar' ? Object.assign({},m0,{name:a.name,text:a.text,space:[m0.space[0],a.space],earth:[m0.earth[0],a.earth]}) : m0;
+  const rows = D.saffire.saffire2.filter(s=>m.ids.includes(s.sample));
+  const thick = [...new Set(rows.map(s=>s.thickness).filter(t=>t && !/^see/i.test(t)))].join(' · ');
+  const el = document.createElement('article'); el.className='mat';
+  el.innerHTML = '<h3>'+m.name+'</h3><div class="thick">'+pick('Samples ','العينات ')+m.ids.join(', ')+' · '+thick+'</div>'+
+    '<dl class="verdict"><dt>'+pick('Space','الفضاء')+'</dt><dd><span class="pill '+m.space[0]+'">'+m.space[1]+'</span></dd><dt>'+pick('Earth','الأرض')+'</dt><dd><span class="pill '+m.earth[0]+'">'+m.earth[1]+'</span></dd></dl>'+
+    '<p>'+m.text+'</p>';
+  matBox.appendChild(el);
+}); }
+renderMats(); RR.push(renderMats);
+
+/* 07 CO */
+function chartCO(){
+  const colors = ['#69e3b0','#9fb4e8','#7fc4ff','#ffb15c','#ff7a5c'];
+  const trs = D.bass2.groups.map((g,i)=>({
+    type:'box', y:g.values, name:tr(g.group).replace(' (','<br>('), boxpoints:'all', jitter:.5, pointpos:0,
+    marker:{color:colors[i],size:6,opacity:.85}, line:{color:colors[i],width:1.4}, fillcolor:'rgba(255,255,255,.03)',
+    hovertemplate:'%{y:.0f} ppm<extra>'+g.group+' · '+g.n+' tests</extra>'
+  }));
+  draw('c-co',trs,base({
+    xaxis:axis('',{tickfont:{size:small()?9.5:11.5},ticks:''}),
+    yaxis:axis('CO increase per test (ppm)',{range:[-40,620]}),
+    margin:Object.assign(base().margin,{b:small()?70:64})
+  }));
+}
+
+
+/* ---------- replay animation ---------- */
+(function(){
+  const B = D.burn, cv = document.getElementById('replay-canvas'), g = cv.getContext('2d');
+  const slider = document.getElementById('r-slider'), playBtn = document.getElementById('r-play');
+  const ir = document.getElementById('r-ir');
+  const el = id => document.getElementById(id);
+  const T_OUT = B.t_hot_out, T_END = B.t_end, T_MAX = +slider.max, SPEED = 4;
+  function lerp(series, t){
+    const X = series.x, Y = series.y;
+    if(t <= X[0]) return Y[0];
+    if(t >= X[X.length-1]) return Y[Y.length-1];
+    let i = 1; while(X[i] < t) i++;
+    const f = (t-X[i-1])/(X[i]-X[i-1]); return Y[i-1]+(Y[i]-Y[i-1])*f;
+  }
+  // tick marks on the timeline
+  function ticks(){ el('r-ticks').innerHTML='';
+  [[0,pick('0 s','0 ث')],[T_OUT,pick('flame "out" '+T_OUT+' s','«انطفاء» '+T_OUT+' ث')],[T_END,pick('burnout '+Math.round(T_END)+' s','نهاية الاحتراق '+Math.round(T_END)+' ث')]].forEach(([t,l])=>{
+    const sp=document.createElement('span'); sp.style.left=(t/T_MAX*100)+'%'; sp.textContent=l;
+    if(t===0) sp.style.transform='none'; el('r-ticks').appendChild(sp);
+  }); }
+  ticks();
+  let W=0,H=0,dpr=1;
+  function size(){ dpr=Math.min(devicePixelRatio||1,2); const r=cv.getBoundingClientRect(); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; g.setTransform(dpr,0,0,dpr,0,0); }
+  function shell(cx,cy,r,rgb,a){
+    if(r<=0||a<=0) return;
+    const R=r*1.35, gr=g.createRadialGradient(cx,cy,0,cx,cy,R);
+    gr.addColorStop(0,'rgba('+rgb+',0)');
+    gr.addColorStop(.48,'rgba('+rgb+','+(.10*a)+')');
+    gr.addColorStop(.66,'rgba('+rgb+','+(.35*a)+')');
+    gr.addColorStop(.74,'rgba(255,240,215,'+(.95*a)+')');
+    gr.addColorStop(.80,'rgba('+rgb+','+(.55*a)+')');
+    gr.addColorStop(1,'rgba('+rgb+',0)');
+    g.fillStyle=gr; g.beginPath(); g.arc(cx,cy,R,0,6.283); g.fill();
+  }
+  function draw(t, clock){
+    g.clearRect(0,0,W,H);
+    const cx=W/2, cy=H/2, px=Math.min(W,H)*0.47/27; // pixels per mm
+    const drop = lerp(B.droplet,t), flameD = lerp(B.flame,t);
+    const flick = 1+0.018*Math.sin(clock/70)+0.012*Math.sin(clock/23);
+    const hotA = t<T_OUT ? Math.min(1,t/0.4) : Math.max(0,1-(t-T_OUT)/0.6);
+    const burning = t>T_OUT && t<T_END;
+    const coolA = burning ? (ir.checked ? .85 : .06) : 0;
+    shell(cx,cy,flameD/2*px*flick,'69,224,255',coolA);
+    shell(cx,cy,flameD/2*px*flick,'255,120,40',hotA);
+    // droplet
+    const dr = Math.max(0, t>T_END ? drop/2*Math.max(0,1-(t-T_END)/2) : drop/2)*px;
+    if(dr>0.3){
+      const dg=g.createRadialGradient(cx-dr*.35,cy-dr*.35,dr*.1,cx,cy,dr);
+      dg.addColorStop(0,'#8c98c4'); dg.addColorStop(.55,'#1d2647'); dg.addColorStop(1,'#070b18');
+      g.fillStyle=dg; g.beginPath(); g.arc(cx,cy,dr,0,6.283); g.fill();
+      g.strokeStyle='rgba(255,170,90,'+(.35*hotA+.15)+')'; g.lineWidth=1; g.stroke();
+    }
+    el('r-scale').style.width=(5*px)+'px';
+    el('r-time').textContent=t.toFixed(1);
+    el('r-drop').textContent=(t>T_END?0:drop).toFixed(2);
+    el('r-hot').textContent=(t<T_OUT?flameD:0).toFixed(1);
+    el('r-cool').textContent= burning ? flameD.toFixed(1)+pick(' mm',' مم') : tr('none');
+    const ph=el('r-phase');
+    if(t<T_OUT){ ph.textContent=tr('Visible hot flame'); ph.className='phase'; }
+    else if(t<T_END){ ph.textContent= tr(ir.checked ? 'Cool flame (invisible to the eye)' : 'Looks out... but still burning'); ph.className='phase cool'; }
+    else { ph.textContent=tr('Burned out'); ph.className='phase out'; }
+  }
+  let t=+slider.value, playing=false, last=0;
+  function frame(now){
+    if(!playing) return;
+    const dt=last?(now-last)/1000:0; last=now;
+    t+=dt*SPEED; if(t>T_MAX){ t=T_MAX; setPlaying(false); }
+    slider.value=t; draw(t,now);
+    requestAnimationFrame(frame);
+  }
+  function setPlaying(p){
+    playing=p; playBtn.textContent=tr(p?'Pause':'Play'); playBtn.setAttribute('aria-pressed',p);
+    if(p){ if(t>=T_MAX) t=0; last=0; requestAnimationFrame(frame); }
+  }
+  playBtn.addEventListener('click',()=>setPlaying(!playing));
+  el('r-restart').addEventListener('click',()=>{ t=0; slider.value=0; draw(t,performance.now()); setPlaying(true); });
+  slider.addEventListener('input',()=>{ t=+slider.value; setPlaying(false); draw(t,performance.now()); });
+  ir.addEventListener('change',()=>{ if(!playing) draw(t,performance.now()); });
+  addEventListener('resize',()=>{ size(); draw(t,performance.now()); });
+  RR.push(()=>{ ticks(); playBtn.textContent=tr(playing?'Pause':'Play'); draw(t,performance.now()); });
+  size(); draw(t,0);
+  // idle shimmer while paused, autoplay once when first seen
+  (function idle(now){ if(!playing && !reduce) draw(t,now); requestAnimationFrame(idle); })(0);
+  if(!reduce && 'IntersectionObserver' in window){
+    let done=false; new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting && !done){ done=true; t=0; setPlaying(true); } }); },{threshold:.5}).observe(cv);
+  }
+})();
+
+
+/* ---------- Earth vs orbit candles ---------- */
+(function(){
+  const cv=document.getElementById('worlds-canvas'), g=cv.getContext('2d'); let W,H;
+  const parts=Array.from({length:26},()=>({x:Math.random(),y:Math.random(),v:.3+Math.random()*.6}));
+  function size(){const d=Math.min(devicePixelRatio||1,2),r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;g.setTransform(d,0,0,d,0,0);}
+  function candle(cx,base){
+    g.fillStyle='#d9dbe6'; g.fillRect(cx-14,base,28,H-base-40);
+    g.fillStyle='rgba(0,0,0,.25)'; g.fillRect(cx+6,base,8,H-base-40);
+    g.strokeStyle='#222'; g.lineWidth=2.5; g.beginPath(); g.moveTo(cx,base); g.lineTo(cx,base-12); g.stroke();
+  }
+  function draw(t){
+    g.clearRect(0,0,W,H);
+    g.fillStyle='rgba(255,255,255,.06)'; g.fillRect(W/2-.5,20,1,H-60);
+    const base=H*0.62, a=W*.25, b=W*.75, f=1+.05*Math.sin(t/90)+.03*Math.sin(t/37);
+    // earth teardrop
+    const h=H*.36*f, w=Math.min(W*.05,30);
+    const gr=g.createLinearGradient(0,base-h,0,base);
+    gr.addColorStop(0,'rgba(255,120,40,0)'); gr.addColorStop(.25,'rgba(255,150,60,.85)'); gr.addColorStop(.6,'rgba(255,230,150,1)'); gr.addColorStop(.9,'rgba(255,250,220,1)'); gr.addColorStop(1,'rgba(80,140,255,.8)');
+    g.save(); g.shadowColor='rgba(255,150,60,.8)'; g.shadowBlur=40;
+    g.fillStyle=gr; g.beginPath(); g.moveTo(a,base-h);
+    g.bezierCurveTo(a+w*1.6,base-h*.45,a+w*1.3,base+4,a,base+6);
+    g.bezierCurveTo(a-w*1.3,base+4,a-w*1.6,base-h*.45,a,base-h); g.fill(); g.restore();
+    // rising hot gas
+    parts.forEach(p=>{ if(!reduce){p.y-=p.v*.004; if(p.y<0){p.y=1;p.x=Math.random();}}
+      const x=a+(p.x-.5)*w*3, y=base-h-10-(1-p.y)*(base-h-30)*-1; const yy=20+p.y*(base-h-30);
+      g.fillStyle='rgba(255,180,120,'+(.25*p.y)+')'; g.fillRect(x,yy,1.5,6); });
+    candle(a,base+6);
+    // orbit sphere
+    const r=Math.min(H*.13,W*.07)*(1+.02*Math.sin(t/120)), cy=base-r*.6;
+    const sg=g.createRadialGradient(b,cy,0,b,cy,r*1.5);
+    sg.addColorStop(0,'rgba(255,140,120,.10)'); sg.addColorStop(.55,'rgba(255,150,140,.18)'); sg.addColorStop(.68,'rgba(69,180,255,.75)'); sg.addColorStop(.76,'rgba(69,224,255,.35)'); sg.addColorStop(1,'rgba(69,224,255,0)');
+    g.fillStyle=sg; g.beginPath(); g.arc(b,cy,r*1.5,0,6.283); g.fill();
+    candle(b,base+6);
+  }
+  function loop(t){draw(t); if(!reduce) requestAnimationFrame(loop);}
+  size(); addEventListener('resize',()=>{size();draw(0);}); requestAnimationFrame(loop);
+})();
+
+/* ---------- glossary ---------- */
+(function(){
+  const G={
+    'microgravity':'Near-weightlessness, as on the ISS. Hot gas no longer rises, so flames lose the airflow that gravity normally creates.',
+    'cool flame':'A faint, low-temperature flame (roughly 500 to 800 K) that the eye can barely see. It can keep fuel burning after the bright flame dies.',
+    'hot flame':'The ordinary bright flame, well above 1,500 K, that we see and feel.',
+    'PMMA':'Polymethyl methacrylate, the clear plastic known as acrylic or Plexiglas.',
+    'Nomex':'A flame-resistant aramid fabric used in firefighter and astronaut clothing.',
+    'SIBAL':'A cotton and fiberglass blend fabric used as a standard test material.',
+    'ppm':'Parts per million. 100 ppm of carbon monoxide means 100 molecules of CO in every million molecules of air.',
+    'Cygnus':'An uncrewed cargo spacecraft that supplies the ISS. Saffire ran inside it after it left the station.',
+    'dodecane':'A liquid hydrocarbon fuel (C12H26), similar to components of jet fuel and kerosene.',
+    'heptane':'A liquid hydrocarbon fuel (C7H16), a component of gasoline.',
+    'atm':'Atmospheres of pressure. 1 atm is sea-level air pressure on Earth.',
+    'radiated':'Heat sent out as light and infrared, which can warm and ignite nearby surfaces.',
+    'carbon monoxide':'CO, a colourless, odourless toxic gas produced by incomplete burning.'
+  };
+  const seen=new Set();
+  const roots=document.querySelectorAll('.lede, .meaning p, .mat p, .insight p, .chart-note');
+  const walker=n=>{ const out=[]; const w=document.createTreeWalker(n,NodeFilter.SHOW_TEXT); while(w.nextNode()) out.push(w.currentNode); return out; };
+  roots.forEach(root=>walker(root).forEach(node=>{
+    for(const term of Object.keys(G)){
+      if(seen.has(term) || !node.parentNode || node.parentNode.closest('.term')) continue;
+      const i=node.nodeValue.toLowerCase().indexOf(term.toLowerCase());
+      if(i<0) continue;
+      const after=node.splitText(i); after.splitText(term.length);
+      const sp=document.createElement('span'); sp.className='term'; sp.tabIndex=0; sp.dataset.term=term;
+      sp.textContent=after.nodeValue; after.parentNode.replaceChild(sp,after); seen.add(term); node=sp.nextSibling||node; break;
+    }
+  }));
+  const tip=document.getElementById('tip');
+  function show(e){ const el=e.target.closest('.term'); if(!el) return; const k=el.dataset.term;
+    tip.innerHTML='<b>'+k+'</b>'+G[k]; const r=el.getBoundingClientRect();
+    tip.style.left=Math.max(10,Math.min(innerWidth-290,r.left))+'px'; tip.style.top=(r.bottom+8)+'px'; tip.classList.add('on'); }
+  function hide(e){ if(e.target.closest && e.target.closest('.term')) tip.classList.remove('on'); }
+  document.addEventListener('mouseover',show); document.addEventListener('focusin',show);
+  document.addEventListener('mouseout',hide); document.addEventListener('focusout',hide);
+  addEventListener('scroll',()=>tip.classList.remove('on'),{passive:true});
+})();
+
+/* ---------- fire drill ---------- */
+(function(){
+  const B=D.burn, ratio=Math.round(sheet/film);
+  const QEN=[
+    {q:'Alarm in the galley module: a plastic storage bin is smouldering with small flames. What do you do first?',
+     a:[['Shut off the ventilation fans in that module',1,'Right. Airflow along a flame made a Saffire fabric fire last 6× longer (420 s vs 70 s), and BASS-II flames went out as airflow was turned down.','Saffire-1 · BASS-II'],
+        ['Open the hatches so the smoke can escape',0,'Risky. Moving air feeds a fire in microgravity: with airflow pushing the flame forward, a Saffire fire burned 6× longer.','Saffire-1'],
+        ['Point a fan at it to blow it out',0,'Unreliable. Strong flow can blow a flame off, but airflow along a flame fed a Saffire fire for 7 minutes. Cut the air instead.','Saffire-1 · BASS-II']]},
+    {q:'The flames are gone. Your crewmate says: "It is out, let us get back to work." Do you agree?',
+     a:[['Yes, there are no flames, the fire is over',0,'Not yet. On the ISS a fuel droplet kept burning '+Math.round(B.invisible_seconds)+' s after its visible flame died, inside a cool flame the eye cannot see.','PSI-117'],
+        ['No, keep watching with thermal and gas sensors for several minutes',1,'Right. Cool flames kept fuel burning '+B.ratio+'× longer than the visible flame, and in one run the hot flame re-ignited by itself 18 s after it went out.','PSI-117'],
+        ['Touch the bin to check whether it is still hot',0,'Dangerous. The material may still be burning invisibly. Use a thermal camera from a distance.','PSI-117']]},
+    {q:'The carbon monoxide alarm starts climbing, even though the flame looks tiny. What now?',
+     a:[['Ignore it: a small flame cannot make much gas',0,'Wrong. Thick plastic burned with small, steady flames for 10 to 15 minutes in Saffire-2, and in BASS-II thick plastic released about '+ratio+'× more CO than thin film.','BASS-II · Saffire-2'],
+        ['Put on masks and isolate the module',1,'Right. In BASS-II, thick plastic sheets raised CO by a median '+Math.round(sheet)+' ppm per test in a small box. Small, long-lasting flames are gas factories.','BASS-II'],
+        ['Turn the fans back on to clear the air',0,'Too early. Fresh airflow can revive a smouldering fire. Isolate first, then scrub the air once the fire is confirmed out.','Saffire-1 · PSI-117']]},
+    {q:'Mission control asks what the new storage bags should be made of.',
+     a:[['Thick acrylic (PMMA) boxes',0,'Poor choice. Thick PMMA kept burning for up to 15 minutes in Saffire-2 and released the most CO in BASS-II.','Saffire-2 · BASS-II'],
+        ['Cotton-fiberglass fabric',0,'Poor choice. In Saffire-2 it burned the full 29 cm sample in about 2 minutes, spreading 2.1 to 2.6 mm/s.','Saffire-2'],
+        ['Nomex fabric',1,'Right. In Saffire-2 the Nomex section never ignited, even with burning plastic right beside it, and BASS-II measured almost no CO from it.','Saffire-2 · BASS-II']]}
+  ];
+
+  const QAR=[
+    {q:'إنذار في وحدة المطبخ: صندوق تخزين بلاستيكي يحترق ببطء بلهب صغير. ماذا تفعل أولًا؟',
+     a:[['أطفئ مراوح التهوية في هذه الوحدة',1,'صحيح. الهواء الموازي للهب جعل حريق قماش في Saffire يستمر 6 مرات أطول (420 ث مقابل 70 ث)، وانطفأت لهب BASS-II عند خفض تدفق الهواء.','Saffire-1 · BASS-II'],
+        ['افتح الأبواب ليخرج الدخان',0,'خطر. الهواء المتحرك يغذي الحريق في الجاذبية المنعدمة: عندما دفع الهواء اللهب للأمام استمر حريق Saffire 6 مرات أطول.','Saffire-1'],
+        ['وجّه مروحة نحوه لإطفائه',0,'غير مضمون. التيار القوي قد يطفئ اللهب، لكن الهواء الموازي للهب غذّى حريق Saffire لمدة 7 دقائق. أوقف الهواء بدلًا من ذلك.','Saffire-1 · BASS-II']]},
+    {q:'اختفت النيران. يقول زميلك: «انطفأ الحريق، لنعد إلى العمل.» هل توافق؟',
+     a:[['نعم، لا توجد نيران، انتهى الحريق',0,'ليس بعد. على محطة الفضاء استمرت قطرة وقود في الاحتراق '+Math.round(B.invisible_seconds)+' ثانية بعد انطفاء لهبها المرئي، داخل لهب بارد لا تراه العين.','PSI-117'],
+        ['لا، استمر في المراقبة بأجهزة الحرارة والغاز لعدة دقائق',1,'صحيح. أبقى اللهب البارد الوقود مشتعلًا '+B.ratio+' مرة أطول من اللهب المرئي، وفي إحدى التجارب عاد اللهب الساخن للاشتعال وحده بعد 18 ثانية من انطفائه.','PSI-117'],
+        ['المس الصندوق لترى إن كان ما زال ساخنًا',0,'خطير. قد تكون المادة ما زالت تحترق دون أن تُرى. استخدم كاميرا حرارية من مسافة.','PSI-117']]},
+    {q:'يبدأ إنذار أول أكسيد الكربون في الارتفاع، مع أن اللهب يبدو صغيرًا جدًا. ماذا الآن؟',
+     a:[['تجاهله: اللهب الصغير لا يُنتج غازًا كثيرًا',0,'خطأ. احترق البلاستيك السميك بلهب صغير ثابت لمدة 10 إلى 15 دقيقة في Saffire-2، وفي BASS-II أطلق البلاستيك السميك نحو '+ratio+' ضعفًا من CO مقارنة بالغشاء الرقيق.','BASS-II · Saffire-2'],
+        ['ارتدوا الأقنعة واعزلوا الوحدة',1,'صحيح. في BASS-II رفعت ألواح البلاستيك السميكة CO بوسيط '+Math.round(sheet)+' ppm في كل اختبار داخل صندوق صغير. اللهب الصغير طويل العمر مصنع للغاز.','BASS-II'],
+        ['شغّل المراوح من جديد لتنقية الهواء',0,'مبكر جدًا. الهواء الجديد قد يُنعش حريقًا يحترق ببطء. اعزل أولًا، ثم نقِّ الهواء بعد التأكد من انطفاء الحريق.','Saffire-1 · PSI-117']]},
+    {q:'يسألك مركز التحكم: من أي مادة يجب أن تُصنع أكياس التخزين الجديدة؟',
+     a:[['صناديق أكريليك سميكة (PMMA)',0,'اختيار سيئ. استمر PMMA السميك في الاحتراق حتى 15 دقيقة في Saffire-2 وأطلق أكبر كمية CO في BASS-II.','Saffire-2 · BASS-II'],
+        ['قماش قطن وألياف زجاجية',0,'اختيار سيئ. في Saffire-2 احترقت العينة كاملة بطول 29 سم في نحو دقيقتين، بسرعة 2.1 إلى 2.6 مم/ث.','Saffire-2'],
+        ['قماش Nomex',1,'صحيح. في Saffire-2 لم يشتعل جزء Nomex إطلاقًا حتى بجوار بلاستيك يحترق، وقاست BASS-II تقريبًا صفر CO منه.','Saffire-2 · BASS-II']]}
+  ];
+  const box=document.getElementById('drill-box'); let i=0, res=[]; let Q=QEN;
+  function dots(){ return '<div class="dots">'+Q.map((_,k)=>'<i class="'+(res[k]===undefined?(k===i?'now':''):(res[k]?'ok':'no'))+'"></i>').join('')+'</div>'; }
+  function render(){
+    Q = LANG==='ar' ? QAR : QEN;
+    if(i>=Q.length){
+      const n=res.filter(Boolean).length, msg=n===4?pick('Perfect. Your crew is safe.','ممتاز. طاقمك في أمان.'):n>=2?pick('The crew made it, but some calls were risky.','نجا الطاقم، لكن بعض القرارات كانت خطرة.'):pick('The habitat would be in serious danger.','المسكن كان سيصبح في خطر كبير.');
+      box.innerHTML='<div class="drill-top"><span>'+pick('Debrief','التقييم')+'</span>'+dots()+'</div><div class="score '+(n>=3?'cool':'hot')+'">'+n+' / 4</div><h3>'+msg+'</h3><p class="chart-note" style="margin:0">'+pick('Every answer came from NASA experiments on this page. Read the full list in <a href="#safety">Fire safety insights</a>.','كل إجابة مأخوذة من تجارب ناسا في هذه الصفحة. اقرأ القائمة كاملة في <a href="#safety">إرشادات السلامة</a>.')+'</p><button class="btn btn-ghost next" type="button" id="d-again">'+pick('Try again','حاول مرة أخرى')+'</button>';
+      document.getElementById('d-again').onclick=()=>{i=0;res=[];render();};
+      return;
+    }
+    const q=Q[i];
+    box.innerHTML='<div class="drill-top"><span>'+pick('Decision ','القرار ')+(i+1)+pick(' of ',' من ')+Q.length+'</span>'+dots()+'</div><h3>'+q.q+'</h3><div class="choices">'+q.a.map((c,k)=>'<button class="choice" type="button" data-k="'+k+'">'+c[0]+'</button>').join('')+'</div>';
+    box.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+      const c=q.a[+b.dataset.k]; res[i]=!!c[1];
+      box.querySelectorAll('.choice').forEach(x=>{ x.disabled=true; if(q.a[+x.dataset.k][1]) x.classList.add('right'); });
+      if(!c[1]) b.classList.add('wrong');
+      const fb=document.createElement('div'); fb.className='feedback '+(c[1]?'ok':'no');
+      fb.innerHTML='<p>'+c[2]+'</p><span class="src">'+pick('Evidence: ','الدليل: ')+c[3]+'</span>';
+      box.appendChild(fb);
+      const nx=document.createElement('button'); nx.className='btn btn-primary next'; nx.type='button'; nx.textContent=i<Q.length-1?pick('Next decision','القرار التالي'):pick('See debrief','عرض التقييم');
+      nx.onclick=()=>{i++;render();}; box.appendChild(nx); nx.focus({preventScroll:true});
+      box.querySelector('.drill-top').outerHTML='<div class="drill-top"><span>'+pick('Decision ','القرار ')+(i+1)+pick(' of ',' من ')+Q.length+'</span>'+dots()+'</div>';
+    });
+  }
+  render(); RR.push(render);
+})();
+
+/* ---------- material risk check ---------- */
+(function(){
+  const optsEn={
+    mat:[['nomex','Nomex fabric'],['silicone','Silicone sheet'],['cotton','Cotton-fiberglass fabric'],['film','Thin plastic film (PMMA)'],['sheet','Thick plastic (PMMA)']],
+    flow:[['still','Fans off, still air'],['with','Airflow along the flame'],['against','Airflow against the flame']],
+    o2:[['low','Reduced, 15 to 17%'],['normal','Normal, about 21%'],['high','Enriched, above 22%']]
+  };
+  const optsAr={
+    mat:[['nomex','قماش Nomex'],['silicone','لوح سيليكون'],['cotton','قماش قطن وألياف زجاجية'],['film','غشاء بلاستيك رقيق (PMMA)'],['sheet','بلاستيك سميك (PMMA)']],
+    flow:[['still','المراوح مطفأة، هواء ساكن'],['with','الهواء مع اتجاه اللهب'],['against','الهواء عكس اتجاه اللهب']],
+    o2:[['low','منخفض، 15 إلى 17%'],['normal','طبيعي، نحو 21%'],['high','مرتفع، أعلى من 22%']]
+  };
+  const state={mat:'cotton',flow:'with',o2:'normal'};
+  function chips(){ const opts=LANG==='ar'?optsAr:optsEn; document.querySelectorAll('.chips').forEach(c=>{
+    const n=c.dataset.name;
+    c.innerHTML=opts[n].map(([v,l])=>'<label><input type="radio" name="'+n+'" value="'+v+'"'+(state[n]===v?' checked':'')+'><span>'+l+'</span></label>').join('');
+    if(!c.dataset.bound){ c.dataset.bound=1; c.addEventListener('change',e=>{state[n]=e.target.value; out();}); }
+  }); }
+  chips();
+  const cls=['safe','warn','bad'];
+  const M={
+    nomex:{spread:0,dur:0,gas:0,s:'Did not ignite in Saffire-2, even beside burning plastic.',d:'Never caught fire, so nothing to sustain.',g:'BASS-II measured almost no CO change.'},
+    silicone:{spread:0,dur:0,gas:null,s:'Barely burned in orbit in Saffire-2 (all four samples), though thin samples burned on Earth.',d:'Flames did not spread in Saffire-2.',g:'No gas measurements for silicone in these datasets.'},
+    cotton:{spread:2,dur:1,gas:1,s:'Burned the full 29 cm in Saffire-2, at 2.1 to 2.6 mm/s.',d:'Large sheet burned 70 to 420 s in Saffire-1; small strips 115 to 145 s.',g:'BASS-II median CO rise about 20 ppm per test.'},
+    film:{spread:1,dur:0,gas:0,s:'Thin films burned in BASS-II tests.',d:'Thin fuel burns away quickly.',g:'BASS-II median CO rise about '+Math.round(film)+' ppm per test.'},
+    sheet:{spread:0,dur:2,gas:2,s:'Flame stayed anchored at the base in Saffire-2 and spread slowly.',d:'Burned 600 to 900 s (10 to 15 min) in Saffire-2.',g:'BASS-II median CO rise about '+Math.round(sheet)+' ppm per test, the highest measured.'}
+  };
+  const clamp=v=>Math.max(0,Math.min(2,v));
+  const MAR={
+    nomex:{s:'لم يشتعل في Saffire-2 حتى بجوار بلاستيك يحترق.',d:'لم يشتعل أصلًا، فلا شيء يستمر.',g:'لم تقس BASS-II تقريبًا أي تغير في CO.'},
+    silicone:{s:'بالكاد احترق في المدار في Saffire-2 (العينات الأربع)، رغم أن العينات الرقيقة احترقت على الأرض.',d:'لم ينتشر اللهب في Saffire-2.',g:'لا توجد قياسات غاز للسيليكون في هذه البيانات.'},
+    cotton:{s:'احترق بطول 29 سم كاملًا في Saffire-2، بسرعة 2.1 إلى 2.6 مم/ث.',d:'احترق اللوح الكبير 70 إلى 420 ث في Saffire-1، والشرائح الصغيرة 115 إلى 145 ث.',g:'وسيط زيادة CO في BASS-II نحو 20 ppm لكل اختبار.'},
+    film:{s:'احترقت الأغشية الرقيقة في اختبارات BASS-II.',d:'الوقود الرقيق يحترق ويختفي بسرعة.',g:'وسيط زيادة CO في BASS-II نحو '+Math.round(film)+' ppm لكل اختبار.'},
+    sheet:{s:'بقي اللهب مثبتًا عند القاعدة في Saffire-2 وانتشر ببطء.',d:'احترق 600 إلى 900 ث (10 إلى 15 دقيقة) في Saffire-2.',g:'وسيط زيادة CO في BASS-II نحو '+Math.round(sheet)+' ppm لكل اختبار، وهو الأعلى.'}
+  };
+
+  function out(){
+    const L=LANG==='ar'?['منخفض','متوسط','مرتفع']:['Low','Medium','High'];
+    const m=LANG==='ar'?Object.assign({},M[state.mat],MAR[state.mat]):M[state.mat]; let sp=m.spread, du=m.dur, ga=m.gas; const notes=[];
+    if(m.spread||m.dur){
+      if(state.flow==='with'){ sp=clamp(sp+1); du=clamp(du+1); notes.push(pick('Airflow along the flame made a Saffire-1 fire last 6× longer.','الهواء الموازي للهب جعل حريق Saffire-1 يستمر 6 مرات أطول.')); }
+      if(state.flow==='against'){ du=clamp(du-1); notes.push(pick('Against the flow, the same Saffire-1 fabric burned only 70 s.','عكس اتجاه الهواء، احترق نفس قماش Saffire-1 لمدة 70 ث فقط.')); }
+      if(state.flow==='still'){ sp=clamp(sp-1); du=clamp(du-1); notes.push(pick('BASS-II flames went out as the airflow was turned down.','انطفأت لهب BASS-II عند خفض تدفق الهواء.')); }
+    }
+    if(state.o2==='high'){ sp=clamp(sp+1); notes.push(pick('Enriched oxygen was not tested in these datasets; more oxygen generally helps materials burn, so treat this as higher risk.','لم يُختبر الأكسجين المرتفع في هذه البيانات؛ لكن زيادة الأكسجين عمومًا تساعد المواد على الاحتراق، فاعتبره خطرًا أعلى.')); }
+    if(state.o2==='low'){ notes.push(pick('BASS-II flames still burned at 15 to 17% oxygen; one sample would not ignite at 13.6%. Reduced oxygen alone is not protection.','ظلت لهب BASS-II مشتعلة عند 15 إلى 17% أكسجين؛ وعينة واحدة لم تشتعل عند 13.6%. خفض الأكسجين وحده ليس حماية.')); }
+    const row=(h,lv,txt)=>'<div class="risk"><h4>'+h+'</h4><div class="lvl">'+(lv===null?'<span class="pill na">'+pick('No data','لا توجد بيانات')+'</span>':'<span class="pill '+cls[lv]+'">'+L[lv]+'</span>')+'</div><p>'+txt+'</p></div>';
+    document.getElementById('calc-out').innerHTML=
+      row(pick('Flame spread','انتشار اللهب'),sp,m.s)+row(pick('Fire duration','مدة الحريق'),du,m.d)+row(pick('Toxic gas','الغاز السام'),ga,m.g)+
+      (notes.length?'<p class="chart-note" style="margin:2px 0 0">'+notes.join(' ')+'</p>':'');
+  }
+  out(); RR.push(()=>{ chips(); out(); });
+})();
+
+function drawAll(){ chartVanish(); chartFuel(); chartPulse(); chartPressure(); chartThree(); chartCO(); }
+drawAll();
+
+
+/* ---------- Ask the data (Gemini, grounded) ---------- */
+(function(){
+  Object.assign(AR,{ask0:'اسأل الذكاء الاصطناعي',ask1:'ذكاء اصطناعي · مبني على بيانات ناسا',ask2:'اسأل البيانات',ask3:'اسأل أي سؤال عن النار في الفضاء. يجيب Gemini فقط من قاعدة المعرفة المبنية من تجارب ناسا هذه، ويذكر مصدر كل معلومة، ويقول ذلك صراحة عندما لا تغطي البيانات سؤالك.'});
+  TR['Ask AI']='اسأل الذكاء الاصطناعي';
+  const B=D.burn, P=D.pressure, TS=D.threeStage, G=Object.fromEntries(D.bass2.groups.map(g=>[g.group,Math.round(g.median)]));
+  const kmin=Math.min(...P.burning_rate.expt.y), kmax=Math.max(...P.burning_rate.expt.y);
+  const KB=[
+    ['K1','PSI-117 burn history (MST 2024)','A 4 mm n-dodecane droplet burned in air at 1 atm on the ISS. The visible hot flame went out at about '+B.t_hot_out+' s, but the droplet kept shrinking and burning inside an invisible cool flame until about '+B.t_end+' s: '+B.invisible_seconds+' s more, '+B.ratio+'× longer than the visible flame.'],
+    ['K2','PSI-117 extinction by fuel (PROCI 2023)','For n-heptane, n-decane and n-dodecane droplets of about 3.3 to 4.4 mm at 1 atm, the hot flame went out while the droplet was still about 2.3 to 4.1 mm across. Cool flames continued until about 0.4 to 1.3 mm. In two dodecane tests no cool flame was recorded.'],
+    ['K3','PSI-117 cool-flame simulations (PROCI 2019)','Simulated 0.5 mm n-heptane droplets: at 21% oxygen the cool flame burned steadily near 700 to 765 K; at 10% oxygen it pulsed about '+D.cool.pulsing.pulses+' times in under a second.'],
+    ['K4','PSI-117 pressure effects (PROCI 2023, MST 2024)','n-dodecane: cool flames died at about 1.9 mm droplet diameter at 0.5 atm, at about 0.3 to 0.5 mm at 1 atm, and none were seen at 3 atm. Hot flames went out near 3.5 mm at all pressures. The burning-rate constant rose from about '+kmin.toFixed(2)+' mm²/s at 0.5 atm to about '+kmax.toFixed(2)+' mm²/s at 5 atm. Measured radiated heat peaked near 33 W at 5 atm versus about 25 W at 0.5 atm.'],
+    ['K5','PSI-117 three-stage burning (PROCI 2019)','A 4.5 mm n-dodecane droplet at 2.75 atm with helium: the hot flame died at about '+TS.first_out_s+' s, a cool flame kept burning, and at about '+TS.reignite_s+' s the hot flame re-ignited by itself, reaching the highest radiated heat of the test, '+TS.reignite_peak_w+' W.'],
+    ['K6','Saffire-1 (PSI-98)','Two 40.6 × 94 cm cotton-fiberglass (SIBAL) sheets burned inside a Cygnus cargo spacecraft after it left the ISS, airflow 20 cm/s, about 21.5% oxygen. With airflow along the flame (concurrent) the fire lasted 420 s; against it (opposed), 70 s: about 6× shorter.'],
+    ['K7','Saffire-2 silicone (PSI-99)','Silicone samples 0.27 to 1.03 mm thick showed almost no burning in microgravity at 20 cm/s and about 22% oxygen. On Earth the thinner samples burned completely.'],
+    ['K8','Saffire-2 cotton-fiberglass (PSI-99)','Cotton-fiberglass (SIBAL) strips 5 × 29 cm burned their full length in microgravity in 115 to 145 s, spreading 2.1 to 2.6 mm/s.'],
+    ['K9','Saffire-2 PMMA and Nomex (PSI-99)','A PMMA plastic piece next to Nomex fabric burned away completely, but the Nomex did not ignite. Thick PMMA (up to 1 cm) burned for 600 to 900 s with a small flame anchored at its base, regressing only 0.01 to 0.04 mm/s.'],
+    ['K10','BASS-II gas readings (PSI-25)','Median rise in carbon monoxide per test inside the BASS-II test box: Nomex about 0 ppm; PMMA film 0.1 to 0.4 mm about '+G['PMMA film (0.1-0.4 mm)']+' ppm; cotton-fiberglass fabric about '+G['Cotton-fiberglass fabric']+' ppm; PMMA rods about '+G['PMMA rod (6-13 mm)']+' ppm; PMMA sheets 1 to 5 mm about '+G['PMMA sheet (1-5 mm)']+' ppm, roughly 21× the thin film.'],
+    ['K11','BASS-II airflow and oxygen (PSI-25)',D.bass2.extinguished_by_low_flow+' BASS-II test logs record flames going out as the airflow was turned down. Flames still burned with 15 to 17% oxygen; one sample would not ignite at about 13.6%.'],
+    ['K12','Coverage notes','Saffire-3 repeated Saffire-1 at 30 cm/s, but its table has no results. BASS and ACME tables are test logs without results. These datasets did not test oxygen above about 22%, lunar or Martian gravity, or extinguishers.'],
+    ['K13','Microgravity flame basics','Without gravity, hot gas does not rise (no buoyancy), so fresh oxygen reaches a flame only by slow diffusion or by ventilation airflow. Flames become round, dimmer and often blue.']
+  ];
+  const kbText=KB.map(k=>'['+k[0]+'] '+k[1]+': '+k[2]).join('\n');
+  const SYS='You are the "Ask the data" assistant of Flame in Freefall, a NASA Space Apps 2026 project on fire safety in space. Answer ONLY from the knowledge base below. Cite each fact with its id in square brackets, like [K6]. If the knowledge base does not answer the question, say plainly that these NASA datasets do not cover it, then say what they do cover. Never invent numbers. Keep answers under 120 words, plain text, no markdown. Answer in the same language as the question (Arabic or English).\n\nKNOWLEDGE BASE\n'+kbText;
+  const SAMPLES=[
+    {en:'Is a fire out once I can no longer see the flame?',ar:'هل انتهى الحريق بمجرد أن لم أعد أرى اللهب؟',
+     aen:'Not necessarily. On the ISS a 4 mm fuel droplet\'s visible flame went out at about '+B.t_hot_out+' s, yet it kept burning inside an invisible cool flame for about '+B.invisible_seconds+' s more [K1]. In another run the hot flame even re-ignited by itself about '+(TS.reignite_s-TS.first_out_s)+' s after dying [K5]. Confirm with temperature and gas sensors, not by sight.',
+     aar:'ليس بالضرورة. على محطة الفضاء انطفأ اللهب المرئي لقطرة وقود قطرها 4 مم عند الثانية '+B.t_hot_out+' تقريبًا، لكنها استمرت تحترق داخل لهب بارد غير مرئي نحو '+B.invisible_seconds+' ثانية أخرى [K1]. وفي تجربة أخرى عاد اللهب الساخن للاشتعال وحده بعد نحو '+(TS.reignite_s-TS.first_out_s)+' ثانية من انطفائه [K5]. تأكد بأجهزة الحرارة والغاز، لا بالنظر.',c:['K1','K5']},
+    {en:'Why turn off the ventilation fans during a fire?',ar:'لماذا نطفئ مراوح التهوية أثناء الحريق؟',
+     aen:'Because airflow feeds flames in microgravity. In Saffire-1, a fabric sheet burned 420 s with airflow along the flame but only 70 s against it [K6]. In BASS-II, '+D.bass2.extinguished_by_low_flow+' test logs record flames going out as the airflow was turned down [K11]. Without fans, oxygen reaches the flame only by slow diffusion [K13].',
+     aar:'لأن تدفق الهواء يغذي اللهب في الجاذبية المنعدمة. في Saffire-1 احترق لوح قماش 420 ثانية مع هواء موازٍ للهب، و70 ثانية فقط عكسه [K6]. وفي BASS-II تسجل '+D.bass2.extinguished_by_low_flow+' اختبارًا انطفاء اللهب عند خفض الهواء [K11]. ودون مراوح يصل الأكسجين للهب بالانتشار البطيء فقط [K13].',c:['K6','K11','K13']},
+    {en:'Which material is safest for storage bags?',ar:'ما أكثر مادة آمنة لأكياس التخزين؟',
+     aen:'Of the materials tested, Nomex: it did not ignite even beside burning PMMA [K9] and released about 0 ppm of CO in BASS-II [K10]. Thick PMMA is the worst choice: it burned 10 to 15 minutes [K9] and raised CO the most, about '+G['PMMA sheet (1-5 mm)']+' ppm per test [K10]. Cotton-fiberglass burned its full length in about 2 minutes [K8].',
+     aar:'من بين المواد المختبرة، Nomex: لم يشتعل حتى بجوار PMMA يحترق [K9] وأطلق تقريبًا 0 ppm من CO في BASS-II [K10]. أسوأ اختيار هو PMMA السميك: احترق 10 إلى 15 دقيقة [K9] ورفع CO أكثر من غيره، نحو '+G['PMMA sheet (1-5 mm)']+' ppm لكل اختبار [K10]. أما القطن مع الألياف الزجاجية فاحترق بطوله كاملًا في نحو دقيقتين [K8].',c:['K8','K9','K10']},
+    {en:'Can we use a fire extinguisher on the Moon?',ar:'هل يمكن استخدام طفاية حريق على القمر؟',
+     aen:'These NASA datasets do not cover that: they did not test extinguishers or lunar gravity [K12]. What they do show is that cutting airflow helped flames go out in BASS-II [K11], and that a fire may keep burning invisibly after it looks out [K1].',
+     aar:'هذه البيانات من ناسا لا تغطي ذلك: لم تختبر طفايات الحريق ولا جاذبية القمر [K12]. لكنها تُظهر أن خفض الهواء ساعد على انطفاء اللهب في BASS-II [K11]، وأن الحريق قد يستمر دون أن يُرى بعد أن يبدو منطفئًا [K1].',c:['K12','K11','K1']}
+  ];
+  let key=''; try{ key=localStorage.getItem('fif-gemini-key')||''; }catch(e){}
+  let model='gemini-2.5-flash'; try{ model=localStorage.getItem('fif-gemini-model')||model; }catch(e){}
+  let last=null;
+  const box=document.getElementById('ask-box');
+  const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const titleOf=id=>{ const k=KB.find(x=>x[0]===id); return k?k[1]:id; };
+  function showAnswer(q,a,ids,tag){
+    last={q,a,ids,tag};
+    const el=document.getElementById('ask-ans');
+    el.innerHTML=(tag?'<span class="tag">'+tag+'</span>':'')+'<p class="q">'+esc(q)+'</p><p class="a">'+esc(a)+'</p>'+(ids.length?'<div class="cites">'+ids.map(i=>'<span class="cite" title="'+esc(titleOf(i))+'">'+i+' · '+esc(titleOf(i))+'</span>').join('')+'</div>':'');
+  }
+  async function ask(q){
+    q=q.trim(); if(!q) return;
+    const ans=document.getElementById('ask-ans');
+    if(!key){
+      const smp=SAMPLES.find(x=>x.en===q||x.ar===q);
+      if(smp){ showAnswer(q,pick(smp.aen,smp.aar),smp.c,pick('EXAMPLE ANSWER · WRITTEN FROM THE KNOWLEDGE BASE','إجابة مثال · مكتوبة من قاعدة المعرفة')); return; }
+      ans.innerHTML='<p class="a">'+pick('Add your free Gemini API key on the right to ask your own questions. Until then, try one of the example questions.','أضف مفتاح Gemini المجاني على الجانب لتسأل أسئلتك الخاصة. حتى ذلك الحين جرّب أحد الأسئلة الجاهزة.')+'</p>'; return;
+    }
+    ans.innerHTML='<p class="q">'+esc(q)+'</p><p class="a dots3">'+pick('Searching the NASA data','جارٍ البحث في بيانات ناسا')+'</p>';
+    try{
+      const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent',{
+        method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},
+        body:JSON.stringify({systemInstruction:{parts:[{text:SYS}]},contents:[{role:'user',parts:[{text:q}]}],generationConfig:{temperature:0.2,maxOutputTokens:700}})
+      });
+      const j=await r.json();
+      if(!r.ok) throw new Error((j.error&&j.error.message)||('HTTP '+r.status));
+      const text=((j.candidates||[])[0]?.content?.parts||[]).map(p=>p.text||'').join('').trim()||pick('No answer came back. Try rephrasing.','لم تصل إجابة. جرّب صياغة أخرى.');
+      const ids=[...new Set((text.match(/K\d{1,2}/g)||[]).filter(i=>KB.some(k=>k[0]===i)))];
+      showAnswer(q,text,ids,'GEMINI · '+model);
+    }catch(e){
+      const offline=/fetch|network|load/i.test(String(e.message||e));
+      ans.innerHTML='<p class="q">'+esc(q)+'</p><p class="a">'+(offline
+        ? pick('Could not reach Gemini. This preview blocks outside connections: open the site from GitHub Pages or your laptop and try again.','تعذّر الوصول إلى Gemini. هذه المعاينة تمنع الاتصالات الخارجية: افتح الموقع من GitHub Pages أو من جهازك وحاول مرة أخرى.')
+        : pick('Gemini returned an error: ','أعاد Gemini خطأ: ')+esc(String(e.message||e))+pick(' Check the key, or switch the model on the right.',' تحقق من المفتاح أو غيّر النموذج على الجانب.'))+'</p>';
+    }
+  }
+  function render(){
+    box.innerHTML=
+      '<div class="ask-main">'+
+        '<form class="ask-form" id="ask-form"><label class="sr" for="ask-q">'+pick('Your question','سؤالك')+'</label><input id="ask-q" type="text" autocomplete="off" placeholder="'+pick('e.g. How long can a fire hide after it looks out?','مثال: إلى متى يمكن أن يختبئ الحريق بعد أن يبدو منطفئًا؟')+'"><button class="btn btn-primary" type="submit">'+pick('Ask','اسأل')+'</button></form>'+
+        '<div class="samples">'+SAMPLES.map((x,i)=>'<button class="sample" type="button" data-i="'+i+'">'+pick(x.en,x.ar)+'</button>').join('')+'</div>'+
+        '<div class="answer" id="ask-ans" aria-live="polite"><p class="a" style="color:var(--muted)">'+pick('Pick an example question or type your own.','اختر سؤالًا جاهزًا أو اكتب سؤالك.')+'</p></div>'+
+      '</div>'+
+      '<div class="ask-side">'+
+        '<label for="ask-key">'+pick('Gemini API key','مفتاح Gemini API')+'</label>'+
+        '<input id="ask-key" type="password" autocomplete="off" placeholder="AIza..." value="'+esc(key)+'">'+
+        '<span>'+pick('Free from aistudio.google.com. Saved only in this browser and sent only to Google.','مجاني من aistudio.google.com. يُحفظ في هذا المتصفح فقط ويُرسل إلى Google فقط.')+'</span>'+
+        '<label for="ask-model">'+pick('Model','النموذج')+'</label>'+
+        '<select id="ask-model">'+['gemini-2.5-flash','gemini-2.5-flash-lite','gemini-4-hydrogen'].map(m=>'<option'+(m===model?' selected':'')+'>'+m+'</option>').join('')+'</select>'+
+        '<details><summary>'+pick('Knowledge base ('+KB.length+' NASA facts)','قاعدة المعرفة ('+KB.length+' حقيقة من ناسا)')+'</summary><div class="kb">'+KB.map(k=>'<p><b>'+k[0]+' · '+esc(k[1])+'</b><br>'+esc(k[2])+'</p>').join('')+'</div></details>'+
+      '</div>';
+    document.getElementById('ask-form').addEventListener('submit',e=>{e.preventDefault(); ask(document.getElementById('ask-q').value);});
+    box.querySelectorAll('.sample').forEach(b=>b.addEventListener('click',()=>{ const x=SAMPLES[+b.dataset.i]; const q=pick(x.en,x.ar); document.getElementById('ask-q').value=q; ask(q); }));
+    document.getElementById('ask-key').addEventListener('change',e=>{ key=e.target.value.trim(); try{ key?localStorage.setItem('fif-gemini-key',key):localStorage.removeItem('fif-gemini-key'); }catch(_){} });
+    document.getElementById('ask-model').addEventListener('change',e=>{ model=e.target.value; try{ localStorage.setItem('fif-gemini-model',model); }catch(_){} });
+    if(last) showAnswer(last.q,last.a,last.ids,last.tag);
+  }
+  render(); RR.push(()=>{ last=null; render(); });
+})();
+
+/* ---------- language switch ---------- */
+const ENHTML=new Map(), GEN=[];
+document.querySelectorAll('h3, figcaption').forEach(el=>{ const k=el.textContent.trim(); if(TR[k] && !el.dataset.i18n) GEN.push([el,k]); });
+function setLang(l){
+  LANG=l; const root=document.documentElement; root.lang=l; root.dir= l==='ar'?'rtl':'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ if(!ENHTML.has(el)) ENHTML.set(el,el.innerHTML); el.innerHTML = l==='ar' ? AR[el.dataset.i18n] : ENHTML.get(el); });
+  GEN.forEach(([el,k])=>{ if(!ENHTML.has(el)) ENHTML.set(el,el.innerHTML); el.innerHTML = l==='ar' ? TR[k] : ENHTML.get(el); });
+  fillAll(); RR.forEach(f=>f()); drawAll();
+  const b=document.getElementById('lang-btn'); b.textContent = l==='ar'?'English':'عربي'; b.lang = l==='ar'?'en':'ar';
+  try{ localStorage.setItem('fif-lang',l); }catch(e){}
+}
+document.getElementById('lang-btn').addEventListener('click',()=>setLang(LANG==='ar'?'en':'ar'));
+try{ if(localStorage.getItem('fif-lang')==='ar') setLang('ar'); }catch(e){}
+
+let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(drawAll,250); });
+})();
+</script>
+</body>
+</html>
