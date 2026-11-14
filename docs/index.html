@@ -299,6 +299,43 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   html{scroll-behavior:auto}
   .bar-fill{animation:none}
 }
+.pred-gauge{height:16px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;margin:10px 0 6px}
+.pred-gauge i{display:block;height:100%;border-radius:999px;transition:width .5s cubic-bezier(.2,.8,.2,1),background .3s}
+.pred-big{font:700 46px/1 var(--font-display,inherit);letter-spacing:.01em}
+.pred-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pred-near{width:100%;border-collapse:collapse;font-size:13.5px;color:var(--muted)}
+.pred-near td,.pred-near th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:start}
+.pred-near th{font:500 11px var(--font-mono);text-transform:uppercase;letter-spacing:.05em}
+.pred-card{display:flex;flex-wrap:wrap;gap:8px 18px;font:500 12px var(--font-mono);color:var(--muted);margin-top:14px}
+.pred-card b{color:var(--text)}
+.pred-o2{width:100%;accent-color:var(--cool)}
+.fc-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;counter-reset:fc}
+.fc-step{position:relative;padding:18px 18px 16px 62px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
+.fc-step b.n{position:absolute;inset-inline-start:16px;top:16px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font:700 15px var(--font-mono);color:#04060d}
+.fc-step h4{margin:0 0 6px;font:600 17px/1.3 var(--font-body);color:var(--text)}
+.fc-step p{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
+.fc-step .ev{margin-top:8px;font:500 11.5px var(--font-mono);color:var(--dim,#7d88a6)}
+.fc-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.evs{margin-top:22px;padding:22px}
+.evs-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.evs-big{font:700 40px/1 var(--font-display,inherit);color:#ff8a76}
+.evs-row{display:grid;grid-template-columns:minmax(150px,220px) 1fr auto;gap:6px 14px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.evs-row .lab{font-size:13.5px;color:var(--text)}.evs-row .lab small{display:block;color:var(--muted);font:500 11px var(--font-mono)}
+.evs-bars{display:grid;gap:4px}
+.evs-bar{display:flex;align-items:center;gap:8px;font:500 11px var(--font-mono);color:var(--muted)}
+.evs-bar span.k{width:44px;flex:none}
+.evs-bar i{display:block;height:9px;border-radius:99px;min-width:3px;transition:width .6s}
+.evs-legend{display:flex;gap:16px;font:500 12px var(--font-mono);color:var(--muted);margin:10px 0 4px}
+.evs-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-inline-end:6px;vertical-align:-1px}
+.retr{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0 2px;font:500 11.5px var(--font-mono);color:var(--muted)}
+.retr span{margin-inline-end:4px;text-transform:uppercase;letter-spacing:.05em}
+.retr b{font-weight:500;padding:3px 8px;border-radius:999px;background:rgba(69,224,255,.1);border:1px solid rgba(69,224,255,.35);color:#45e0ff}
+.answer .a{white-space:pre-line}
+.limits{margin-top:18px;padding:22px}
+.limits ul{margin:12px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.limits li{padding:14px;border-radius:12px;background:rgba(255,200,107,.05);border:1px solid rgba(255,200,107,.22);font-size:14px;color:var(--muted);line-height:1.5}
+.limits li b{display:block;color:var(--text);font-size:15px;margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -315,7 +352,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     <ul>
       <li><a data-i18n="k0" href="#vanishing">Story</a></li>
       <li><a data-i18n="k1" href="#spacecraft">Spacecraft fires</a></li>
-      <li><a data-i18n="k2" href="#drill">Fire drill</a></li>
+      <li><a data-i18n="k2" href="#firecard">Fire card</a></li>
       <li><a data-i18n="k3" href="#safety">Safety</a></li>
       <li><a data-i18n="ask0" href="#ask">Ask AI</a></li>
       <li><a data-i18n="k4" href="#sources">Data</a></li>
@@ -547,6 +584,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     <h3 data-i18n="k80" style="margin-top:34px">Saffire-2: which materials burned in space?</h3>
     <p data-i18n="k81" class="chart-note" style="margin:6px 0 0">Nine 5 × 29 cm samples, airflow 20 cm/s, about 22% oxygen, compared with the same test on Earth.</p>
     <div class="materials" id="materials"></div>
+    <div class="card evs" id="evs"></div>
   </section>
 
   <!-- 07 -->
@@ -573,15 +611,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   </section>
 
 <div class="ribbon" aria-hidden="true"><svg viewBox="0 0 1200 150" preserveAspectRatio="none" class="ribbon-svg"></svg></div>
-  <!-- drill -->
-  <section class="chapter wrap" id="drill">
-    <div class="chapter-head">
-      <div data-i18n="k89" class="eyebrow">Interactive · test yourself</div>
-      <h2 data-i18n="k90">Fire drill: lunar habitat</h2>
-      <p data-i18n="k91" class="lede">You are the commander. Four decisions, each answered with what the ISS experiments showed.</p>
-    </div>
-    <div class="card drill" id="drill-box" aria-live="polite"></div>
-  </section>
 
   <!-- 08 -->
   <section class="chapter wrap" id="safety">
@@ -601,6 +630,19 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   </section>
 
   <!-- calculator -->
+  <section class="chapter wrap" id="firecard">
+    <div class="chapter-head">
+      <div class="eyebrow" data-fc="eb">Practical · print and keep</div>
+      <h2 data-fc="h">Crew fire card</h2>
+      <p class="lede" data-fc="lede">Everything above, turned into one card a crew can follow in the first minutes of a fire. Each step shows the NASA measurement behind it.</p>
+    </div>
+    <div class="card" style="padding:24px">
+      <div class="fc-head"><span class="eyebrow" style="margin:0" data-fc="sub">Fire in a lunar or Mars habitat: first response</span><button class="btn btn-primary" type="button" id="fc-print" data-fc="btn">Print the card</button></div>
+      <div class="fc-steps" id="fc-steps"></div>
+    </div>
+    <p class="chart-note" data-fc="note">A rule of thumb built from PSI-117, Saffire-1, Saffire-2 and BASS-II results. It is not an official NASA procedure.</p>
+  </section>
+
   <section class="chapter wrap" id="risk">
     <div class="chapter-head">
       <div data-i18n="k113" class="eyebrow">Interactive · material check</div>
@@ -619,11 +661,28 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   </section>
 
   <!-- ask -->
+  <section class="chapter wrap" id="predict">
+    <div class="chapter-head">
+      <div class="eyebrow" data-pk="eb">Machine learning · trained on 111 ISS fires</div>
+      <h2 data-pk="h">Toxic smoke predictor</h2>
+      <p class="lede" data-pk="lede">A random-forest model trained on the BASS-II experiments. Pick a material, its thickness and the oxygen level: it predicts the chance that the fire raises carbon monoxide by more than 100 ppm inside the test chamber, and shows the real ISS fires behind the answer.</p>
+    </div>
+    <div class="card calc">
+      <form class="calc-inputs" id="pred-form" onsubmit="return false">
+        <fieldset><legend data-pk="l1">Material</legend><div class="pchips" data-name="g"></div></fieldset>
+        <fieldset><legend data-pk="l2">Thickness</legend><div class="pchips" data-name="th"></div></fieldset>
+        <fieldset><legend><span data-pk="l3">Oxygen</span>: <b id="pred-o2v"></b></legend><input class="pred-o2" id="pred-o2" type="range" min="14" max="23" step="0.1" value="21"></fieldset>
+      </form>
+      <div class="calc-out" id="pred-out" aria-live="polite"></div>
+    </div>
+    <p class="chart-note" data-pk="note">Model: 60 decision trees (scikit-learn), inputs material, thickness and oxygen. Checked with 5-fold cross-validation repeated 10 times on tests it never saw. It predicts conditions inside the small BASS-II chamber, not a spacecraft cabin.</p>
+  </section>
+
   <section class="chapter wrap" id="ask">
     <div class="chapter-head">
       <div class="eyebrow" data-i18n="ask1">AI · grounded in NASA data</div>
       <h2 data-i18n="ask2">Ask the data</h2>
-      <p class="lede" data-i18n="ask3">Ask anything about fire in space. Gemini answers only from the knowledge base built from these NASA experiments, cites every claim, and says so when the data does not cover your question.</p>
+      <p class="lede" data-i18n="ask3">Ask anything about fire in space. The site first retrieves the NASA facts that match your question (a BM25 search over 13 sourced facts, in English and Arabic), then Gemini answers only from those facts, cites every claim, and says so when the data does not cover your question.</p>
     </div>
     <div class="card ask" id="ask-box"></div>
   </section>
@@ -659,6 +718,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         </ul>
       </div>
     </div>
+    <div class="card limits" id="limits"></div>
   </section>
 </main>
 
@@ -671,11 +731,12 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="data.js"></script>
+<script src="model.js"></script>
 <script>
 (function(){
 "use strict";
 const D = window.FLAME_DATA;
-const AR={"k0": "القصة", "k1": "حرائق المركبات", "k2": "تدريب الطوارئ", "k3": "السلامة", "k4": "البيانات", "k5": "ناسا Space Apps 2026 · Flame in Freefall", "k6": "النار تتصرف بشكل مختلف في الفضاء", "k7": "على متن محطة الفضاء الدولية، أشعلت ناسا مئات الحرائق عن عمد. حوّلنا النتائج المنشورة إلى قصة واحدة: كيف تختبئ النيران وتعود وتسمّم الهواء في غياب الجاذبية، وما الذي يجب أن يفعله الرواد على القمر والمريخ.", "k8": "شاهد قطرة تحترق", "k9": "انتقل إلى إرشادات السلامة", "k10": "لهب حقيقي على محطة الفضاء · تجربة BASS من ناسا", "k11": "من اللهب المرئي حول قطرة وقود قطرها 4 مم", "k12": "من الاحتراق الإضافي بعد أن بدا اللهب «منطفئًا»", "k13": "أطول عمرًا لحريق القماش عندما دفع الهواء اللهب للأمام", "k14": "أكثر من أول أكسيد الكربون من البلاستيك السميك مقارنة بالرقيق", "k15": "ابدأ هنا · لماذا تختلف النار دون جاذبية", "k16": "شمعة واحدة، عالمان", "k17": "على الأرض، يرتفع الغاز الساخن ويسحب هواءً جديدًا من الأسفل، فيتمدد اللهب على شكل دمعة طويلة ساطعة. أما في المدار فلا شيء يرتفع؛ يصل الأكسجين إلى اللهب بالانتشار البطيء فقط، فيصبح كرة خافتة مستديرة، غالبًا زرقاء.", "k18": "على الأرض · جاذبية 1 g", "k19": "في المدار · جاذبية شبه منعدمة", "k20": "أحرقت تجربتا BASS و BASS-II شموعًا حقيقية على محطة الفضاء (PSI-25، PSI-26). رسم توضيحي، ليس بمقياس حقيقي.", "k21": "إعادة تشغيل · مبنية على قياسات محطة الفضاء (PSI-117)", "k22": "شاهد قطرة تحترق", "k23": "قطرة دوديكان قطرها 4 مم أُشعلت على محطة الفضاء. الأحجام والتوقيتات مأخوذة مباشرة من البيانات المقاسة، بسرعة 4 أضعاف. شغّل عرض الأشعة تحت الحمراء لترى ما لم يكن يراه أي رائد فضاء.", "k24": "قطرة الوقود", "k25": "اللهب الساخن", "k26": "اللهب البارد", "k27": "عرض الأشعة تحت الحمراء: اكشف اللهب البارد", "k28": "إعادة", "k29": "01 · PSI-117 · احتراق القطرات على محطة الفضاء", "k30": "اللهب الذي يختفي", "k31": "دون جاذبية لا يرتفع الغاز الساخن، فتحيط القطرة المحترقة نفسها بكرة لهب مثالية. راقب ما يحدث عند الثانية 13 تقريبًا.", "k32": "<i style=\"background:var(--hot)\"></i>قطر اللهب (مقاس)", "k33": "<i style=\"background:var(--model)\"></i>قطر اللهب (نموذج)", "k34": "<i style=\"background:#fff\"></i>قطر قطرة الوقود", "k35": "دوديكان، قطر ابتدائي 4 مم، هواء عند 1 ضغط جوي. المصدر: تحليل MST 2024 لبيانات محطة الفضاء (PSI-117).", "k36": "ينهار <span class=\"hot\">اللهب الساخن</span> الساطع عند الثانية <b data-fill=\"burn.t_hot_out\">12.6</b>. بالنسبة لرائد الفضاء، سيبدو وكأنه انطفأ.", "k37": "لكن القطرة تستمر في الانكماش بنفس المعدل لمدة <b class=\"cool\" data-fill=\"burn.invisible_seconds\">33</b> ثانية أخرى. ما زالت تحترق داخل <span class=\"cool\">لهب بارد</span>: لهب خافت منخفض الحرارة لا تراه العين.", "k38": "استمر تفاعل الوقود مدة أطول بـ <b data-fill=\"burn.ratio\">2.6</b> مرة من عمر النار المرئية.", "k39": "02 · PSI-117 · مقارنة ثلاثة أنواع وقود", "k40": "متى يموت اللهب حقًا؟", "k41": "لكل قطرة، سجّل العلماء الحجم الذي انكمشت إليه عندما انطفأ كل لهب. اختر نوع الوقود.", "k42": "النقاط: تجارب محطة الفضاء. الخطوط المتقطعة: نماذج. هواء عند 1 ضغط جوي. المصدر: Proceedings of the Combustion Institute 2023 (PSI-117).", "k43": "<span class=\"hot\">اللهب الساخن</span> يستسلم مبكرًا بينما معظم القطرة ما زال موجودًا: نقاطه تقع قرب أعلى الرسم.", "k44": "أما <span class=\"cool\">اللهب البارد</span> فيستمر حتى يصبح قطر القطرة نحو 1 مم أو أقل. رؤية اللهب ينطفئ ليست دليلًا على أن الوقود توقف عن الاحتراق.", "k45": "03 · PSI-117 · محاكاة قطرة هيبتان 0.5 مم", "k46": "لهب بارد ينبض", "k47": "نفس القطرة في محاكاة داخل جوّين مختلفين. عند 21% أكسجين يحترق اللهب البارد بثبات، وعند 10% أكسجين يبدأ بالنبض مثل القلب.", "k48": "<i style=\"background:var(--cool)\"></i>21% أكسجين: ثابت", "k49": "<i style=\"background:#ffc86b\"></i>10% أكسجين: نابض", "k50": "أعلى درجة حرارة للغاز حول القطرة (محاكاة). القفزة القصيرة عند الاشتعال قرب 1,150 كلفن في البداية خارج حدود الرسم. المصدر: PROCI 2019 (PSI-117).", "k51": "عند 10% أكسجين يتوهج اللهب البارد <b data-fill=\"cool.pulsing.pulses\">6</b> مرات في أقل من ثانية، يخفت ثم يعود في كل مرة.", "k52": "الحريق الذي يبدو أنه يحتضر قد يعود مرارًا. يجب أن تراقب أجهزة الكشف درجة الحرارة على مدى الوقت، لا قراءة واحدة.", "k53": "04 · PSI-117 · دوديكان من 0.5 إلى 5 ضغط جوي", "k54": "الضغط يغيّر النار", "k55": "قد لا تحافظ مساكن القمر والمريخ المستقبلية على ضغط سطح البحر الأرضي. اختبرت هذه التجارب على محطة الفضاء كيف يعيد الضغط تشكيل اللهب.", "k56": "متى ينطفئ اللهب", "k57": "سرعة احتراق الوقود", "k58": "الحرارة المنبعثة", "k59": "الضغط الأعلى يجعل القطرات تحترق أسرع، وعند 5 ضغط جوي تبعث حرارة أكثر.", "k60": "اللهب البارد يتأثر بشدة: عند 0.5 ضغط جوي انطفأ والقطرة ما زال قطرها نحو 2 مم، وعند 1 ضغط جوي استمر حتى صار قطرها نحو 0.5 مم أو أقل، وعند 3 ضغط جوي لم يُرصد إطلاقًا.", "k61": "قواعد الحريق المستفادة عند ضغط معين لا تنطبق على ضغط آخر. اختبر المواد عند الضغط الحقيقي للمسكن.", "k62": "05 · PSI-117 · دوديكان عند 2.75 ضغط جوي مع الهيليوم", "k63": "النار التي تعود", "k64": "في هذه التجربة مرّ اللهب بثلاث مراحل، والحرارة المقاسة تحكي القصة.", "k65": "<i style=\"background:var(--hot)\"></i>الحرارة المنبعثة (مقاسة)", "k66": "<i style=\"background:var(--model)\"></i>الحرارة المنبعثة (نموذج)", "k67": "<i style=\"background:#fff\"></i>حجم القطرة المتبقي", "k68": "تم تحويل الزمن من الزمن المُقاس في البحث (t ÷ d₀²) باستخدام d₀ = 4.5 مم. المصدر: PROCI 2019 (PSI-117).", "k69": "<b>المرحلة 1:</b> يحترق <span class=\"hot\">لهب ساخن</span> ثم ينطفئ عند الثانية <b data-fill=\"threeStage.first_out_s\">8</b> تقريبًا.", "k70": "<b>المرحلة 2:</b> يواصل <span class=\"cool\">لهب بارد</span> حرق القطرة بهدوء.", "k71": "<b>المرحلة 3:</b> عند الثانية <b data-fill=\"threeStage.reignite_s\">26</b> تقريبًا تقفز الحرارة المنبعثة إلى أعلى قيمة في التجربة كلها، <b data-fill=\"threeStage.reignite_peak_w\">62.8</b> واط. لقد عاد اللهب الساخن من تلقاء نفسه.", "k72": "06 · Saffire-1 و Saffire-2 · حرائق داخل مركبة شحن Cygnus", "k73": "من قطرة إلى حريق داخل مركبة فضاء", "k74": "بعد مغادرة محطة الفضاء، تحولت مركبات الشحن Cygnus إلى مختبرات حريق طائرة. أُحرقت بداخلها عينات كبيرة من القماش والبلاستيك، بعيدًا عن أي طاقم.", "k75": "Saffire: نار تنتشر على قماش داخل مركبة Cygnus · ناسا", "k76": "نفس القماش، نفس الهواء، اتجاه مختلف", "k77": "Saffire-1: لوحان من قماش القطن والألياف الزجاجية (SIBAL) بمقاس 40.6 × 94 سم، سرعة الهواء 20 سم/ث، ونحو 21.5% أكسجين.", "k78": "عندما دفع الهواء اللهب إلى الأمام فوق القماش غير المحترق، استمر الحريق <b>7 دقائق</b>. وعندما هبّ الهواء عكس اللهب، استمر أكثر من دقيقة بقليل.", "k79": "التهوية قد تغذي الحريق. ورأت تجربة BASS-II على محطة الفضاء الجانب الآخر: <b data-fill=\"bass2.extinguished_by_low_flow\">15</b> من سجلات اختباراتها تُظهر انطفاء اللهب عند خفض تدفق الهواء.", "k80": "Saffire-2: أي المواد احترقت في الفضاء؟", "k81": "تسع عينات بمقاس 5 × 29 سم، سرعة الهواء 20 سم/ث، ونحو 22% أكسجين، مقارنة بنفس الاختبار على الأرض.", "k82": "07 · BASS-II · وقود صلب احترق على محطة الفضاء", "k83": "الخطر غير المرئي: الغاز السام", "k84": "سجّلت BASS-II أول أكسيد الكربون داخل صندوق الاختبار المغلق قبل كل احتراق وبعده. الزيادة تُظهر كمية الغاز السام التي أطلقتها كل مادة.", "k85": "كل نقطة اختبار واحد: CO بعد الاحتراق ناقص CO قبله، بوحدة ppm، داخل صندوق التجربة (وليس مقصورة المحطة). الصناديق تُظهر النصف الأوسط من الاختبارات. المصدر: جدول تجربة BASS-II (PSI-25).", "k86": "رفعت ألواح البلاستيك السميكة CO بوسيط <b data-fill=\"co.sheet\">335</b> ppm في كل اختبار، أي نحو <b data-fill=\"co.ratio\">21</b> ضعف الغشاء الرقيق من نفس البلاستيك.", "k87": "لم يُطلق Nomex تقريبًا أي غاز. البلاستيك السميك يحترق ببطء ويبقى مشتعلًا مدة أطول (في Saffire-2 استمر أحدها 15 دقيقة)، فيستمر في إنتاج الغاز.", "k88": "قد يكون اللهب الصغير الثابت أخطر على الطاقم من لهب كبير قصير.", "k89": "تفاعلي · اختبر نفسك", "k90": "تدريب طوارئ: مسكن على القمر", "k91": "أنت القائد. أربعة قرارات، وكل إجابة مبنية على ما أظهرته تجارب محطة الفضاء.", "k92": "08 · ما تقوله البيانات للرواد", "k93": "إرشادات السلامة من الحرائق", "k94": "كل توصية هنا تشير إلى التجربة التي تدعمها.", "k95": "«منطفئ» لا يعني منطفئًا", "k96": "تأكد من انتهاء الحريق بأجهزة استشعار الحرارة والغاز، لا بالنظر. أبقى اللهب البارد الوقود مشتعلًا 2.6 مرة أطول من اللهب المرئي.", "k97": "الدليل: <a href=\"#vanishing\">سجل الاحتراق PSI-117</a>", "k98": "احذر من العودة", "k99": "واصل المراقبة بعد الانطفاء. في إحدى التجارب عادت القطرة للاشتعال بأشد لهب لها بعد 18 ثانية من انطفاء اللهب الأول.", "k100": "الدليل: <a href=\"#return\">تجربة المراحل الثلاث PSI-117</a>", "k101": "أوقف تدفق الهواء أولًا", "k102": "أطفئ مراوح التهوية عند أول علامة حريق. جعل الهواء الموازي للهب حريق القماش يستمر 6 مرات أطول.", "k103": "الدليل: <a href=\"#spacecraft\">Saffire-1، BASS-II</a>", "k104": "اختر مواد ترفض الاحتراق", "k105": "فضّل أقمشة مثل Nomex والسيليكون المقاوم للهب قرب أماكن الطاقم. لم يشتعل Nomex حتى بجوار بلاستيك يحترق.", "k106": "الدليل: <a href=\"#spacecraft\">Saffire-2</a>", "k107": "استعد للغاز السام", "k108": "احمل أجهزة استشعار CO وأقنعة جاهزة للاستخدام. أطلق البلاستيك السميك نحو 21 ضعفًا من أول أكسيد الكربون مقارنة بالغشاء الرقيق.", "k109": "الدليل: <a href=\"#smoke\">قراءات الغاز في BASS-II</a>", "k110": "اختبر في ظروف المهمة", "k111": "اعتمد المواد عند الضغط والأكسجين وتدفق الهواء الحقيقي للمسكن. احترق السيليكون على الأرض لكن ليس في المدار، وتغيّر اللهب البارد مع الضغط.", "k112": "الدليل: <a href=\"#pressure\">PSI-117</a>، <a href=\"#spacecraft\">Saffire-2</a>", "k113": "تفاعلي · فحص المواد", "k114": "فحص خطورة المواد", "k115": "اختر مادة وظروف المقصورة. الحكم مبني فقط على ما قاسته هذه التجارب، ويوضح أين تنتهي البيانات.", "k116": "المادة", "k117": "تدفق الهواء عند الحريق", "k118": "أكسجين المقصورة", "k119": "قاعدة تقريبية من نتائج PSI-117 و Saffire و BASS-II، وليست اعتمادًا هندسيًا.", "k120": "09 · بيانات مفتوحة", "k121": "البيانات والمصادر", "k122": "كل البيانات من مستودع Physical Sciences Informatics (PSI) التابع لناسا. سكريبت Python ينظف الملفات الخام ويبني كل رسم في هذه الصفحة.", "k123": "مجموعات بيانات PSI من ناسا", "k124": "الأبحاث وراء PSI-117", "k125": "البيانات والصور: ناسا · الرسوم: Plotly"};
+const AR={"k0": "القصة", "k1": "حرائق المركبات", "k2": "بطاقة الحريق", "k3": "السلامة", "k4": "البيانات", "k5": "ناسا Space Apps 2026 · Flame in Freefall", "k6": "النار تتصرف بشكل مختلف في الفضاء", "k7": "على متن محطة الفضاء الدولية، أشعلت ناسا مئات الحرائق عن عمد. حوّلنا النتائج المنشورة إلى قصة واحدة: كيف تختبئ النيران وتعود وتسمّم الهواء في غياب الجاذبية، وما الذي يجب أن يفعله الرواد على القمر والمريخ.", "k8": "شاهد قطرة تحترق", "k9": "انتقل إلى إرشادات السلامة", "k10": "لهب حقيقي على محطة الفضاء · تجربة BASS من ناسا", "k11": "من اللهب المرئي حول قطرة وقود قطرها 4 مم", "k12": "من الاحتراق الإضافي بعد أن بدا اللهب «منطفئًا»", "k13": "أطول عمرًا لحريق القماش عندما دفع الهواء اللهب للأمام", "k14": "أكثر من أول أكسيد الكربون من البلاستيك السميك مقارنة بالرقيق", "k15": "ابدأ هنا · لماذا تختلف النار دون جاذبية", "k16": "شمعة واحدة، عالمان", "k17": "على الأرض، يرتفع الغاز الساخن ويسحب هواءً جديدًا من الأسفل، فيتمدد اللهب على شكل دمعة طويلة ساطعة. أما في المدار فلا شيء يرتفع؛ يصل الأكسجين إلى اللهب بالانتشار البطيء فقط، فيصبح كرة خافتة مستديرة، غالبًا زرقاء.", "k18": "على الأرض · جاذبية 1 g", "k19": "في المدار · جاذبية شبه منعدمة", "k20": "أحرقت تجربتا BASS و BASS-II شموعًا حقيقية على محطة الفضاء (PSI-25، PSI-26). رسم توضيحي، ليس بمقياس حقيقي.", "k21": "إعادة تشغيل · مبنية على قياسات محطة الفضاء (PSI-117)", "k22": "شاهد قطرة تحترق", "k23": "قطرة دوديكان قطرها 4 مم أُشعلت على محطة الفضاء. الأحجام والتوقيتات مأخوذة مباشرة من البيانات المقاسة، بسرعة 4 أضعاف. شغّل عرض الأشعة تحت الحمراء لترى ما لم يكن يراه أي رائد فضاء.", "k24": "قطرة الوقود", "k25": "اللهب الساخن", "k26": "اللهب البارد", "k27": "عرض الأشعة تحت الحمراء: اكشف اللهب البارد", "k28": "إعادة", "k29": "01 · PSI-117 · احتراق القطرات على محطة الفضاء", "k30": "اللهب الذي يختفي", "k31": "دون جاذبية لا يرتفع الغاز الساخن، فتحيط القطرة المحترقة نفسها بكرة لهب مثالية. راقب ما يحدث عند الثانية 13 تقريبًا.", "k32": "<i style=\"background:var(--hot)\"></i>قطر اللهب (مقاس)", "k33": "<i style=\"background:var(--model)\"></i>قطر اللهب (نموذج)", "k34": "<i style=\"background:#fff\"></i>قطر قطرة الوقود", "k35": "دوديكان، قطر ابتدائي 4 مم، هواء عند 1 ضغط جوي. المصدر: تحليل MST 2024 لبيانات محطة الفضاء (PSI-117).", "k36": "ينهار <span class=\"hot\">اللهب الساخن</span> الساطع عند الثانية <b data-fill=\"burn.t_hot_out\">12.6</b>. بالنسبة لرائد الفضاء، سيبدو وكأنه انطفأ.", "k37": "لكن القطرة تستمر في الانكماش بنفس المعدل لمدة <b class=\"cool\" data-fill=\"burn.invisible_seconds\">33</b> ثانية أخرى. ما زالت تحترق داخل <span class=\"cool\">لهب بارد</span>: لهب خافت منخفض الحرارة لا تراه العين.", "k38": "استمر تفاعل الوقود مدة أطول بـ <b data-fill=\"burn.ratio\">2.6</b> مرة من عمر النار المرئية.", "k39": "02 · PSI-117 · مقارنة ثلاثة أنواع وقود", "k40": "متى يموت اللهب حقًا؟", "k41": "لكل قطرة، سجّل العلماء الحجم الذي انكمشت إليه عندما انطفأ كل لهب. اختر نوع الوقود.", "k42": "النقاط: تجارب محطة الفضاء. الخطوط المتقطعة: نماذج. هواء عند 1 ضغط جوي. المصدر: Proceedings of the Combustion Institute 2023 (PSI-117).", "k43": "<span class=\"hot\">اللهب الساخن</span> يستسلم مبكرًا بينما معظم القطرة ما زال موجودًا: نقاطه تقع قرب أعلى الرسم.", "k44": "أما <span class=\"cool\">اللهب البارد</span> فيستمر حتى يصبح قطر القطرة نحو 1 مم أو أقل. رؤية اللهب ينطفئ ليست دليلًا على أن الوقود توقف عن الاحتراق.", "k45": "03 · PSI-117 · محاكاة قطرة هيبتان 0.5 مم", "k46": "لهب بارد ينبض", "k47": "نفس القطرة في محاكاة داخل جوّين مختلفين. عند 21% أكسجين يحترق اللهب البارد بثبات، وعند 10% أكسجين يبدأ بالنبض مثل القلب.", "k48": "<i style=\"background:var(--cool)\"></i>21% أكسجين: ثابت", "k49": "<i style=\"background:#ffc86b\"></i>10% أكسجين: نابض", "k50": "أعلى درجة حرارة للغاز حول القطرة (محاكاة). القفزة القصيرة عند الاشتعال قرب 1,150 كلفن في البداية خارج حدود الرسم. المصدر: PROCI 2019 (PSI-117).", "k51": "عند 10% أكسجين يتوهج اللهب البارد <b data-fill=\"cool.pulsing.pulses\">6</b> مرات في أقل من ثانية، يخفت ثم يعود في كل مرة.", "k52": "الحريق الذي يبدو أنه يحتضر قد يعود مرارًا. يجب أن تراقب أجهزة الكشف درجة الحرارة على مدى الوقت، لا قراءة واحدة.", "k53": "04 · PSI-117 · دوديكان من 0.5 إلى 5 ضغط جوي", "k54": "الضغط يغيّر النار", "k55": "قد لا تحافظ مساكن القمر والمريخ المستقبلية على ضغط سطح البحر الأرضي. اختبرت هذه التجارب على محطة الفضاء كيف يعيد الضغط تشكيل اللهب.", "k56": "متى ينطفئ اللهب", "k57": "سرعة احتراق الوقود", "k58": "الحرارة المنبعثة", "k59": "الضغط الأعلى يجعل القطرات تحترق أسرع، وعند 5 ضغط جوي تبعث حرارة أكثر.", "k60": "اللهب البارد يتأثر بشدة: عند 0.5 ضغط جوي انطفأ والقطرة ما زال قطرها نحو 2 مم، وعند 1 ضغط جوي استمر حتى صار قطرها نحو 0.5 مم أو أقل، وعند 3 ضغط جوي لم يُرصد إطلاقًا.", "k61": "قواعد الحريق المستفادة عند ضغط معين لا تنطبق على ضغط آخر. اختبر المواد عند الضغط الحقيقي للمسكن.", "k62": "05 · PSI-117 · دوديكان عند 2.75 ضغط جوي مع الهيليوم", "k63": "النار التي تعود", "k64": "في هذه التجربة مرّ اللهب بثلاث مراحل، والحرارة المقاسة تحكي القصة.", "k65": "<i style=\"background:var(--hot)\"></i>الحرارة المنبعثة (مقاسة)", "k66": "<i style=\"background:var(--model)\"></i>الحرارة المنبعثة (نموذج)", "k67": "<i style=\"background:#fff\"></i>حجم القطرة المتبقي", "k68": "تم تحويل الزمن من الزمن المُقاس في البحث (t ÷ d₀²) باستخدام d₀ = 4.5 مم. المصدر: PROCI 2019 (PSI-117).", "k69": "<b>المرحلة 1:</b> يحترق <span class=\"hot\">لهب ساخن</span> ثم ينطفئ عند الثانية <b data-fill=\"threeStage.first_out_s\">8</b> تقريبًا.", "k70": "<b>المرحلة 2:</b> يواصل <span class=\"cool\">لهب بارد</span> حرق القطرة بهدوء.", "k71": "<b>المرحلة 3:</b> عند الثانية <b data-fill=\"threeStage.reignite_s\">26</b> تقريبًا تقفز الحرارة المنبعثة إلى أعلى قيمة في التجربة كلها، <b data-fill=\"threeStage.reignite_peak_w\">62.8</b> واط. لقد عاد اللهب الساخن من تلقاء نفسه.", "k72": "06 · Saffire-1 و Saffire-2 · حرائق داخل مركبة شحن Cygnus", "k73": "من قطرة إلى حريق داخل مركبة فضاء", "k74": "بعد مغادرة محطة الفضاء، تحولت مركبات الشحن Cygnus إلى مختبرات حريق طائرة. أُحرقت بداخلها عينات كبيرة من القماش والبلاستيك، بعيدًا عن أي طاقم.", "k75": "Saffire: نار تنتشر على قماش داخل مركبة Cygnus · ناسا", "k76": "نفس القماش، نفس الهواء، اتجاه مختلف", "k77": "Saffire-1: لوحان من قماش القطن والألياف الزجاجية (SIBAL) بمقاس 40.6 × 94 سم، سرعة الهواء 20 سم/ث، ونحو 21.5% أكسجين.", "k78": "عندما دفع الهواء اللهب إلى الأمام فوق القماش غير المحترق، استمر الحريق <b>7 دقائق</b>. وعندما هبّ الهواء عكس اللهب، استمر أكثر من دقيقة بقليل.", "k79": "التهوية قد تغذي الحريق. ورأت تجربة BASS-II على محطة الفضاء الجانب الآخر: <b data-fill=\"bass2.extinguished_by_low_flow\">15</b> من سجلات اختباراتها تُظهر انطفاء اللهب عند خفض تدفق الهواء.", "k80": "Saffire-2: أي المواد احترقت في الفضاء؟", "k81": "تسع عينات بمقاس 5 × 29 سم، سرعة الهواء 20 سم/ث، ونحو 22% أكسجين، مقارنة بنفس الاختبار على الأرض.", "k82": "07 · BASS-II · وقود صلب احترق على محطة الفضاء", "k83": "الخطر غير المرئي: الغاز السام", "k84": "سجّلت BASS-II أول أكسيد الكربون داخل صندوق الاختبار المغلق قبل كل احتراق وبعده. الزيادة تُظهر كمية الغاز السام التي أطلقتها كل مادة.", "k85": "كل نقطة اختبار واحد: CO بعد الاحتراق ناقص CO قبله، بوحدة ppm، داخل صندوق التجربة (وليس مقصورة المحطة). الصناديق تُظهر النصف الأوسط من الاختبارات. المصدر: جدول تجربة BASS-II (PSI-25).", "k86": "رفعت ألواح البلاستيك السميكة CO بوسيط <b data-fill=\"co.sheet\">335</b> ppm في كل اختبار، أي نحو <b data-fill=\"co.ratio\">21</b> ضعف الغشاء الرقيق من نفس البلاستيك.", "k87": "لم يُطلق Nomex تقريبًا أي غاز. البلاستيك السميك يحترق ببطء ويبقى مشتعلًا مدة أطول (في Saffire-2 استمر أحدها 15 دقيقة)، فيستمر في إنتاج الغاز.", "k88": "قد يكون اللهب الصغير الثابت أخطر على الطاقم من لهب كبير قصير.", "k89": "تفاعلي · اختبر نفسك", "k90": "تدريب طوارئ: مسكن على القمر", "k91": "أنت القائد. أربعة قرارات، وكل إجابة مبنية على ما أظهرته تجارب محطة الفضاء.", "k92": "08 · ما تقوله البيانات للرواد", "k93": "إرشادات السلامة من الحرائق", "k94": "كل توصية هنا تشير إلى التجربة التي تدعمها.", "k95": "«منطفئ» لا يعني منطفئًا", "k96": "تأكد من انتهاء الحريق بأجهزة استشعار الحرارة والغاز، لا بالنظر. أبقى اللهب البارد الوقود مشتعلًا 2.6 مرة أطول من اللهب المرئي.", "k97": "الدليل: <a href=\"#vanishing\">سجل الاحتراق PSI-117</a>", "k98": "احذر من العودة", "k99": "واصل المراقبة بعد الانطفاء. في إحدى التجارب عادت القطرة للاشتعال بأشد لهب لها بعد 18 ثانية من انطفاء اللهب الأول.", "k100": "الدليل: <a href=\"#return\">تجربة المراحل الثلاث PSI-117</a>", "k101": "أوقف تدفق الهواء أولًا", "k102": "أطفئ مراوح التهوية عند أول علامة حريق. جعل الهواء الموازي للهب حريق القماش يستمر 6 مرات أطول.", "k103": "الدليل: <a href=\"#spacecraft\">Saffire-1، BASS-II</a>", "k104": "اختر مواد ترفض الاحتراق", "k105": "فضّل أقمشة مثل Nomex والسيليكون المقاوم للهب قرب أماكن الطاقم. لم يشتعل Nomex حتى بجوار بلاستيك يحترق.", "k106": "الدليل: <a href=\"#spacecraft\">Saffire-2</a>", "k107": "استعد للغاز السام", "k108": "احمل أجهزة استشعار CO وأقنعة جاهزة للاستخدام. أطلق البلاستيك السميك نحو 21 ضعفًا من أول أكسيد الكربون مقارنة بالغشاء الرقيق.", "k109": "الدليل: <a href=\"#smoke\">قراءات الغاز في BASS-II</a>", "k110": "اختبر في ظروف المهمة", "k111": "اعتمد المواد عند الضغط والأكسجين وتدفق الهواء الحقيقي للمسكن. احترق السيليكون على الأرض لكن ليس في المدار، وتغيّر اللهب البارد مع الضغط.", "k112": "الدليل: <a href=\"#pressure\">PSI-117</a>، <a href=\"#spacecraft\">Saffire-2</a>", "k113": "تفاعلي · فحص المواد", "k114": "فحص خطورة المواد", "k115": "اختر مادة وظروف المقصورة. الحكم مبني فقط على ما قاسته هذه التجارب، ويوضح أين تنتهي البيانات.", "k116": "المادة", "k117": "تدفق الهواء عند الحريق", "k118": "أكسجين المقصورة", "k119": "قاعدة تقريبية من نتائج PSI-117 و Saffire و BASS-II، وليست اعتمادًا هندسيًا.", "k120": "09 · بيانات مفتوحة", "k121": "البيانات والمصادر", "k122": "كل البيانات من مستودع Physical Sciences Informatics (PSI) التابع لناسا. سكريبت Python ينظف الملفات الخام ويبني كل رسم في هذه الصفحة.", "k123": "مجموعات بيانات PSI من ناسا", "k124": "الأبحاث وراء PSI-117", "k125": "البيانات والصور: ناسا · الرسوم: Plotly"};
 const TR={"Time since ignition (s)": "الزمن منذ الاشتعال (ث)", "Diameter (mm)": "القطر (مم)", "VISIBLE FLAME": "لهب مرئي", "INVISIBLE COOL FLAME": "لهب بارد غير مرئي", "Flame (model)": "اللهب (نموذج)", "Flame (measured)": "اللهب (مقاس)", "Droplet": "القطرة", "Hot flame (model)": "لهب ساخن (نموذج)", "Cool flame (model)": "لهب بارد (نموذج)", "Hot flame out (ISS)": "انطفاء اللهب الساخن (المحطة)", "Cool flame out (ISS)": "انطفاء اللهب البارد (المحطة)", "Cool flame out (ISS, 2024)": "انطفاء اللهب البارد (المحطة، 2024)", "Cool-flame range": "نطاق اللهب البارد", "Starting droplet diameter (mm)": "قطر القطرة الابتدائي (مم)", "Droplet diameter when flame went out (mm)": "قطر القطرة عند انطفاء اللهب (مم)", "21% O₂ (steady)": "21% O₂ (ثابت)", "10% O₂ (pulsing)": "10% O₂ (نابض)", "Time (s)": "الزمن (ث)", "Peak gas temperature (K)": "أعلى حرارة للغاز (كلفن)", "Pressure (atm)": "الضغط (ضغط جوي)", "Model": "نموذج", "ISS experiments": "تجارب المحطة", "Burning-rate constant K (mm²/s)": "ثابت معدل الاحتراق K (مم²/ث)", "0.5 atm (model)": "0.5 ضغط جوي (نموذج)", "5 atm (model)": "5 ضغط جوي (نموذج)", "0.5 atm (ISS)": "0.5 ضغط جوي (المحطة)", "5 atm (ISS)": "5 ضغط جوي (المحطة)", "Heat radiated (W)": "الحرارة المنبعثة (واط)", "Heat radiated (measured)": "الحرارة المنبعثة (مقاسة)", "Droplet size remaining": "حجم القطرة المتبقي", "Droplet size (d/d₀)²": "حجم القطرة (d/d₀)²", "1 · HOT": "1 · ساخن", "2 · COOL FLAME": "2 · لهب بارد", "3 · HOT AGAIN": "3 · ساخن مجددًا", "CO increase per test (ppm)": "زيادة CO لكل اختبار (ppm)", "PMMA film (0.1-0.4 mm)": "غشاء PMMA (0.1-0.4 مم)", "Cotton-fiberglass fabric": "قماش قطن وألياف زجاجية", "PMMA rod (6-13 mm)": "قضيب PMMA (6-13 مم)", "PMMA sheet (1-5 mm)": "لوح PMMA (1-5 مم)", "Visible hot flame": "لهب ساخن مرئي", "Cool flame (invisible to the eye)": "لهب بارد (غير مرئي للعين)", "Looks out... but still burning": "يبدو منطفئًا... لكنه ما زال يحترق", "Burned out": "احترق بالكامل", "Play": "تشغيل", "Pause": "إيقاف", "none": "لا يوجد", "What it means": "ماذا يعني ذلك", "Real flame on the ISS · NASA BASS": "لهب حقيقي على محطة الفضاء · NASA BASS", "Real flame on the ISS · NASA BASS-II": "لهب حقيقي على محطة الفضاء · NASA BASS-II", "Burning plastic rod on the ISS · NASA BASS-II": "قضيب بلاستيكي يحترق على محطة الفضاء · NASA BASS-II"};
 let LANG='en';
 const tr = en => (LANG==='ar' && TR[en]) ? TR[en] : en;
@@ -1134,72 +1195,6 @@ function chartCO(){
   addEventListener('scroll',()=>tip.classList.remove('on'),{passive:true});
 })();
 
-/* ---------- fire drill ---------- */
-(function(){
-  const B=D.burn, ratio=Math.round(sheet/film);
-  const QEN=[
-    {q:'Alarm in the galley module: a plastic storage bin is smouldering with small flames. What do you do first?',
-     a:[['Shut off the ventilation fans in that module',1,'Right. Airflow along a flame made a Saffire fabric fire last 6× longer (420 s vs 70 s), and BASS-II flames went out as airflow was turned down.','Saffire-1 · BASS-II'],
-        ['Open the hatches so the smoke can escape',0,'Risky. Moving air feeds a fire in microgravity: with airflow pushing the flame forward, a Saffire fire burned 6× longer.','Saffire-1'],
-        ['Point a fan at it to blow it out',0,'Unreliable. Strong flow can blow a flame off, but airflow along a flame fed a Saffire fire for 7 minutes. Cut the air instead.','Saffire-1 · BASS-II']]},
-    {q:'The flames are gone. Your crewmate says: "It is out, let us get back to work." Do you agree?',
-     a:[['Yes, there are no flames, the fire is over',0,'Not yet. On the ISS a fuel droplet kept burning '+Math.round(B.invisible_seconds)+' s after its visible flame died, inside a cool flame the eye cannot see.','PSI-117'],
-        ['No, keep watching with thermal and gas sensors for several minutes',1,'Right. Cool flames kept fuel burning '+B.ratio+'× longer than the visible flame, and in one run the hot flame re-ignited by itself 18 s after it went out.','PSI-117'],
-        ['Touch the bin to check whether it is still hot',0,'Dangerous. The material may still be burning invisibly. Use a thermal camera from a distance.','PSI-117']]},
-    {q:'The carbon monoxide alarm starts climbing, even though the flame looks tiny. What now?',
-     a:[['Ignore it: a small flame cannot make much gas',0,'Wrong. Thick plastic burned with small, steady flames for 10 to 15 minutes in Saffire-2, and in BASS-II thick plastic released about '+ratio+'× more CO than thin film.','BASS-II · Saffire-2'],
-        ['Put on masks and isolate the module',1,'Right. In BASS-II, thick plastic sheets raised CO by a median '+Math.round(sheet)+' ppm per test in a small box. Small, long-lasting flames are gas factories.','BASS-II'],
-        ['Turn the fans back on to clear the air',0,'Too early. Fresh airflow can revive a smouldering fire. Isolate first, then scrub the air once the fire is confirmed out.','Saffire-1 · PSI-117']]},
-    {q:'Mission control asks what the new storage bags should be made of.',
-     a:[['Thick acrylic (PMMA) boxes',0,'Poor choice. Thick PMMA kept burning for up to 15 minutes in Saffire-2 and released the most CO in BASS-II.','Saffire-2 · BASS-II'],
-        ['Cotton-fiberglass fabric',0,'Poor choice. In Saffire-2 it burned the full 29 cm sample in about 2 minutes, spreading 2.1 to 2.6 mm/s.','Saffire-2'],
-        ['Nomex fabric',1,'Right. In Saffire-2 the Nomex section never ignited, even with burning plastic right beside it, and BASS-II measured almost no CO from it.','Saffire-2 · BASS-II']]}
-  ];
-
-  const QAR=[
-    {q:'إنذار في وحدة المطبخ: صندوق تخزين بلاستيكي يحترق ببطء بلهب صغير. ماذا تفعل أولًا؟',
-     a:[['أطفئ مراوح التهوية في هذه الوحدة',1,'صحيح. الهواء الموازي للهب جعل حريق قماش في Saffire يستمر 6 مرات أطول (420 ث مقابل 70 ث)، وانطفأت لهب BASS-II عند خفض تدفق الهواء.','Saffire-1 · BASS-II'],
-        ['افتح الأبواب ليخرج الدخان',0,'خطر. الهواء المتحرك يغذي الحريق في الجاذبية المنعدمة: عندما دفع الهواء اللهب للأمام استمر حريق Saffire 6 مرات أطول.','Saffire-1'],
-        ['وجّه مروحة نحوه لإطفائه',0,'غير مضمون. التيار القوي قد يطفئ اللهب، لكن الهواء الموازي للهب غذّى حريق Saffire لمدة 7 دقائق. أوقف الهواء بدلًا من ذلك.','Saffire-1 · BASS-II']]},
-    {q:'اختفت النيران. يقول زميلك: «انطفأ الحريق، لنعد إلى العمل.» هل توافق؟',
-     a:[['نعم، لا توجد نيران، انتهى الحريق',0,'ليس بعد. على محطة الفضاء استمرت قطرة وقود في الاحتراق '+Math.round(B.invisible_seconds)+' ثانية بعد انطفاء لهبها المرئي، داخل لهب بارد لا تراه العين.','PSI-117'],
-        ['لا، استمر في المراقبة بأجهزة الحرارة والغاز لعدة دقائق',1,'صحيح. أبقى اللهب البارد الوقود مشتعلًا '+B.ratio+' مرة أطول من اللهب المرئي، وفي إحدى التجارب عاد اللهب الساخن للاشتعال وحده بعد 18 ثانية من انطفائه.','PSI-117'],
-        ['المس الصندوق لترى إن كان ما زال ساخنًا',0,'خطير. قد تكون المادة ما زالت تحترق دون أن تُرى. استخدم كاميرا حرارية من مسافة.','PSI-117']]},
-    {q:'يبدأ إنذار أول أكسيد الكربون في الارتفاع، مع أن اللهب يبدو صغيرًا جدًا. ماذا الآن؟',
-     a:[['تجاهله: اللهب الصغير لا يُنتج غازًا كثيرًا',0,'خطأ. احترق البلاستيك السميك بلهب صغير ثابت لمدة 10 إلى 15 دقيقة في Saffire-2، وفي BASS-II أطلق البلاستيك السميك نحو '+ratio+' ضعفًا من CO مقارنة بالغشاء الرقيق.','BASS-II · Saffire-2'],
-        ['ارتدوا الأقنعة واعزلوا الوحدة',1,'صحيح. في BASS-II رفعت ألواح البلاستيك السميكة CO بوسيط '+Math.round(sheet)+' ppm في كل اختبار داخل صندوق صغير. اللهب الصغير طويل العمر مصنع للغاز.','BASS-II'],
-        ['شغّل المراوح من جديد لتنقية الهواء',0,'مبكر جدًا. الهواء الجديد قد يُنعش حريقًا يحترق ببطء. اعزل أولًا، ثم نقِّ الهواء بعد التأكد من انطفاء الحريق.','Saffire-1 · PSI-117']]},
-    {q:'يسألك مركز التحكم: من أي مادة يجب أن تُصنع أكياس التخزين الجديدة؟',
-     a:[['صناديق أكريليك سميكة (PMMA)',0,'اختيار سيئ. استمر PMMA السميك في الاحتراق حتى 15 دقيقة في Saffire-2 وأطلق أكبر كمية CO في BASS-II.','Saffire-2 · BASS-II'],
-        ['قماش قطن وألياف زجاجية',0,'اختيار سيئ. في Saffire-2 احترقت العينة كاملة بطول 29 سم في نحو دقيقتين، بسرعة 2.1 إلى 2.6 مم/ث.','Saffire-2'],
-        ['قماش Nomex',1,'صحيح. في Saffire-2 لم يشتعل جزء Nomex إطلاقًا حتى بجوار بلاستيك يحترق، وقاست BASS-II تقريبًا صفر CO منه.','Saffire-2 · BASS-II']]}
-  ];
-  const box=document.getElementById('drill-box'); let i=0, res=[]; let Q=QEN;
-  function dots(){ return '<div class="dots">'+Q.map((_,k)=>'<i class="'+(res[k]===undefined?(k===i?'now':''):(res[k]?'ok':'no'))+'"></i>').join('')+'</div>'; }
-  function render(){
-    Q = LANG==='ar' ? QAR : QEN;
-    if(i>=Q.length){
-      const n=res.filter(Boolean).length, msg=n===4?pick('Perfect. Your crew is safe.','ممتاز. طاقمك في أمان.'):n>=2?pick('The crew made it, but some calls were risky.','نجا الطاقم، لكن بعض القرارات كانت خطرة.'):pick('The habitat would be in serious danger.','المسكن كان سيصبح في خطر كبير.');
-      box.innerHTML='<div class="drill-top"><span>'+pick('Debrief','التقييم')+'</span>'+dots()+'</div><div class="score '+(n>=3?'cool':'hot')+'">'+n+' / 4</div><h3>'+msg+'</h3><p class="chart-note" style="margin:0">'+pick('Every answer came from NASA experiments on this page. Read the full list in <a href="#safety">Fire safety insights</a>.','كل إجابة مأخوذة من تجارب ناسا في هذه الصفحة. اقرأ القائمة كاملة في <a href="#safety">إرشادات السلامة</a>.')+'</p><button class="btn btn-ghost next" type="button" id="d-again">'+pick('Try again','حاول مرة أخرى')+'</button>';
-      document.getElementById('d-again').onclick=()=>{i=0;res=[];render();};
-      return;
-    }
-    const q=Q[i];
-    box.innerHTML='<div class="drill-top"><span>'+pick('Decision ','القرار ')+(i+1)+pick(' of ',' من ')+Q.length+'</span>'+dots()+'</div><h3>'+q.q+'</h3><div class="choices">'+q.a.map((c,k)=>'<button class="choice" type="button" data-k="'+k+'">'+c[0]+'</button>').join('')+'</div>';
-    box.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
-      const c=q.a[+b.dataset.k]; res[i]=!!c[1];
-      box.querySelectorAll('.choice').forEach(x=>{ x.disabled=true; if(q.a[+x.dataset.k][1]) x.classList.add('right'); });
-      if(!c[1]) b.classList.add('wrong');
-      const fb=document.createElement('div'); fb.className='feedback '+(c[1]?'ok':'no');
-      fb.innerHTML='<p>'+c[2]+'</p><span class="src">'+pick('Evidence: ','الدليل: ')+c[3]+'</span>';
-      box.appendChild(fb);
-      const nx=document.createElement('button'); nx.className='btn btn-primary next'; nx.type='button'; nx.textContent=i<Q.length-1?pick('Next decision','القرار التالي'):pick('See debrief','عرض التقييم');
-      nx.onclick=()=>{i++;render();}; box.appendChild(nx); nx.focus({preventScroll:true});
-      box.querySelector('.drill-top').outerHTML='<div class="drill-top"><span>'+pick('Decision ','القرار ')+(i+1)+pick(' of ',' من ')+Q.length+'</span>'+dots()+'</div>';
-    });
-  }
-  render(); RR.push(render);
-})();
 
 /* ---------- material risk check ---------- */
 (function(){
@@ -1214,7 +1209,7 @@ function chartCO(){
     o2:[['low','منخفض، 15 إلى 17%'],['normal','طبيعي، نحو 21%'],['high','مرتفع، أعلى من 22%']]
   };
   const state={mat:'cotton',flow:'with',o2:'normal'};
-  function chips(){ const opts=LANG==='ar'?optsAr:optsEn; document.querySelectorAll('.chips').forEach(c=>{
+  function chips(){ const opts=LANG==='ar'?optsAr:optsEn; document.querySelectorAll('#calc-form .chips').forEach(c=>{
     const n=c.dataset.name;
     c.innerHTML=opts[n].map(([v,l])=>'<label><input type="radio" name="'+n+'" value="'+v+'"'+(state[n]===v?' checked':'')+'><span>'+l+'</span></label>').join('');
     if(!c.dataset.bound){ c.dataset.bound=1; c.addEventListener('change',e=>{state[n]=e.target.value; out();}); }
@@ -1261,7 +1256,7 @@ drawAll();
 
 /* ---------- Ask the data (Gemini, grounded) ---------- */
 (function(){
-  Object.assign(AR,{ask0:'اسأل الذكاء الاصطناعي',ask1:'ذكاء اصطناعي · مبني على بيانات ناسا',ask2:'اسأل البيانات',ask3:'اسأل أي سؤال عن النار في الفضاء. يجيب Gemini فقط من قاعدة المعرفة المبنية من تجارب ناسا هذه، ويذكر مصدر كل معلومة، ويقول ذلك صراحة عندما لا تغطي البيانات سؤالك.'});
+  Object.assign(AR,{ask0:'اسأل الذكاء الاصطناعي',ask1:'ذكاء اصطناعي · مبني على بيانات ناسا',ask2:'اسأل البيانات',ask3:'اسأل أي شيء عن النار في الفضاء. يسترجع الموقع أولًا حقائق ناسا الأقرب لسؤالك (بحث BM25 في 13 حقيقة موثقة، بالعربية والإنجليزية)، ثم يجيب Gemini من هذه الحقائق فقط، ويذكر مصدر كل معلومة، ويقول بوضوح إذا كانت البيانات لا تغطي سؤالك.'});
   TR['Ask AI']='اسأل الذكاء الاصطناعي';
   const B=D.burn, P=D.pressure, TS=D.threeStage, G=Object.fromEntries(D.bass2.groups.map(g=>[g.group,Math.round(g.median)]));
   const kmin=Math.min(...P.burning_rate.expt.y), kmax=Math.max(...P.burning_rate.expt.y);
@@ -1280,8 +1275,38 @@ drawAll();
     ['K12','Coverage notes','Saffire-3 repeated Saffire-1 at 30 cm/s, but its table has no results. BASS and ACME tables are test logs without results. These datasets did not test oxygen above about 22%, lunar or Martian gravity, or extinguishers.'],
     ['K13','Microgravity flame basics','Without gravity, hot gas does not rise (no buoyancy), so fresh oxygen reaches a flame only by slow diffusion or by ventilation airflow. Flames become round, dimmer and often blue.']
   ];
+  // ---- Retrieval (RAG): BM25 search over the knowledge base, in English and Arabic ----
+  const TAGS={K1:'visible flame out invisible cool flame hidden burning droplet seconds see look extinguished اللهب المرئي منطفئ مخفي غير مرئي لهب بارد يختبئ يرى أرى انطفأ انتهى قطرة ثانية شايف شايفه مطفيه تنطفي اتطفت خلصت',
+    K2:'extinction fuel heptane decane dodecane diameter goes out die وقود انطفاء قطر يموت',
+    K3:'cool flame pulse pulsing oxygen low simulation temperature ينبض نبض أكسجين منخفض محاكاة حرارة',
+    K4:'pressure atm habitat moon mars ضغط جوي مسكن القمر المريخ',
+    K5:'reignite return come back again re-ignition watch after out يعود عودة يرجع إعادة اشتعال مجددا بعد الانطفاء مراقبة ترجع رجعت تولع يولع ولعت تاني',
+    K6:'airflow ventilation fan fans air flow direction concurrent opposed spacecraft cygnus fabric longer هواء تهوية مروحة مراوح تدفق اتجاه مركبة قماش أطول المروحه ليه',
+    K7:'silicone earth space test different سيليكون الأرض الفضاء اختبار مختلف',
+    K8:'cotton fiberglass fabric cloth spread speed قطن قماش ألياف انتشار سرعة',
+    K9:'material safest safe nomex plastic pmma storage bag thick slow burn minutes مادة آمن أمان نومكس بلاستيك تخزين أكياس سميك بطيء دقائق خامه خامات انهي أنهي احسن أحسن',
+    K10:'toxic gas carbon monoxide co smoke poison ppm mask material سام غاز أول أكسيد الكربون دخان تسمم ماسك قناع خامه خامات اخطر أخطر بتطلع',
+    K11:'airflow low turned down oxygen percent extinguish go out هواء خفض أكسجين نسبة إطفاء ينطفئ تقفل نقفل',
+    K12:'extinguisher water foam moon mars gravity lunar not covered missing enriched oxygen طفاية ماء رغوة القمر المريخ جاذبية غير مغطى أكسجين مرتفع مية',
+    K13:'why gravity buoyancy round blue shape rise diffusion different space لماذا جاذبية دائري أزرق شكل يرتفع انتشار مختلف الفضاء كوره كورة شكلها ليه'};
+  const STOP=new Set('the a an is are was were be of to in on at for and or what why how does do can i we it this that with from by as if my our you your فى في من على عن إلى الى ما ماذا هل هو هي أن ان لا لم كيف لماذا هذا هذه ذلك التي الذي مع أو او يا'.split(' '));
+  const norm=t=>t.toLowerCase().replace(/[ً-ْـ]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');
+  const toks=t=>norm(t).split(/[^a-z0-9؀-ۿ]+/).filter(Boolean).map(w=>{
+      if(/[؀-ۿ]/.test(w)){ w=w.replace(/^(وال|بال|فال|لل|ال|و)(?=..)/,''); } else if(w.length>4) w=w.replace(/(ing|ed|es|s)$/,'');
+      return w; }).filter(w=>w.length>1&&!STOP.has(w));
+  const DOCS=KB.map(k=>toks(k[1]+' '+k[2]+' '+(TAGS[k[0]]||'')));
+  const AVG=DOCS.reduce((s,d)=>s+d.length,0)/DOCS.length;
+  const DF={}; DOCS.forEach(d=>new Set(d).forEach(w=>DF[w]=(DF[w]||0)+1));
+  function retrieve(q,k=4){
+    const qt=[...new Set(toks(q))];
+    const sc=DOCS.map((d,i)=>{ let s=0; qt.forEach(w=>{ const f=d.filter(x=>x===w||(w.length>3&&x.length>3&&(x.startsWith(w)||w.startsWith(x)))).length; if(!f) return;
+        const idf=Math.log(1+(DOCS.length-(DF[w]||0)+.5)/((DF[w]||0)+.5)); s+=idf*f*2.2/(f+1.2*(.25+.75*d.length/AVG)); }); return [KB[i][0],+s.toFixed(2)]; })
+      .filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,k);
+    if(!sc.some(x=>x[0]==='K12')) sc.push(['K12',0]);   // always send the coverage notes, so the model can say what the data does not cover
+    return sc;
+  }
   const kbText=KB.map(k=>'['+k[0]+'] '+k[1]+': '+k[2]).join('\n');
-  const SYS='You are the "Ask the data" assistant of Flame in Freefall, a NASA Space Apps 2026 project on fire safety in space. Answer ONLY from the knowledge base below. Cite each fact with its id in square brackets, like [K6]. If the knowledge base does not answer the question, say plainly that these NASA datasets do not cover it, then say what they do cover. Never invent numbers. Keep answers under 120 words, plain text, no markdown. Answer in the same language as the question (Arabic or English).\n\nKNOWLEDGE BASE\n'+kbText;
+  const sysFor=facts=>'You are the "Ask the data" assistant of Flame in Freefall, a NASA Space Apps 2026 project on fire safety in space. Answer ONLY from the facts below, which were retrieved from the knowledge base for this question. Cite each fact with its id in square brackets, like [K6]. If the knowledge base does not answer the question, say plainly that these NASA datasets do not cover it, then say what they do cover. Never invent numbers. Keep answers under 120 words, plain text, no markdown. Answer in the same language as the question (Arabic or English).\n\nKNOWLEDGE BASE\n'+facts.map(k=>'['+k[0]+'] '+k[1]+': '+k[2]).join('\n');
   const SAMPLES=[
     {en:'Is a fire out once I can no longer see the flame?',ar:'هل انتهى الحريق بمجرد أن لم أعد أرى اللهب؟',
      aen:'Not necessarily. On the ISS a 4 mm fuel droplet\'s visible flame went out at about '+B.t_hot_out+' s, yet it kept burning inside an invisible cool flame for about '+B.invisible_seconds+' s more [K1]. In another run the hot flame even re-ignited by itself about '+(TS.reignite_s-TS.first_out_s)+' s after dying [K5]. Confirm with temperature and gas sensors, not by sight.',
@@ -1303,19 +1328,24 @@ drawAll();
   const box=document.getElementById('ask-box');
   const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
   const titleOf=id=>{ const k=KB.find(x=>x[0]===id); return k?k[1]:id; };
-  function showAnswer(q,a,ids,tag){
-    last={q,a,ids,tag};
+  function showAnswer(q,a,ids,tag,ret){
+    last={q,a,ids,tag,ret};
     const el=document.getElementById('ask-ans');
-    el.innerHTML=(tag?'<span class="tag">'+tag+'</span>':'')+'<p class="q" dir="auto">'+esc(q)+'</p><p class="a" dir="auto">'+esc(a)+'</p>'+(ids.length?'<div class="cites">'+ids.map(i=>'<span class="cite" title="'+esc(titleOf(i))+'">'+i+' · '+esc(titleOf(i))+'</span>').join('')+'</div>':'');
+    el.innerHTML=(tag?'<span class="tag">'+tag+'</span>':'')+'<p class="q" dir="auto">'+esc(q)+'</p><p class="a" dir="auto">'+esc(a)+'</p>'+(ret?'<div class="retr"><span>'+pick('Retrieved for this question','الحقائق المسترجعة لهذا السؤال')+'</span>'+ret.map(r=>'<b title="'+esc(titleOf(r[0]))+'">'+r[0]+(r[1]?' · '+r[1]:'')+'</b>').join('')+'</div>':'')+(ids.length?'<div class="cites">'+ids.map(i=>'<span class="cite" title="'+esc(titleOf(i))+'">'+i+' · '+esc(titleOf(i))+'</span>').join('')+'</div>':'');
   }
   async function ask(q){
     q=q.trim(); if(!q) return;
     const ans=document.getElementById('ask-ans');
     if(!key){
       const smp=SAMPLES.find(x=>x.en===q||x.ar===q);
-      if(smp){ showAnswer(q,pick(smp.aen,smp.aar),smp.c,pick('EXAMPLE ANSWER · WRITTEN FROM THE KNOWLEDGE BASE','إجابة مثال · مكتوبة من قاعدة المعرفة')); return; }
+      if(smp){ showAnswer(q,pick(smp.aen,smp.aar),smp.c,pick('EXAMPLE ANSWER · WRITTEN FROM THE KNOWLEDGE BASE','إجابة مثال · مكتوبة من قاعدة المعرفة'),retrieve(q)); return; }
+      const ret=retrieve(q).filter(r=>r[1]>0);
+      if(ret.length){ showAnswer(q,pick('Without a Gemini key, here are the NASA facts that match your question best. Add a free key on the right to get a written answer.','بدون مفتاح Gemini، هذه حقائق ناسا الأقرب لسؤالك. أضف مفتاحًا مجانيًا على الجانب لتحصل على إجابة مكتوبة.')+'\n\n'+ret.map(r=>'['+r[0]+'] '+KB.find(k=>k[0]===r[0])[2]).join('\n\n'),ret.map(r=>r[0]),pick('RETRIEVAL ONLY · NO AI KEY','استرجاع فقط · بدون مفتاح'),ret); return; }
       ans.innerHTML='<p class="a">'+pick('Add your free Gemini API key on the right to ask your own questions. Until then, try one of the example questions.','أضف مفتاح Gemini المجاني على الجانب لتسأل أسئلتك الخاصة. حتى ذلك الحين جرّب أحد الأسئلة الجاهزة.')+'</p>'; return;
     }
+    let ret=retrieve(q); const hit=ret.some(r=>r[1]>0);
+    if(!hit) ret=KB.map(k=>[k[0],0]);   // no keyword match (e.g. slang): fall back to the whole knowledge base
+    const facts=ret.map(r=>KB.find(k=>k[0]===r[0]));
     ans.innerHTML='<p class="q">'+esc(q)+'</p><p class="a dots3">'+pick('Searching the NASA data','جارٍ البحث في بيانات ناسا')+'</p>';
     try{
       // Try the chosen model first; if it is busy or retired, fall back to the others.
@@ -1325,7 +1355,7 @@ drawAll();
         for(let attempt=0; attempt<2 && !j; attempt++){
           const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(m)+':generateContent',{
             method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},
-            body:JSON.stringify({systemInstruction:{parts:[{text:SYS}]},contents:[{role:'user',parts:[{text:q}]}],generationConfig:{temperature:0.2,maxOutputTokens:8192}})
+            body:JSON.stringify({systemInstruction:{parts:[{text:sysFor(facts)}]},contents:[{role:'user',parts:[{text:q}]}],generationConfig:{temperature:0.2,maxOutputTokens:8192}})
           });
           const body=await r.json().catch(()=>({}));
           const txt=r.ok?((body.candidates||[])[0]?.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('').trim():'';
@@ -1343,7 +1373,7 @@ drawAll();
       if(!j) throw lastErr||new Error('No model answered');
       const text=((j.candidates||[])[0]?.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('').trim()||pick('No answer came back. Try rephrasing.','لم تصل إجابة. جرّب صياغة أخرى.');
       const ids=[...new Set((text.match(/K\d{1,2}/g)||[]).filter(i=>KB.some(k=>k[0]===i)))];
-      showAnswer(q,text,ids,'GEMINI · '+used);
+      showAnswer(q,text,ids,'RAG · GEMINI · '+used,ret);
     }catch(e){
       const offline=/fetch|network|load/i.test(String(e.message||e));
       ans.innerHTML='<p class="q">'+esc(q)+'</p><p class="a">'+(offline
@@ -1370,9 +1400,134 @@ drawAll();
     box.querySelectorAll('.sample').forEach(b=>b.addEventListener('click',()=>{ const x=SAMPLES[+b.dataset.i]; const q=pick(x.en,x.ar); document.getElementById('ask-q').value=q; ask(q); }));
     document.getElementById('ask-key').addEventListener('change',e=>{ key=e.target.value.trim(); try{ key?localStorage.setItem('fif-gemini-key',key):localStorage.removeItem('fif-gemini-key'); }catch(_){} });
     document.getElementById('ask-model').addEventListener('change',e=>{ model=e.target.value; try{ localStorage.setItem('fif-gemini-model',model); }catch(_){} });
-    if(last) showAnswer(last.q,last.a,last.ids,last.tag);
+    if(last) showAnswer(last.q,last.a,last.ids,last.tag,last.ret);
   }
   render(); RR.push(()=>{ last=null; render(); });
+})();
+
+
+
+
+/* ---------- Earth vs space (Saffire-2) ---------- */
+(function(){
+  // burn length along the 29 cm sample. "Complete" = 29 cm. Values from the Saffire-2 table (PSI-99).
+  const R=[['2-1','sil','0.27 mm',29,0],['2-2','sil','0.61 mm',7.6,0],['2-3','sil','1.03 mm',0,0],['2-4','sil','0.37 mm',29,0],
+           ['2-5','fab','0.37 mm',29,29],['2-6','fab','0.37 mm',29,29],['2-7','nom','0.37 mm',0,0],['2-8','pm','',29,10],['2-9','pm','10 mm',29,10]];
+  const N={en:{sil:'Silicone',fab:'Cotton-fiberglass fabric',nom:'Nomex',pm:'Thick plastic (PMMA)'},ar:{sil:'سيليكون',fab:'قماش قطن وألياف زجاجية',nom:'Nomex',pm:'بلاستيك سميك (PMMA)'}};
+  function render(){ const L=LANG==='ar'?'ar':'en';
+    const diff=R.filter(r=>Math.abs(r[3]-r[4])>3).length;
+    const bar=(k,v,c)=>'<div class="evs-bar"><span class="k">'+k+'</span><i style="width:'+(v/29*100*0.82)+'%;background:'+c+'"></i><span>'+(v>=29?pick('all 29 cm','كل 29 سم'):v===0?pick('~0 cm','~0 سم'):(v===10?'~':'')+v+pick(' cm',' سم'))+'</span></div>';
+    document.getElementById('evs').innerHTML=
+      '<div class="evs-head"><div><div class="eyebrow" style="margin:0">'+pick('Earth vs space · same sample, same test','الأرض مقابل الفضاء · نفس العينة ونفس الاختبار')+'</div>'+
+      '<h3 style="margin:8px 0 0">'+pick('An Earth test gave a different answer for','اختبار الأرض أعطى نتيجة مختلفة في')+' <span class="evs-big">'+diff+pick(' / ',' من ')+R.length+'</span> '+pick('samples','عينات')+'</h3></div></div>'+
+      '<div class="evs-legend"><span><i style="background:#9fb4e8"></i>'+pick('Earth','الأرض')+'</span><span><i style="background:#45e0ff"></i>'+pick('Space (Cygnus)','الفضاء (Cygnus)')+'</span><span>'+pick('length burned of the 29 cm sample','الطول المحترق من العينة (29 سم)')+'</span></div>'+
+      R.map(r=>{ const d=Math.abs(r[3]-r[4])>3;
+        return '<div class="evs-row"><div class="lab">'+N[L][r[1]]+'<small>'+pick('Sample ','العينة ')+'<bdi dir="ltr">'+r[0]+'</bdi>'+(r[2]?' · '+r[2].replace('mm',pick('mm','مم')):'')+'</small></div>'+
+        '<div class="evs-bars">'+bar(pick('Earth','الأرض'),r[3],'#9fb4e8')+bar(pick('Space','الفضاء'),r[4],'#45e0ff')+'</div>'+
+        '<span class="pill '+(d?'bad':'na')+'">'+(d?pick('Different','مختلف'):pick('Same','متطابق'))+'</span></div>'; }).join('')+
+      '<p class="chart-note" style="margin:12px 0 0">'+pick('Silicone burned on Earth but not in orbit. Thick plastic burned fully on Earth with a growing flame, but in space stayed a small anchored flame for 10 to 15 minutes. A material that passes an Earth fire test can behave differently in space, safer or more dangerous. Source: Saffire-2 table (PSI-99).',
+        'احترق السيليكون على الأرض لكن ليس في المدار. واحترق البلاستيك السميك بالكامل على الأرض بلهب يتزايد، أما في الفضاء فبقي لهبًا صغيرًا ثابتًا لمدة 10 إلى 15 دقيقة. المادة التي تنجح في اختبار الحريق على الأرض قد تتصرف بشكل مختلف في الفضاء، أأمن أو أخطر. المصدر: جدول Saffire-2 (PSI-99).')+'</p>';
+  }
+  render(); RR.push(render);
+})();
+
+
+/* ---------- limitations ---------- */
+(function(){
+  const T={en:{eb:'Honest limits',h:'What this data cannot tell us',items:[
+    ['Small samples','Saffire-2 burned 9 samples, Nomex appears in only 2 BASS-II tests, and the machine-learning model learned from 111 tests. Treat every number as evidence, not a guarantee.'],
+    ['A test box, not a cabin','BASS-II measured carbon monoxide inside a small sealed test box. Levels in a real spacecraft cabin would be different.'],
+    ['Not tested at all','Lunar or Martian gravity, fire extinguishers, and oxygen above about 22%. The site says "no data" instead of guessing.'],
+    ['Messy records','BASS-II logged airflow as changing fan settings, so we left it out of the model. Saffire-2 notes like "Complete" were turned into numbers (29 cm, the full sample).'],
+    ['Measured vs simulated','Some PSI-117 curves, like the pulsing cool flame, come from simulations published with the data. Every chart labels which is which.'],
+    ['Rules of thumb','The fire card, risk check and predictor turn research results into guidance. They are not certified NASA procedures.']]},
+   ar:{eb:'حدود صريحة',h:'ما لا تستطيع هذه البيانات أن تخبرنا به',items:[
+    ['عينات قليلة','أحرقت Saffire-2 تسع عينات فقط، وظهر Nomex في اختبارين فقط في BASS-II، وتعلّم نموذج التعلّم الآلي من 111 اختبارًا. اعتبر كل رقم دليلًا، لا ضمانًا.'],
+    ['صندوق تجربة، لا مقصورة','قاست BASS-II أول أكسيد الكربون داخل صندوق اختبار صغير مغلق. المستويات في مقصورة مركبة حقيقية ستكون مختلفة.'],
+    ['لم يُختبر إطلاقًا','جاذبية القمر أو المريخ، وطفايات الحريق، والأكسجين أعلى من نحو 22%. يقول الموقع «لا توجد بيانات» بدل التخمين.'],
+    ['سجلات غير مرتبة','سجّلت BASS-II تدفق الهواء كإعدادات مروحة متغيرة، فاستبعدناه من النموذج. وحوّلنا ملاحظات Saffire-2 مثل «Complete» إلى أرقام (29 سم، العينة كاملة).'],
+    ['مقاس أم محاكاة','بعض منحنيات PSI-117، مثل اللهب البارد النابض، مأخوذة من محاكاة منشورة مع البيانات. كل رسم يوضح أيهما.'],
+    ['قواعد تقريبية','بطاقة الحريق وفحص المواد والمتنبئ تحوّل نتائج الأبحاث إلى إرشادات، وليست إجراءات معتمدة من ناسا.']]}};
+  function render(){ const L=T[LANG==='ar'?'ar':'en'];
+    document.getElementById('limits').innerHTML='<div class="eyebrow" style="margin:0;color:#ffc86b">'+L.eb+'</div><h3 style="margin:8px 0 0">'+L.h+'</h3><ul>'+L.items.map(x=>'<li><b>'+x[0]+'</b>'+x[1]+'</li>').join('')+'</ul>'; }
+  render(); RR.push(render);
+})();
+
+/* ---------- crew fire card ---------- */
+(function(){
+  const C=['#45e0ff','#ff8a76','#6aa8ff','#ff8a3d','#69e3b0','#ffc86b'];
+  const T={en:{eb:'Practical · print and keep',h:'Crew fire card',lede:'Everything above, turned into one card a crew can follow in the first minutes of a fire. Each step shows the NASA measurement behind it.',sub:'Fire in a lunar or Mars habitat: first response',btn:'Print the card',note:'A rule of thumb built from PSI-117, Saffire-1, Saffire-2 and BASS-II results. It is not an official NASA procedure.',
+    steps:[['Cut the airflow','Switch off ventilation fans at the first sign of fire.','Saffire-1: 420 s with airflow along the flame vs 70 s against it (6×). BASS-II: flames went out when flow was turned down.'],
+           ['Masks on, CO sensors on','Assume toxic gas before you see smoke.','BASS-II: thick plastic raised CO by 335 ppm per test, 21× more than thin film.'],
+           ['Confirm with sensors, not eyes','A fire that looks out may still be burning.','PSI-117: fuel kept burning 33 s after the visible flame died (2.6× longer).'],
+           ['Keep watching for at least 1 minute','Stay ready to act after the flame disappears.','PSI-117: a flame re-ignited by itself 18 s after it went out, at its hottest. 1 minute is about 2× the longest hidden burning measured.'],
+           ['Check slow burners nearby','Small, steady flames on thick plastic last longest.','Saffire-2: thick plastic burned 10 to 15 minutes. Nomex never ignited.'],
+           ['Low oxygen is not protection','Do not rely on reduced cabin oxygen to stop a fire.','BASS-II: flames still burned at 15 to 17% oxygen.']]},
+   ar:{eb:'عملي · اطبعها واحتفظ بها',h:'بطاقة الحريق للطاقم',lede:'كل ما سبق في بطاقة واحدة يتبعها الطاقم في الدقائق الأولى من الحريق. كل خطوة تعرض قياس ناسا الذي يدعمها.',sub:'حريق في مسكن على القمر أو المريخ: الاستجابة الأولى',btn:'اطبع البطاقة',note:'قاعدة تقريبية مبنية على نتائج PSI-117 و Saffire-1 و Saffire-2 و BASS-II، وليست إجراءً رسميًا من ناسا.',
+    steps:[['أوقف تدفق الهواء','أطفئ مراوح التهوية عند أول علامة حريق.','Saffire-1: استمر الحريق 420 ث مع الهواء مقابل 70 ث عكسه (6 أضعاف). BASS-II: انطفأت اللهب عند خفض التدفق.'],
+           ['الأقنعة وأجهزة CO أولًا','افترض وجود غاز سام قبل أن ترى الدخان.','BASS-II: رفع البلاستيك السميك CO بمقدار 335 ppm لكل اختبار، 21 ضعف الغشاء الرقيق.'],
+           ['تأكد بالحساسات لا بالعين','الحريق الذي يبدو منطفئًا قد يكون مشتعلًا.','PSI-117: استمر الوقود في الاحتراق 33 ث بعد اختفاء اللهب المرئي (2.6 ضعف).'],
+           ['راقب دقيقة واحدة على الأقل','ابقَ جاهزًا بعد اختفاء اللهب.','PSI-117: عاد اللهب للاشتعال وحده بعد 18 ث من انطفائه، بأشد حرارة. الدقيقة نحو ضعف أطول احتراق مخفي تم قياسه.'],
+           ['افحص المواد بطيئة الاحتراق','اللهب الصغير الثابت على البلاستيك السميك يدوم أطول.','Saffire-2: احترق البلاستيك السميك 10 إلى 15 دقيقة. لم يشتعل Nomex.'],
+           ['خفض الأكسجين ليس حماية','لا تعتمد على خفض أكسجين المقصورة لإيقاف الحريق.','BASS-II: استمرت اللهب عند 15 إلى 17% أكسجين.']]}};
+  const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  function render(){ const L=T[LANG==='ar'?'ar':'en'];
+    document.querySelectorAll('#firecard [data-fc]').forEach(el=>{ el.textContent=L[el.dataset.fc]; });
+    document.getElementById('fc-steps').innerHTML=L.steps.map((st,i)=>'<div class="fc-step"><b class="n" style="background:'+C[i]+'">'+(i+1)+'</b><h4>'+esc(st[0])+'</h4><p>'+esc(st[1])+'</p><div class="ev">'+esc(st[2])+'</div></div>').join('');
+  }
+  document.getElementById('fc-print').addEventListener('click',()=>{ const ar=LANG==='ar', L=T[ar?'ar':'en'];
+    const w=window.open('','_blank'); if(!w) return;
+    w.document.write('<!DOCTYPE html><html lang="'+(ar?'ar':'en')+'" dir="'+(ar?'rtl':'ltr')+'"><head><meta charset="utf-8"><title>Crew fire card</title><style>body{font-family:"IBM Plex Sans","IBM Plex Sans Arabic",Arial,sans-serif;margin:28px;color:#111}h1{font-size:26px;margin:0 0 4px}.s{color:#555;margin:0 0 18px;font-size:14px}ol{padding:0;margin:0;list-style:none;display:grid;gap:10px}li{border:2px solid #222;border-radius:10px;padding:12px 14px;break-inside:avoid}li b{font-size:17px}li p{margin:4px 0 0;font-size:14px}li small{display:block;margin-top:6px;color:#444;font-size:12px}.f{margin-top:16px;font-size:11px;color:#555}</style></head><body><h1>'+esc(L.h)+'</h1><p class="s">'+esc(L.sub)+'</p><ol>'+
+      L.steps.map((st,i)=>'<li><b>'+(i+1)+'. '+esc(st[0])+'</b><p>'+esc(st[1])+'</p><small>'+esc(st[2])+'</small></li>').join('')+'</ol><p class="f">'+esc(L.note)+' · Flame in Freefall · Team ERU Stellar AI · NASA Space Apps 2026</p><script>onload=()=>print()<\/script></body></html>');
+    w.document.close(); });
+  render(); RR.push(render);
+})();
+
+/* ---------- ML toxic smoke predictor ---------- */
+(function(){
+  const M=window.FIRE_MODEL; if(!M) return;
+  const G=['PMMA film','PMMA sheet','PMMA rod','Fabric','Nomex'];
+  const GN={en:['Thin plastic film','Thick plastic sheet','Plastic rod','Cotton-fiberglass fabric','Nomex fabric'],ar:['غشاء بلاستيك رقيق','لوح بلاستيك سميك','قضيب بلاستيك','قماش قطن وألياف زجاجية','قماش Nomex']};
+  const T={en:{eb:'Machine learning · trained on 111 ISS fires',h:'Toxic smoke predictor',lede:'A random-forest model trained on the BASS-II experiments. Pick a material, its thickness and the oxygen level: it predicts the chance that the fire raises carbon monoxide by more than 100 ppm inside the test chamber, and shows the real ISS fires behind the answer.',l1:'Material',l2:'Thickness',l3:'Oxygen',note:'Model: 60 decision trees (scikit-learn), inputs material, thickness and oxygen. Checked with 5-fold cross-validation repeated 10 times on tests it never saw. It predicts conditions inside the small BASS-II chamber, not a spacecraft cabin.'},
+           ar:{eb:'تعلّم آلي · مدرَّب على 111 حريقًا في محطة الفضاء',h:'متنبئ الدخان السام',lede:'نموذج غابة عشوائية مدرَّب على تجارب BASS-II. اختر المادة وسُمكها ونسبة الأكسجين: يتوقع احتمال أن يرفع الحريق أول أكسيد الكربون أكثر من 100 ppm داخل صندوق التجربة، ويعرض حرائق المحطة الحقيقية التي بُنيت عليها الإجابة.',l1:'المادة',l2:'السُمك',l3:'الأكسجين',note:'النموذج: 60 شجرة قرار (scikit-learn)، ومدخلاته المادة والسُمك والأكسجين. اختُبر بالتحقق المتقاطع (5 أجزاء، مكرر 10 مرات) على اختبارات لم يرها. يتوقع الظروف داخل صندوق BASS-II الصغير، وليس مقصورة مركبة فضاء.'}};
+  const st={g:1,th:M.ranges['PMMA sheet'].th[2],o2:21};
+  const fmtTh=v=>(v>=6?(v===6.35?'6.4':v===9.53?'9.5':v.toFixed(1)):String(v))+(LANG==='ar'?' مم':' mm');
+  function predict(g,th,o2){ const x=G.map((n,i)=>i===g?1:0).concat([Math.log(th),o2]); let s=0;
+    for(const t of M.trees){ let i=0; while(t[i][0]!==-1){ i = x[t[i][0]]<=t[i][1] ? t[i][2] : t[i][3]; } s+=t[i][1]; } return s/M.trees.length; }
+  function chips(){ const L=LANG==='ar'?'ar':'en';
+    document.querySelectorAll('#pred-form .pchips').forEach(c=>{ const n=c.dataset.name;
+      const opts= n==='g' ? G.map((_,i)=>[i,GN[L][i]+' ('+M.ranges[G[i]].n+')']) : M.ranges[G[st.g]].th.map(v=>[v,fmtTh(v)]);
+      c.innerHTML=opts.map(([v,l])=>'<label><input type="radio" name="p'+n+'" value="'+v+'"'+(String(st[n])===String(v)?' checked':'')+'><span>'+l+'</span></label>').join('');
+      c.className='pchips chips';
+      if(!c.dataset.bound){ c.dataset.bound=1; c.addEventListener('change',e=>{ st[n]=+e.target.value; if(n==='g'){ const r=M.ranges[G[st.g]]; if(!r.th.includes(st.th)) st.th=r.th[0]; chips(); } out(); }); }
+    });
+    document.querySelectorAll('#predict [data-pk]').forEach(el=>{ el.textContent=T[L][el.dataset.pk]; });
+  }
+  const o2=document.getElementById('pred-o2'); o2.addEventListener('input',()=>{ st.o2=+o2.value; out(); });
+  function out(){ const ar=LANG==='ar';
+    document.getElementById('pred-o2v').textContent=st.o2.toFixed(1)+'%';
+    const p=predict(st.g,st.th,st.o2), pc=Math.round(p*100), r=M.ranges[G[st.g]];
+    const lv=p<.34?0:p<.67?1:2, cls=['safe','warn','bad'], col=['#69e3b0','#ffc86b','#ff7a5c'];
+    const lab=ar?['منخفض','متوسط','مرتفع'][lv]:['Low','Medium','High'][lv];
+    const near=M.tests.filter(t=>t[0]===st.g).map(t=>[t,Math.abs(Math.log(t[1])-Math.log(st.th))*3+Math.abs(t[2]-st.o2)/2]).sort((a,b)=>a[1]-b[1]).slice(0,4).map(z=>z[0]);
+    const warn=[];
+    if(st.o2<r.o2[0]-0.05||st.o2>r.o2[1]+0.05) warn.push(pick('No ISS test of this material used '+st.o2.toFixed(1)+'% oxygen (tested '+r.o2[0]+' to '+r.o2[1]+'%). The model is extrapolating: treat this as a guess.','لم يُختبر هذا النوع عند '+st.o2.toFixed(1)+'% أكسجين (المختبَر من '+r.o2[0]+' إلى '+r.o2[1]+'%). النموذج يستنتج خارج البيانات، فاعتبرها تخمينًا.'));
+    if(r.n<5) warn.push(pick('Only '+r.n+' ISS tests used this material, so this answer rests on very little data.','استُخدمت هذه المادة في '+r.n+' اختبارات فقط، فالإجابة مبنية على بيانات قليلة جدًا.'));
+    const cv=M.cv;
+    document.getElementById('pred-out').innerHTML=
+      '<div class="risk" style="display:block">'+
+        '<div class="pred-row"><h4>'+pick('Chance of high toxic smoke (CO +100 ppm)','احتمال دخان سام مرتفع (CO أكثر من +100 ppm)')+'</h4><span class="pill '+cls[lv]+'">'+lab+'</span></div>'+
+        '<div class="pred-big" style="color:'+col[lv]+'">'+pc+'%</div>'+
+        '<div class="pred-gauge"><i style="width:'+Math.max(2,pc)+'%;background:'+col[lv]+'"></i></div>'+
+        (warn.length?'<p style="margin:6px 0 0;color:#ffc86b;font-size:13.5px">⚠ '+warn.join(' ')+'</p>':'')+
+      '</div>'+
+      '<div class="risk" style="display:block"><h4 style="margin-bottom:6px">'+pick('Closest real ISS fires','أقرب حرائق حقيقية في المحطة')+'</h4>'+
+        '<table class="pred-near"><tr><th>'+pick('Thickness','السُمك')+'</th><th>'+pick('Oxygen','الأكسجين')+'</th><th>'+pick('CO rise','زيادة CO')+'</th></tr>'+
+        near.map(t=>'<tr><td>'+fmtTh(t[1])+'</td><td>'+t[2]+'%</td><td style="color:'+(t[3]>100?'#ff8a76':'var(--text)')+'">'+(t[3]>0?'+':'')+Math.round(t[3])+' ppm</td></tr>').join('')+'</table></div>'+
+      '<div class="pred-card"><span>'+pick('Accuracy on unseen tests','الدقة على اختبارات لم يرها')+' <b>'+Math.round(cv.accuracy*100)+'%</b></span><span>'+pick('Always guessing "low"','تخمين «منخفض» دائمًا')+' <b>'+Math.round(cv.baseline_accuracy*100)+'%</b></span><span>AUC <b>'+cv.auc.toFixed(2)+'</b></span><span>'+pick('Tests','الاختبارات')+' <b>'+cv.n+'</b></span></div>'+
+      '<p class="chart-note" style="margin:6px 0 0">'+pick('What drives the prediction: material '+Math.round(M.importance.material*100)+'%, thickness '+Math.round(M.importance.thickness*100)+'%, oxygen '+Math.round(M.importance.oxygen*100)+'%. Source: BASS-II table (PSI-25).','ما يحدد التوقع: المادة '+Math.round(M.importance.material*100)+'%، السُمك '+Math.round(M.importance.thickness*100)+'%، الأكسجين '+Math.round(M.importance.oxygen*100)+'%. المصدر: جدول BASS-II (PSI-25).')+'</p>';
+  }
+  chips(); out(); RR.push(()=>{ chips(); out(); });
 })();
 
 /* ---------- language switch ---------- */
