@@ -1297,7 +1297,8 @@ drawAll();
      aar:'هذه البيانات من ناسا لا تغطي ذلك: لم تختبر طفايات الحريق ولا جاذبية القمر [K12]. لكنها تُظهر أن خفض الهواء ساعد على انطفاء اللهب في BASS-II [K11]، وأن الحريق قد يستمر دون أن يُرى بعد أن يبدو منطفئًا [K1].',c:['K12','K11','K1']}
   ];
   let key=''; try{ key=localStorage.getItem('fif-gemini-key')||''; }catch(e){}
-  let model='gemini-2.5-flash'; try{ model=localStorage.getItem('fif-gemini-model')||model; }catch(e){}
+  const MODELS=['gemini-3.8-flash','gemini-4-hydrogen','gemini-2.5-flash'];
+  let model=MODELS[0]; try{ const m=localStorage.getItem('fif-gemini-model'); if(m && m!=='gemini-2.5-flash' && MODELS.includes(m)) model=m; }catch(e){}
   let last=null;
   const box=document.getElementById('ask-box');
   const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
@@ -1305,7 +1306,7 @@ drawAll();
   function showAnswer(q,a,ids,tag){
     last={q,a,ids,tag};
     const el=document.getElementById('ask-ans');
-    el.innerHTML=(tag?'<span class="tag">'+tag+'</span>':'')+'<p class="q">'+esc(q)+'</p><p class="a">'+esc(a)+'</p>'+(ids.length?'<div class="cites">'+ids.map(i=>'<span class="cite" title="'+esc(titleOf(i))+'">'+i+' · '+esc(titleOf(i))+'</span>').join('')+'</div>':'');
+    el.innerHTML=(tag?'<span class="tag">'+tag+'</span>':'')+'<p class="q" dir="auto">'+esc(q)+'</p><p class="a" dir="auto">'+esc(a)+'</p>'+(ids.length?'<div class="cites">'+ids.map(i=>'<span class="cite" title="'+esc(titleOf(i))+'">'+i+' · '+esc(titleOf(i))+'</span>').join('')+'</div>':'');
   }
   async function ask(q){
     q=q.trim(); if(!q) return;
@@ -1317,15 +1318,32 @@ drawAll();
     }
     ans.innerHTML='<p class="q">'+esc(q)+'</p><p class="a dots3">'+pick('Searching the NASA data','جارٍ البحث في بيانات ناسا')+'</p>';
     try{
-      const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent',{
-        method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},
-        body:JSON.stringify({systemInstruction:{parts:[{text:SYS}]},contents:[{role:'user',parts:[{text:q}]}],generationConfig:{temperature:0.2,maxOutputTokens:700}})
-      });
-      const j=await r.json();
-      if(!r.ok) throw new Error((j.error&&j.error.message)||('HTTP '+r.status));
-      const text=((j.candidates||[])[0]?.content?.parts||[]).map(p=>p.text||'').join('').trim()||pick('No answer came back. Try rephrasing.','لم تصل إجابة. جرّب صياغة أخرى.');
+      // Try the chosen model first; if it is busy or retired, fall back to the others.
+      const order=[model,...MODELS.filter(m=>m!==model)];
+      let j=null, used=null, lastErr=null;
+      for(const m of order){
+        for(let attempt=0; attempt<2 && !j; attempt++){
+          const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(m)+':generateContent',{
+            method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},
+            body:JSON.stringify({systemInstruction:{parts:[{text:SYS}]},contents:[{role:'user',parts:[{text:q}]}],generationConfig:{temperature:0.2,maxOutputTokens:8192}})
+          });
+          const body=await r.json().catch(()=>({}));
+          const txt=r.ok?((body.candidates||[])[0]?.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('').trim():'';
+          if(r.ok && txt){ j=body; used=m; break; }
+          if(r.ok){ lastErr=new Error('empty answer ('+(((body.candidates||[])[0]||{}).finishReason||'no text')+')'); break; }
+          lastErr=new Error((body.error&&body.error.message)||('HTTP '+r.status));
+          const busy=r.status===429||r.status===503||/high demand|overloaded|unavailable|try again/i.test(lastErr.message);
+          const gone=r.status===404||/no longer available|not found|not supported/i.test(lastErr.message);
+          if(r.status===400||r.status===401||r.status===403){ if(!gone) throw lastErr; }
+          if(busy && attempt===0){ await new Promise(res=>setTimeout(res,1500)); continue; }
+          break;
+        }
+        if(j) break;
+      }
+      if(!j) throw lastErr||new Error('No model answered');
+      const text=((j.candidates||[])[0]?.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('').trim()||pick('No answer came back. Try rephrasing.','لم تصل إجابة. جرّب صياغة أخرى.');
       const ids=[...new Set((text.match(/K\d{1,2}/g)||[]).filter(i=>KB.some(k=>k[0]===i)))];
-      showAnswer(q,text,ids,'GEMINI · '+model);
+      showAnswer(q,text,ids,'GEMINI · '+used);
     }catch(e){
       const offline=/fetch|network|load/i.test(String(e.message||e));
       ans.innerHTML='<p class="q">'+esc(q)+'</p><p class="a">'+(offline
@@ -1336,7 +1354,7 @@ drawAll();
   function render(){
     box.innerHTML=
       '<div class="ask-main">'+
-        '<form class="ask-form" id="ask-form"><label class="sr" for="ask-q">'+pick('Your question','سؤالك')+'</label><input id="ask-q" type="text" autocomplete="off" placeholder="'+pick('e.g. How long can a fire hide after it looks out?','مثال: إلى متى يمكن أن يختبئ الحريق بعد أن يبدو منطفئًا؟')+'"><button class="btn btn-primary" type="submit">'+pick('Ask','اسأل')+'</button></form>'+
+        '<form class="ask-form" id="ask-form"><label class="sr" for="ask-q">'+pick('Your question','سؤالك')+'</label><input id="ask-q" dir="auto" type="text" autocomplete="off" placeholder="'+pick('e.g. How long can a fire hide after it looks out?','مثال: إلى متى يمكن أن يختبئ الحريق بعد أن يبدو منطفئًا؟')+'"><button class="btn btn-primary" type="submit">'+pick('Ask','اسأل')+'</button></form>'+
         '<div class="samples">'+SAMPLES.map((x,i)=>'<button class="sample" type="button" data-i="'+i+'">'+pick(x.en,x.ar)+'</button>').join('')+'</div>'+
         '<div class="answer" id="ask-ans" aria-live="polite"><p class="a" style="color:var(--muted)">'+pick('Pick an example question or type your own.','اختر سؤالًا جاهزًا أو اكتب سؤالك.')+'</p></div>'+
       '</div>'+
@@ -1345,7 +1363,7 @@ drawAll();
         '<input id="ask-key" type="password" autocomplete="off" placeholder="AIza..." value="'+esc(key)+'">'+
         '<span>'+pick('Free from aistudio.google.com. Saved only in this browser and sent only to Google.','مجاني من aistudio.google.com. يُحفظ في هذا المتصفح فقط ويُرسل إلى Google فقط.')+'</span>'+
         '<label for="ask-model">'+pick('Model','النموذج')+'</label>'+
-        '<select id="ask-model">'+['gemini-2.5-flash','gemini-2.5-flash-lite','gemini-4-hydrogen'].map(m=>'<option'+(m===model?' selected':'')+'>'+m+'</option>').join('')+'</select>'+
+        '<select id="ask-model">'+MODELS.map(m=>'<option'+(m===model?' selected':'')+'>'+m+'</option>').join('')+'</select>'+
         '<details><summary>'+pick('Knowledge base ('+KB.length+' NASA facts)','قاعدة المعرفة ('+KB.length+' حقيقة من ناسا)')+'</summary><div class="kb">'+KB.map(k=>'<p><b>'+k[0]+' · '+esc(k[1])+'</b><br>'+esc(k[2])+'</p>').join('')+'</div></details>'+
       '</div>';
     document.getElementById('ask-form').addEventListener('submit',e=>{e.preventDefault(); ask(document.getElementById('ask-q').value);});
