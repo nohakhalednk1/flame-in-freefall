@@ -160,8 +160,6 @@ docs/index.html         the website
 docs/img/               NASA photos and README images
 ```
 
-## 👩‍🚀 Team ERU Stellar AI
-
-**Noha Khaled** · **Habiba Mohamed** · **Howida Ashraf** · **Basmala Hamdey** · **Lenna Hossam**
+## 👩‍🚀 Built by Team ERU Stellar AI
 
 <p align="center"><sub>Data and photos: NASA Physical Sciences Informatics (psi.nasa.gov) and images.nasa.gov · Built for the NASA Space Apps Challenge 2026</sub></p>
