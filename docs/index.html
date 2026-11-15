@@ -146,6 +146,7 @@ section.chapter{padding:84px 0 20px;scroll-margin-top:70px}
 .timeline input{width:100%;accent-color:var(--accent)}
 .ticks{position:absolute;left:0;right:0;bottom:0;height:16px;font:500 10.5px var(--font-mono);color:var(--muted)}
 .ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.ticks,input[type=range]{direction:ltr}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (max-width:960px){.replay{grid-template-columns:1fr}}
 
@@ -327,12 +328,14 @@ html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
 .evs-bar{display:flex;align-items:center;gap:8px;font:500 11px var(--font-mono);color:var(--muted)}
 .evs-bar span.k{width:44px;flex:none}
 .evs-bar i{display:block;height:9px;border-radius:99px;min-width:3px;transition:width .6s}
+@media (max-width:640px){.evs-row{grid-template-columns:1fr auto}.evs-row .evs-bars{grid-column:1 / -1;grid-row:2}.evs-bar span:last-child{white-space:nowrap}.evs-big{font-size:32px}}
 .evs-legend{display:flex;gap:16px;font:500 12px var(--font-mono);color:var(--muted);margin:10px 0 4px}
 .evs-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-inline-end:6px;vertical-align:-1px}
 .retr{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0 2px;font:500 11.5px var(--font-mono);color:var(--muted)}
 .retr span{margin-inline-end:4px;text-transform:uppercase;letter-spacing:.05em}
 .retr b{font-weight:500;padding:3px 8px;border-radius:999px;background:rgba(69,224,255,.1);border:1px solid rgba(69,224,255,.35);color:#45e0ff}
 .answer .a{white-space:pre-line}
+.answer .a+.a{margin-top:10px}
 .limits{margin-top:18px;padding:22px}
 .limits ul{margin:12px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
 .limits li{padding:14px;border-radius:12px;background:rgba(255,200,107,.05);border:1px solid rgba(255,200,107,.22);font-size:14px;color:var(--muted);line-height:1.5}
@@ -1047,7 +1050,7 @@ function chartCO(){
   function ticks(){ el('r-ticks').innerHTML='';
   [[0,pick('0 s','0 ث')],[T_OUT,pick('flame "out" '+T_OUT+' s','«انطفاء» '+T_OUT+' ث')],[T_END,pick('burnout '+Math.round(T_END)+' s','نهاية الاحتراق '+Math.round(T_END)+' ث')]].forEach(([t,l])=>{
     const sp=document.createElement('span'); sp.style.left=(t/T_MAX*100)+'%'; sp.textContent=l;
-    if(t===0) sp.style.transform='none'; el('r-ticks').appendChild(sp);
+    if(t===0) sp.style.transform='none'; if(t===T_END) sp.style.transform='translateX(-100%)'; el('r-ticks').appendChild(sp);
   }); }
   ticks();
   let W=0,H=0,dpr=1;
@@ -1332,7 +1335,7 @@ drawAll();
   function showAnswer(q,a,ids,tag,ret){
     last={q,a,ids,tag,ret};
     const el=document.getElementById('ask-ans');
-    el.innerHTML=(tag?'<span class="tag">'+tag+'</span>':'')+'<p class="q" dir="auto">'+esc(q)+'</p><p class="a" dir="auto">'+esc(a)+'</p>'+(ret?'<div class="retr"><span>'+pick('Retrieved for this question','الحقائق المسترجعة لهذا السؤال')+'</span>'+ret.map(r=>'<b title="'+esc(titleOf(r[0]))+'">'+r[0]+(r[1]?' · '+r[1]:'')+'</b>').join('')+'</div>':'')+(ids.length?'<div class="cites">'+ids.map(i=>'<span class="cite" title="'+esc(titleOf(i))+'">'+i+' · '+esc(titleOf(i))+'</span>').join('')+'</div>':'');
+    el.innerHTML=(tag?'<span class="tag">'+tag+'</span>':'')+'<p class="q" dir="auto">'+esc(q)+'</p>'+a.split(/\n\s*\n/).map(par=>'<p class="a" dir="auto">'+esc(par.trim())+'</p>').join('')+(ret?'<div class="retr"><span>'+pick('Retrieved for this question','الحقائق المسترجعة لهذا السؤال')+'</span>'+ret.map(r=>'<b title="'+esc(titleOf(r[0]))+'">'+r[0]+(r[1]?' · '+r[1]:'')+'</b>').join('')+'</div>':'')+(ids.length?'<div class="cites">'+ids.map(i=>'<span class="cite" title="'+esc(titleOf(i))+'">'+i+' · '+esc(titleOf(i))+'</span>').join('')+'</div>':'');
   }
   async function ask(q){
     q=q.trim(); if(!q) return;
