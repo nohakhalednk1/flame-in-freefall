@@ -3925,5 +3925,9 @@ document.addEventListener('click', e => { if(e.target.closest('button, a, input[
   </div>
 </div>
 
+<script>
+/* if the 3D library cannot load, hide the 3D block instead of showing a broken black box */
+window.addEventListener('load',function(){ if(!window.THREE){ var a=document.getElementById('planet-world-anchor'); if(a) a.style.display='none'; console.warn('3D hidden: THREE.js did not load'); } });
+</script>
 </body>
 </html>
