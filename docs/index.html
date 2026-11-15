@@ -751,8 +751,37 @@ html[dir="rtl"] .sim-choice-btn:hover:not(:disabled){transform:translateX(-3px)}
 
 <main id="top">
   <div class="wrap">
+    <section class="hero">
+      <div>
+        <div data-i18n="k5" class="eyebrow">NASA Space Apps 2026 · Flame in Freefall</div>
+        <h1 data-i18n="k6">Fire behaves differently in space</h1>
+        <p data-i18n="k7" class="lede">On the International Space Station, NASA has lit hundreds of fires on purpose. We turned the published results into one story: how flames hide, return and poison the air without gravity, and what crews on the Moon and Mars should do about it.</p>
+        <div class="hero-cta">
+          <button type="button" class="btn btn-primary" id="btn-start-tour" style="box-shadow:0 0 25px rgba(69,224,255,.4);border-color:var(--cool)">🎬 90s Guided Tour</button>
+          <a data-i18n="k8" class="btn btn-primary" href="#replay">Watch a droplet burn</a>
+          <a data-i18n="k9" class="btn btn-ghost" href="#safety">Jump to safety insights</a>
+        </div>
+      </div>
+      <figure class="hero-photo" id="hero-photo-stage">
+        <canvas id="hero-orb-canvas" width="480" height="480" aria-label="Interactive 3D Holographic Microgravity Plasma Orb"></canvas>
+        <div class="hero-holo-chips">
+          <div class="holo-chip c1"><small>Core Temp</small><b>1,420 K</b></div>
+          <div class="holo-chip c2"><small>Regime</small><b>0g Spherical</b></div>
+          <div class="holo-chip c3"><small>Infrared Flux</small><b>Cool Shell Active</b></div>
+          <div class="holo-chip c4"><small>Gravity</small><b>0.0001 g</b></div>
+        </div>
+        <figcaption data-i18n="k10">Interactive 3D Microgravity Plasma Orb · Move mouse to interact</figcaption>
+      </figure>
+    </section>
+
+    <div class="stats" id="stats">
+      <div class="stat"><div class="num hot" data-key="visible">12.6 s</div><div data-i18n="k11" class="lab">of visible flame around a 4 mm fuel droplet</div><div class="src">PSI-117 · ISS</div></div>
+      <div class="stat"><div class="num cool" data-key="invisible">33 s</div><div data-i18n="k12" class="lab">more burning after that flame looked “out”</div><div class="src">PSI-117 · ISS</div></div>
+      <div class="stat"><div class="num" data-key="saffire">6×</div><div data-i18n="k13" class="lab">longer fabric fire when airflow pushed the flame forward</div><div class="src">Saffire-1 · Cygnus</div></div>
+      <div class="stat"><div class="num" data-key="co">21×</div><div data-i18n="k14" class="lab">more carbon monoxide from thick plastic than thin film</div><div class="src">BASS-II · ISS</div></div>
+    </div>
     <!-- Flagship 3D Planetary Surface World (Three.js) -->
-    <div class="planet-world-section" id="planet-world-anchor">
+    <div class="planet-world-section" id="planet-world-anchor" style="margin-top:28px">
       <!-- Section Header for Absolute Clarity -->
       <div class="planet-header-bar">
         <div>
@@ -816,35 +845,7 @@ html[dir="rtl"] .sim-choice-btn:hover:not(:disabled){transform:translateX(-3px)}
       </div>
     </div>
 
-    <section class="hero">
-      <div>
-        <div data-i18n="k5" class="eyebrow">NASA Space Apps 2026 · Flame in Freefall</div>
-        <h1 data-i18n="k6">Fire behaves differently in space</h1>
-        <p data-i18n="k7" class="lede">On the International Space Station, NASA has lit hundreds of fires on purpose. We turned the published results into one story: how flames hide, return and poison the air without gravity, and what crews on the Moon and Mars should do about it.</p>
-        <div class="hero-cta">
-          <button type="button" class="btn btn-primary" id="btn-start-tour" style="box-shadow:0 0 25px rgba(69,224,255,.4);border-color:var(--cool)">🎬 90s Guided Tour</button>
-          <a data-i18n="k8" class="btn btn-primary" href="#replay">Watch a droplet burn</a>
-          <a data-i18n="k9" class="btn btn-ghost" href="#safety">Jump to safety insights</a>
-        </div>
-      </div>
-      <figure class="hero-photo" id="hero-photo-stage">
-        <canvas id="hero-orb-canvas" width="480" height="480" aria-label="Interactive 3D Holographic Microgravity Plasma Orb"></canvas>
-        <div class="hero-holo-chips">
-          <div class="holo-chip c1"><small>Core Temp</small><b>1,420 K</b></div>
-          <div class="holo-chip c2"><small>Regime</small><b>0g Spherical</b></div>
-          <div class="holo-chip c3"><small>Infrared Flux</small><b>Cool Shell Active</b></div>
-          <div class="holo-chip c4"><small>Gravity</small><b>0.0001 g</b></div>
-        </div>
-        <figcaption data-i18n="k10">Interactive 3D Microgravity Plasma Orb · Move mouse to interact</figcaption>
-      </figure>
-    </section>
 
-    <div class="stats" id="stats">
-      <div class="stat"><div class="num hot" data-key="visible">12.6 s</div><div data-i18n="k11" class="lab">of visible flame around a 4 mm fuel droplet</div><div class="src">PSI-117 · ISS</div></div>
-      <div class="stat"><div class="num cool" data-key="invisible">33 s</div><div data-i18n="k12" class="lab">more burning after that flame looked “out”</div><div class="src">PSI-117 · ISS</div></div>
-      <div class="stat"><div class="num" data-key="saffire">6×</div><div data-i18n="k13" class="lab">longer fabric fire when airflow pushed the flame forward</div><div class="src">Saffire-1 · Cygnus</div></div>
-      <div class="stat"><div class="num" data-key="co">21×</div><div data-i18n="k14" class="lab">more carbon monoxide from thick plastic than thin film</div><div class="src">BASS-II · ISS</div></div>
-    </div>
   </div>
 
 <div class="ribbon" aria-hidden="true"><svg viewBox="0 0 1200 150" preserveAspectRatio="none" class="ribbon-svg"></svg></div>
@@ -3929,5 +3930,26 @@ document.addEventListener('click', e => { if(e.target.closest('button, a, input[
 /* if the 3D library cannot load, hide the 3D block instead of showing a broken black box */
 window.addEventListener('load',function(){ if(!window.THREE){ var a=document.getElementById('planet-world-anchor'); if(a) a.style.display='none'; console.warn('3D hidden: THREE.js did not load'); } });
 </script>
+<script>
+/* Fullscreen for the 3D viewport (works with or without the 3D engine) */
+(function(){
+  var btn=document.getElementById('p-fullscreen-btn'), box=document.getElementById('planet-viewport-box');
+  if(!btn||!box) return;
+  function isFs(){ return document.fullscreenElement||document.webkitFullscreenElement; }
+  function label(){ var ar=document.documentElement.lang==='ar';
+    btn.textContent = isFs() ? (ar?'⛶ خروج من ملء الشاشة':'⛶ Exit fullscreen') : (ar?'⛶ ملء الشاشة':'⛶ Fullscreen'); }
+  btn.addEventListener('click',function(e){ e.preventDefault(); e.stopImmediatePropagation();
+    if(isFs()){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
+    else { var f=box.requestFullscreen||box.webkitRequestFullscreen; if(f) f.call(box); } },true);
+  ['fullscreenchange','webkitfullscreenchange'].forEach(function(ev){ document.addEventListener(ev,function(){
+    label(); setTimeout(function(){ window.dispatchEvent(new Event('resize')); },60); }); });
+  var lb=document.getElementById('lang-btn'); if(lb) lb.addEventListener('click',function(){ setTimeout(label,50); });
+})();
+</script>
+<style>
+#planet-viewport-box:fullscreen{width:100vw;height:100vh;max-width:none;border-radius:0;margin:0}
+#planet-viewport-box:-webkit-full-screen{width:100vw;height:100vh;max-width:none;border-radius:0;margin:0}
+#planet-viewport-box:fullscreen canvas{width:100%!important;height:100%!important}
+</style>
 </body>
 </html>
