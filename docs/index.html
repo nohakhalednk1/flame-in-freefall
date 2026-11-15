@@ -43,8 +43,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--cool);outline-offse
 header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(4,6,13,.6);border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font:700 13px/1 var(--font-display);letter-spacing:.18em}
-.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
-.nav ul a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+.nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+.nav ul a{color:var(--muted);text-decoration:none;font-size:13.5px;font-weight:500;white-space:nowrap}
+@media (max-width:1240px){.nav-end .badge{display:none}}
 .nav ul a:hover{color:var(--text)}
 .nav .badge{border:1px solid var(--line);padding:7px 12px;border-radius:999px;font:500 12px/1 var(--font-mono);color:var(--muted)}
 
@@ -340,12 +341,392 @@ html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
 .limits ul{margin:12px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
 .limits li{padding:14px;border-radius:12px;background:rgba(255,200,107,.05);border:1px solid rgba(255,200,107,.22);font-size:14px;color:var(--muted);line-height:1.5}
 .limits li b{display:block;color:var(--text);font-size:15px;margin-bottom:4px}
+
+/* ================= GLOBAL CHAMPION ENHANCEMENTS CSS ================= */
+/* 3D Digital Twin */
+.twin-stage{position:relative;width:100%;height:520px;border-radius:var(--radius);overflow:hidden;background:radial-gradient(ellipse at center,#0d152e 0%,#03050a 85%);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#twin-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+#twin-canvas:active{cursor:grabbing}
+.twin-hud-top{position:absolute;top:16px;left:16px;display:flex;gap:10px;flex-wrap:wrap;z-index:2;pointer-events:none}
+.twin-hud-top > *{pointer-events:auto}
+.twin-hud-bottom{position:absolute;bottom:16px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;z-index:2;pointer-events:none}
+.twin-hud-bottom > *{pointer-events:auto}
+.twin-mode-btn{padding:9px 18px;border-radius:10px;font:600 13.5px var(--font-body);border:1px solid var(--line);background:rgba(14,22,44,.85);color:var(--muted);cursor:pointer;backdrop-filter:blur(8px);transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.twin-mode-btn:hover{color:var(--text);border-color:rgba(106,168,255,.5)}
+.twin-mode-btn.active{background:rgba(69,224,255,.18);border-color:var(--cool);color:var(--text);box-shadow:0 0 20px rgba(69,224,255,.25)}
+.twin-badge{padding:6px 14px;border-radius:999px;font:500 12px var(--font-mono);background:rgba(4,6,13,.8);border:1px solid var(--line);color:var(--accent);backdrop-filter:blur(6px)}
+.twin-callout{position:absolute;right:18px;top:18px;max-width:280px;padding:12px 16px;border-radius:12px;background:rgba(14,22,44,.85);border:1px solid var(--line);font-size:13px;line-height:1.45;color:var(--muted);pointer-events:none;backdrop-filter:blur(8px);z-index:2}
+.twin-callout b{color:var(--text);display:block;margin-bottom:4px}
+
+/* Planetary Fire Physics */
+.planetary-card{display:grid;grid-template-columns:1.2fr 1fr;gap:26px}
+.planet-presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.planet-btn{padding:9px 18px;border-radius:10px;font:600 13.5px var(--font-body);border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.planet-btn:hover{border-color:rgba(106,168,255,.5);color:var(--text)}
+.planet-btn.active{background:rgba(106,168,255,.18);border-color:var(--accent);color:var(--text);box-shadow:0 0 16px rgba(106,168,255,.2)}
+.planet-viz-stage{position:relative;height:290px;border-radius:14px;background:radial-gradient(ellipse at 50% 90%,#13203f 0%,#03050b 75%);border:1px solid var(--line);overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+#flame-morph-canvas{position:absolute;inset:0;width:100%;height:100%}
+.planet-stage-hud{position:absolute;top:14px;left:16px;display:flex;flex-direction:column;gap:6px;font:500 12px var(--font-mono);color:var(--muted);pointer-events:none}
+.planet-readouts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+.planet-metric{padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.planet-metric .val{font:700 24px/1.1 var(--font-display);color:var(--text);margin-top:4px}
+.planet-metric .lbl{font:500 11.5px var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.regime-tag{display:inline-block;padding:4px 10px;border-radius:999px;font:600 12px var(--font-mono);margin-top:8px}
+
+/* Multi-Sensor Fusion */
+.sensor-fusion-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:26px}
+.sensor-stream-box{display:grid;gap:10px}
+.sensor-row{display:grid;grid-template-columns:140px 1fr 110px;gap:14px;align-items:center;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);transition:border-color .3s}
+.sensor-name{font:600 14px var(--font-body);color:var(--text);display:flex;flex-direction:column}
+.sensor-name small{font:500 11px var(--font-mono);color:var(--muted)}
+.sensor-bar-wrap{height:12px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}
+.sensor-bar{height:100%;border-radius:999px;transition:width .4s cubic-bezier(.2,.8,.2,1),background-color .3s}
+.sensor-badge{font:600 11.5px var(--font-mono);padding:4px 8px;border-radius:6px;text-align:center;letter-spacing:.03em}
+.sensor-badge.active{background:rgba(255,100,80,.2);color:#ff8a76;border:1px solid rgba(255,100,80,.4)}
+.sensor-badge.blind{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--line)}
+.sensor-badge.ok{background:rgba(80,220,160,.15);color:#69e3b0;border:1px solid rgba(80,220,160,.3)}
+.fusion-status-card{padding:22px;border-radius:var(--radius);background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;gap:16px}
+.fusion-alarm{padding:16px;border-radius:12px;font:700 14.5px var(--font-mono);display:flex;align-items:center;gap:12px;transition:all .3s}
+.fusion-alarm.critical{background:rgba(255,70,70,.16);border:1px solid rgba(255,80,80,.5);color:#ff8a76;animation:pulseAlarm 2s infinite}
+.fusion-alarm.warning{background:rgba(255,190,80,.16);border:1px solid rgba(255,190,80,.5);color:#ffc86b}
+.fusion-alarm.nominal{background:rgba(80,220,160,.12);border:1px solid rgba(80,220,160,.35);color:#69e3b0}
+@keyframes pulseAlarm{0%,100%{box-shadow:0 0 10px rgba(255,80,80,.2)}50%{box-shadow:0 0 25px rgba(255,80,80,.5)}}
+.fusion-actions{display:grid;gap:8px}
+.fusion-act{padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--line);font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.fusion-act.done{border-color:rgba(69,224,255,.4);color:var(--cool)}
+
+/* Mission Control Emergency Simulator */
+.sim-container{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid rgba(106,168,255,.35);background:linear-gradient(180deg,rgba(11,18,38,.96) 0%,rgba(4,6,13,.98) 100%);box-shadow:0 16px 50px rgba(0,0,0,.6)}
+.sim-header{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid var(--line);background:rgba(0,0,0,.35)}
+.sim-clock{font:700 24px var(--font-mono);color:#ffc86b;letter-spacing:.05em}
+.sim-body{padding:26px;display:grid;grid-template-columns:1.55fr 1fr;gap:26px}
+.sim-scenario{display:flex;flex-direction:column;gap:18px}
+.sim-prompt{font-size:17px;line-height:1.5;color:var(--text)}
+.sim-choices{display:grid;gap:10px}
+.sim-choice-btn{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font:500 15px/1.45 var(--font-body);cursor:pointer;text-align:start;transition:all .2s}
+.sim-choice-btn:hover:not(:disabled){border-color:var(--cool);background:rgba(69,224,255,.08);transform:translateX(3px)}
+html[dir="rtl"] .sim-choice-btn:hover:not(:disabled){transform:translateX(-3px)}
+.sim-choice-btn b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.1);font:700 13px var(--font-mono);flex-shrink:0}
+.sim-telemetry{display:grid;gap:14px;padding:20px;border-radius:14px;background:rgba(0,0,0,.45);border:1px solid var(--line)}
+.sim-gauge{display:flex;flex-direction:column;gap:6px}
+.sim-gauge-head{display:flex;justify-content:space-between;font:500 12.5px var(--font-mono);color:var(--muted)}
+.sim-gauge-head b{color:var(--text)}
+.sim-gauge .bar{height:9px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.sim-gauge .fill{height:100%;border-radius:999px;transition:width .5s ease}
+.sim-report{padding:24px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line);display:grid;gap:16px}
+.sim-score-big{font:700 clamp(44px,6vw,60px)/1 var(--font-display);color:var(--accent)}
+
+/* TRL & NASA Roadmap */
+.trl-timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:20px}
+.trl-node{padding:20px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);display:flex;flex-direction:column;gap:10px}
+.trl-node.current{border-color:var(--cool);background:rgba(69,224,255,.06);box-shadow:0 0 24px rgba(69,224,255,.15)}
+.trl-tag{display:inline-block;padding:3px 10px;border-radius:6px;font:700 11.5px var(--font-mono);letter-spacing:.05em}
+.trl-tag.active{background:var(--cool);color:#04060d}
+.trl-tag.target{background:rgba(255,200,107,.2);color:#ffc86b;border:1px solid rgba(255,200,107,.4)}
+.cfs-arch-box{margin-top:22px;padding:22px;border-radius:14px;background:rgba(14,22,44,.7);border:1px solid var(--line);font-size:14px;color:var(--muted);line-height:1.6}
+.cfs-arch-box h4{color:var(--text);margin:0 0 8px;font:600 16px var(--font-body)}
+
+@media (max-width:960px){
+  .twin-stage{height:420px}
+  .planetary-card,.sensor-fusion-grid,.sim-body{grid-template-columns:1fr}
+  .sensor-row{grid-template-columns:1fr auto}
+  .sensor-bar-wrap{display:none}
+}
+@media (max-width:640px){
+  .twin-stage{height:340px}
+  .twin-callout{display:none}
+}
+
+
+/* ================= MISSION CINEMATIC STYLES ================= */
+/* Mission Telemetry Ticker */
+.mission-ticker{background:linear-gradient(90deg,#040918,#0a1532,#040918);border-bottom:1px solid rgba(69,224,255,.2);padding:6px 0;font:500 11.5px var(--font-mono);color:var(--muted);overflow:hidden;position:relative;z-index:60;letter-spacing:.04em}
+.ticker-track{display:flex;white-space:nowrap;gap:28px;align-items:center;animation:tickerScroll 35s linear infinite;width:max-content}
+.ticker-track:hover{animation-play-state:paused}
+.ticker-item{display:inline-flex;align-items:center;gap:8px}
+.ticker-item b{color:var(--text);font-variant-numeric:tabular-nums}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:#ff4e4e;display:inline-block;animation:pulseAlarm .8s infinite;margin-inline-end:4px}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Hero Hologram 3D Orb */
+.hero-photo{position:relative;margin:0 auto;width:100%;max-width:480px;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+#hero-orb-canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;cursor:crosshair;z-index:2}
+.hero-holo-chips{position:absolute;inset:0;pointer-events:none;z-index:3}
+.holo-chip{position:absolute;padding:6px 12px;border-radius:8px;background:rgba(14,22,44,.85);border:1px solid rgba(69,224,255,.35);font:600 11.5px var(--font-mono);color:var(--cool);backdrop-filter:blur(8px);box-shadow:0 0 16px rgba(69,224,255,.2);transition:transform .2s ease,opacity .3s}
+.holo-chip small{display:block;font-size:9.5px;color:var(--muted);text-transform:uppercase}
+.holo-chip.c1{top:12%;left:2%}
+.holo-chip.c2{top:8%;right:4%}
+.holo-chip.c3{bottom:15%;left:0%}
+.holo-chip.c4{bottom:12%;right:2%}
+
+/* Cinema Tour HUD */
+.tour-hud{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;width:min(680px,94vw);background:rgba(11,18,38,.92);border:1px solid var(--cool);border-radius:18px;padding:16px 22px;backdrop-filter:blur(16px);box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 30px rgba(69,224,255,.3);display:none;animation:tourSlideUp .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes tourSlideUp{from{transform:translate(-50%,40px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+.tour-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tour-progress-bar{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden;margin-bottom:12px}
+.tour-progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--cool));transition:width .4s ease}
+.tour-title{font:700 16px var(--font-display);color:var(--text);letter-spacing:.02em;margin:0 0 4px}
+.tour-desc{font-size:14px;color:var(--muted);line-height:1.45;margin:0 0 14px}
+.tour-controls{display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+/* Audio Toggle Button */
+.audio-btn{background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--text);padding:7px 13px;border-radius:999px;font:600 12.5px var(--font-mono);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .2s;margin-inline-end:8px}
+.audio-btn.on{background:rgba(69,224,255,.16);border-color:var(--cool);color:var(--cool);box-shadow:0 0 15px rgba(69,224,255,.25)}
+
+/* Voice Mic Button */
+.mic-btn{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);padding:0 14px;border-radius:12px;cursor:pointer;display:grid;place-items:center;font-size:17px;transition:all .2s}
+.mic-btn:hover{border-color:var(--cool);background:rgba(69,224,255,.1)}
+.mic-btn.listening{background:rgba(255,70,70,.2);border-color:#ff4e4e;color:#ff8a76;animation:pulseAlarm .8s infinite}
+
+
+/* ================= IMMERSIVE 3D PLANETARY WORLD CSS ================= */
+.planet-world-section{
+  position:relative;
+  margin:16px 0 36px;
+  width:100%;
+  scroll-margin-top:90px;
+}
+.planet-header-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-bottom:14px;
+}
+.planet-viewport{
+  position:relative;
+  width:100%;
+  height:clamp(520px,65vh,760px);
+  border-radius:24px;
+  overflow:hidden;
+  border:2px solid rgba(255,138,61,.55);
+  background:radial-gradient(ellipse at 50% 30%, #1a0803 0%, #080302 60%, #020101 100%);
+  box-shadow:0 24px 80px rgba(0,0,0,.95), 0 0 50px rgba(255,110,40,.2);
+}
+#planet-three-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  cursor:grab;
+}
+#planet-three-canvas:active{cursor:grabbing}
+
+/* Top HUD Controls */
+.planet-hud-top{
+  position:absolute;
+  top:18px;
+  left:18px;
+  right:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  z-index:25;
+  pointer-events:none;
+}
+.planet-hud-top > *{pointer-events:auto}
+.planet-selector-group{
+  display:inline-flex;
+  gap:6px;
+  background:rgba(18,8,5,.94);
+  padding:6px;
+  border-radius:14px;
+  border:1.5px solid rgba(255,138,61,.5);
+  backdrop-filter:blur(16px);
+  box-shadow:0 8px 32px rgba(0,0,0,.7);
+}
+.p-sel-btn{
+  padding:8px 16px;
+  border-radius:10px;
+  font:700 13px var(--font-body);
+  border:1.5px solid transparent;
+  background:transparent;
+  color:#deb8a0;
+  cursor:pointer;
+  transition:all .2s;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.p-sel-btn:hover{color:#ffffff;background:rgba(255,255,255,.1)}
+.p-sel-btn.active{
+  background:linear-gradient(135deg,rgba(255,138,61,.4),rgba(255,80,30,.45));
+  border-color:#ff8a3d;
+  color:#ffffff;
+  box-shadow:0 0 18px rgba(255,138,61,.5);
+  text-shadow:0 0 10px rgba(255,138,61,.7);
+}
+
+/* Perspective Selector Bar */
+.planet-hud-bottom{
+  position:absolute;
+  bottom:18px;
+  left:18px;
+  right:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  z-index:25;
+  pointer-events:none;
+}
+.planet-hud-bottom > *{pointer-events:auto}
+.persp-selector-group{
+  display:inline-flex;
+  gap:6px;
+  background:rgba(18,8,5,.94);
+  padding:6px;
+  border-radius:14px;
+  border:1.5px solid rgba(255,138,61,.5);
+  backdrop-filter:blur(16px);
+  box-shadow:0 8px 32px rgba(0,0,0,.7);
+  overflow-x:auto;
+  max-width:100%;
+}
+.persp-btn{
+  padding:8px 15px;
+  border-radius:10px;
+  font:700 12.5px var(--font-body);
+  border:1.5px solid transparent;
+  background:transparent;
+  color:#deb8a0;
+  cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.persp-btn:hover{color:#ffffff;background:rgba(255,255,255,.1)}
+.persp-btn.active{
+  background:linear-gradient(135deg,rgba(255,110,40,.45),rgba(235,60,20,.5));
+  border-color:#ff7733;
+  color:#ffffff;
+  box-shadow:0 0 18px rgba(255,110,40,.55);
+}
+
+/* Telemetry Card in Viewport */
+.planet-live-telemetry{
+  position:absolute;
+  top:80px;
+  left:20px;
+  background:rgba(16,7,4,.92);
+  border:1.5px solid rgba(255,138,61,.45);
+  border-radius:14px;
+  padding:14px 18px;
+  font:600 12px var(--font-mono);
+  color:#e0b299;
+  backdrop-filter:blur(16px);
+  pointer-events:none;
+  z-index:20;
+  display:grid;
+  gap:5px;
+  box-shadow:0 14px 40px rgba(0,0,0,.75);
+}
+.planet-live-telemetry b{color:#ffffff;letter-spacing:.02em}
+.planet-live-telemetry .status-row{display:flex;align-items:center;gap:8px}
+
+/* Action Buttons */
+.p-action-btn{
+  padding:8px 15px;
+  border-radius:10px;
+  font:700 12.5px var(--font-mono);
+  background:rgba(18,8,5,.94);
+  border:1.5px solid rgba(255,138,61,.5);
+  color:#f2e6dc;
+  cursor:pointer;
+  backdrop-filter:blur(16px);
+  transition:all .2s;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.p-action-btn:hover{
+  border-color:#ff9e59;
+  color:#ffffff;
+  background:rgba(255,138,61,.2);
+}
+.p-action-btn.active{
+  background:rgba(255,75,30,.3);
+  border-color:#ff5522;
+  color:#ffaa77;
+}
+
+/* Hint pill */
+.p-hint-pill{
+  background:rgba(18,8,5,.92);
+  border:1.5px solid rgba(255,138,61,.4);
+  color:#e8c6b0;
+  border-radius:999px;
+  padding:7px 15px;
+  font:600 12px var(--font-body);
+  backdrop-filter:blur(16px);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* Fullscreen expanded state */
+.planet-viewport.is-fullscreen{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  border-radius:0;
+  z-index:99999;
+}
+
+@media (max-width:860px){
+  .planet-live-telemetry{display:none}
+  .planet-viewport{height:460px}
+}
+
+/* Audio Toggle Button */
+.audio-btn{background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--text);padding:7px 13px;border-radius:999px;font:600 12.5px var(--font-mono);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .2s;margin-inline-end:8px}
+.audio-btn.on{background:rgba(69,224,255,.16);border-color:var(--cool);color:var(--cool);box-shadow:0 0 15px rgba(69,224,255,.25)}
+
+/* Voice Mic Button */
+.mic-btn{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);padding:0 14px;border-radius:12px;cursor:pointer;display:grid;place-items:center;font-size:17px;transition:all .2s}
+.mic-btn:hover{border-color:var(--cool);background:rgba(69,224,255,.1)}
+.mic-btn.listening{background:rgba(255,70,70,.2);border-color:#ff4e4e;color:#ff8a76;animation:pulseAlarm .8s infinite}
+
+
 </style>
+<script src="three.min.js"></script>
 </head>
 <body>
 <canvas id="stars" aria-hidden="true"></canvas>
 <div id="tip" role="tooltip"></div>
 <div class="glow" aria-hidden="true"></div>
+
+<div class="mission-ticker" id="mission-ticker">
+  <div class="ticker-track" id="ticker-track">
+    <div class="ticker-item"><span class="pulse-dot"></span><b>SIMULATED HABITAT TELEMETRY · NOT LIVE DATA</b></div>
+    <div class="ticker-item">ORBIT: <b id="tick-alt">418.6 km</b></div>
+    <div class="ticker-item">VELOCITY: <b id="tick-vel">27,582 km/h</b></div>
+    <div class="ticker-item">CABIN PRESSURE: <b id="tick-press">101.3 kPa</b></div>
+    <div class="ticker-item">OXYGEN CONC: <b id="tick-o2">21.04%</b></div>
+    <div class="ticker-item">CO CONC: <b id="tick-co">0.14 ppm</b></div>
+    <div class="ticker-item">MICROGRAVITY: <b id="tick-g">0.00008 g</b></div>
+    <div class="ticker-item">FIRE SUPPRESSION: <b style="color:#69e3b0">ARMED (AUTOMATIC)</b></div>
+    <div class="ticker-item">ECLSS STATUS: <b style="color:#45e0ff">NOMINAL</b></div>
+    <!-- Duplicate for infinite marquee -->
+    <div class="ticker-item"><span class="pulse-dot"></span><b>SIMULATED HABITAT TELEMETRY · NOT LIVE DATA</b></div>
+    <div class="ticker-item">ORBIT: <b>418.6 km</b></div>
+    <div class="ticker-item">VELOCITY: <b>27,582 km/h</b></div>
+    <div class="ticker-item">CABIN PRESSURE: <b>101.3 kPa</b></div>
+    <div class="ticker-item">OXYGEN CONC: <b>21.04%</b></div>
+    <div class="ticker-item">CO CONC: <b>0.14 ppm</b></div>
+    <div class="ticker-item">MICROGRAVITY: <b>0.00008 g</b></div>
+    <div class="ticker-item">FIRE SUPPRESSION: <b style="color:#69e3b0">ARMED (AUTOMATIC)</b></div>
+    <div class="ticker-item">ECLSS STATUS: <b style="color:#45e0ff">NOMINAL</b></div>
+  </div>
+</div>
 
 <header>
   <nav class="wrap nav" aria-label="Main">
@@ -355,36 +736,104 @@ html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
     </a>
     <ul>
       <li><a data-i18n="k0" href="#vanishing">Story</a></li>
+      <li><a data-i18n="nav_planetary" href="#planetary">Moon &amp; Mars</a></li>
+      <li><a data-i18n="nav_fusion" href="#sensor-fusion">Early Warning</a></li>
       <li><a data-i18n="k1" href="#spacecraft">Spacecraft fires</a></li>
       <li><a data-i18n="k2" href="#firecard">Fire card</a></li>
       <li><a data-i18n="k3" href="#safety">Safety</a></li>
       <li><a data-i18n="ask0" href="#ask">Ask AI</a></li>
-      <li><a data-i18n="k4" href="#sources">Data</a></li>
     </ul>
-    <div class="nav-end"><span class="badge">Space Apps 2026</span><button class="lang-btn" id="lang-btn" type="button" lang="ar">عربي</button></div>
+    <div class="nav-end"><button class="audio-btn" id="audio-toggle-btn" type="button" title="Toggle NASA Sci-Fi Soundscape & Voice">🔇 Audio: OFF</button><span class="badge">Space Apps 2026</span><button class="lang-btn" id="lang-btn" type="button" lang="ar">عربي</button></div>
   </nav>
 </header>
 
 <main id="top">
   <div class="wrap">
+    <!-- Flagship 3D Planetary Surface World (Three.js) -->
+    <div class="planet-world-section" id="planet-world-anchor">
+      <!-- Section Header for Absolute Clarity -->
+      <div class="planet-header-bar">
+        <div>
+          <div style="display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+            <span class="badge" style="background:rgba(69,224,255,.2);color:#45e0ff;border-color:rgba(69,224,255,.5);font-weight:700">SIMULATION · INSPIRED BY NASA ARTEMIS</span>
+            <span class="badge" style="background:rgba(255,138,61,.2);color:#ff9e59;border-color:rgba(255,138,61,.5);font-weight:700">WebGL / Three.js 3D Interactive World</span>
+          </div>
+          <h2 style="font-family:var(--font-display);font-size:clamp(1.25rem,2.4vw,1.9rem);color:#ffffff;margin:0 0 6px;letter-spacing:0.04em;text-shadow:0 0 25px rgba(69,224,255,.4)" id="p-world-title">
+            Flagship 3D Planetary Fire Simulation
+          </h2>
+          <p style="color:#b8cbef;font-size:14.5px;margin:0;max-width:780px;line-height:1.5" id="p-world-subtitle">
+            Explore how a habitat fire could behave on Mars (0.38g), the Moon (0.166g) and in orbit, with 5 camera views. An illustrative simulation, not measured data.
+          </p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="p-hint-pill" style="font-size:12px;font-family:var(--font-mono)">
+            <span class="pulse-dot"></span> <span id="p-status-fps">SIMULATION ENGINE: 60 FPS NOMINAL</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="planet-viewport" id="planet-viewport-box">
+        <canvas id="planet-three-canvas" aria-label="3D Interactive Planetary Surface Simulation"></canvas>
+        
+        <!-- Top HUD: Planet Selection & Controls -->
+        <div class="planet-hud-top">
+          <div class="planet-selector-group">
+            <button type="button" class="p-sel-btn active" id="p-btn-mars" data-planet="mars">🔴 Mars (Martian Outpost)</button>
+            <button type="button" class="p-sel-btn" id="p-btn-jupiter" data-planet="jupiter" hidden style="display:none">🪐 Jupiter (Jovian System)</button>
+            <button type="button" class="p-sel-btn" id="p-btn-moon" data-planet="moon">🌙 Moon (Artemis Base)</button>
+            <button type="button" class="p-sel-btn" id="p-btn-orbit" data-planet="orbit">🛰️ Orbit (Gateway Station)</button>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button type="button" class="p-action-btn" id="p-ignite-btn">🔥 Trigger Test Burn</button>
+            <button type="button" class="p-action-btn" id="p-fullscreen-btn" title="Toggle Fullscreen">⛶ Fullscreen</button>
+          </div>
+        </div>
+
+        <!-- Telemetry Floating Card -->
+        <div class="planet-live-telemetry" id="p-telemetry-card">
+          <div class="status-row"><span class="pulse-dot"></span><b id="p-telem-loc">LOCATION: ARTEMIS BASE CAMP (MOON)</b></div>
+          <div>SURFACE GRAVITY: <b id="p-telem-g">0.166 g</b></div>
+          <div>HABITAT AIR: <b id="p-telem-atm">0.56 atm (34% O₂)</b></div>
+          <div>SOLAR ILLUMINATION: <b id="p-telem-sun">SURFACE NOON</b></div>
+          <div>COMBUSTION CHAMBER: <b id="p-telem-state" style="color:#69e3b0">STANDBY / READY</b></div>
+        </div>
+
+        <!-- Bottom HUD: 5 Camera Perspectives -->
+        <div class="planet-hud-bottom">
+          <div class="persp-selector-group" id="persp-group">
+            <button type="button" class="persp-btn active" data-persp="astronaut" id="p-cam-astronaut">🧑‍🚀 Astronaut Surface View</button>
+            <button type="button" class="persp-btn" data-persp="orbital" id="p-cam-orbital">🛰️ Orbital Satellite View</button>
+            <button type="button" class="persp-btn" data-persp="lab" id="p-cam-lab">🔬 Combustion Chamber Macro</button>
+            <button type="button" class="persp-btn" data-persp="flyby" id="p-cam-flyby">🚁 Cinematic Drone Flyby</button>
+            <button type="button" class="persp-btn" data-persp="free" id="p-cam-free">🎮 Free 3D Navigation</button>
+          </div>
+          <div class="twin-badge" style="backdrop-filter:blur(8px);background:rgba(4,9,24,.85)">
+            <span id="p-hint-text">🖱️ Drag to pan/orbit · Scroll to zoom</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <section class="hero">
       <div>
         <div data-i18n="k5" class="eyebrow">NASA Space Apps 2026 · Flame in Freefall</div>
         <h1 data-i18n="k6">Fire behaves differently in space</h1>
         <p data-i18n="k7" class="lede">On the International Space Station, NASA has lit hundreds of fires on purpose. We turned the published results into one story: how flames hide, return and poison the air without gravity, and what crews on the Moon and Mars should do about it.</p>
         <div class="hero-cta">
+          <button type="button" class="btn btn-primary" id="btn-start-tour" style="box-shadow:0 0 25px rgba(69,224,255,.4);border-color:var(--cool)">🎬 90s Guided Tour</button>
           <a data-i18n="k8" class="btn btn-primary" href="#replay">Watch a droplet burn</a>
           <a data-i18n="k9" class="btn btn-ghost" href="#safety">Jump to safety insights</a>
         </div>
       </div>
-      <figure class="hero-photo">
-        <img src="img/bass-blue-shell.jpg" alt="A real flame photographed on the International Space Station: a blue shell with a glowing pink core around a burning plastic sample">
-        <svg class="rings" viewBox="0 0 400 400" aria-hidden="true">
-          <g class="spin"><ellipse cx="200" cy="200" rx="192" ry="70" fill="none" stroke="#45e0ff" stroke-opacity=".35" stroke-width="1"/><circle cx="392" cy="200" r="5" fill="#45e0ff"/></g>
-          <g class="spin rev"><ellipse cx="200" cy="200" rx="175" ry="120" fill="none" stroke="#6aa8ff" stroke-opacity=".22" stroke-dasharray="3 8" transform="rotate(-24 200 200)"/><circle cx="41" cy="128" r="3.5" fill="#ff8a3d"/></g>
-          <circle cx="200" cy="200" r="198" fill="none" stroke="#ffffff" stroke-opacity=".06"/>
-        </svg>
-        <figcaption data-i18n="k10">Real flame on the ISS · NASA BASS experiment</figcaption>
+      <figure class="hero-photo" id="hero-photo-stage">
+        <canvas id="hero-orb-canvas" width="480" height="480" aria-label="Interactive 3D Holographic Microgravity Plasma Orb"></canvas>
+        <div class="hero-holo-chips">
+          <div class="holo-chip c1"><small>Core Temp</small><b>1,420 K</b></div>
+          <div class="holo-chip c2"><small>Regime</small><b>0g Spherical</b></div>
+          <div class="holo-chip c3"><small>Infrared Flux</small><b>Cool Shell Active</b></div>
+          <div class="holo-chip c4"><small>Gravity</small><b>0.0001 g</b></div>
+        </div>
+        <figcaption data-i18n="k10">Interactive 3D Microgravity Plasma Orb · Move mouse to interact</figcaption>
       </figure>
     </section>
 
@@ -445,6 +894,40 @@ html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
       </div>
     </div>
   </section>
+
+  <!-- 3D Digital Twin -->
+  <section class="chapter wrap" id="twin3d">
+    <div class="chapter-head">
+      <div data-i18n="twin_eb" class="eyebrow">Interactive WebGL · 3D Digital Twin</div>
+      <h2 data-i18n="twin_h">Orbital & Planetary Flame Dynamics in 3D</h2>
+      <p data-i18n="twin_lede" class="lede">Explore the physical structure of microgravity fire in full 3D. Rotate, zoom, and inspect the spherical hot reaction zone, the invisible cool flame outer envelope, and how spacecraft ventilation accelerates toxic spread.</p>
+    </div>
+    <div class="card" style="padding:16px">
+      <div class="twin-stage">
+        <canvas id="twin-canvas" aria-label="Interactive 3D WebGL visualization of microgravity combustion and spacecraft compartment"></canvas>
+        <div class="twin-hud-top">
+          <button type="button" class="twin-mode-btn active" id="twin-mode-flame" data-i18n="twin_btn_flame">🔥 Spherical Flame Core</button>
+          <button type="button" class="twin-mode-btn" id="twin-mode-cabin" data-i18n="twin_btn_cabin">🛰️ Habitat Compartment</button>
+          <button type="button" class="twin-mode-btn" id="twin-btn-ir" data-i18n="twin_btn_ir">👁️ Infrared / Cool Shell: OFF</button>
+        </div>
+        <div class="twin-callout" id="twin-callout">
+          <b data-i18n="twin_callout_h">Symmetric Spherical Diffusion</b>
+          <span data-i18n="twin_callout_p">In orbital freefall, buoyancy gas lift is zero. Oxygen enters purely via molecular diffusion, wrapping the droplet in a radiant spherical flame shell.</span>
+        </div>
+        <div class="twin-hud-bottom">
+          <span class="twin-badge" id="twin-status" data-i18n="twin_status_prompt">🖱️ Drag to rotate · Scroll to zoom</span>
+          <div style="display:flex;gap:10px;align-items:center;background:rgba(4,6,13,.75);padding:6px 14px;border-radius:10px;border:1px solid var(--line);font-size:13px">
+            <span data-i18n="twin_lbl_vent">Airflow Speed:</span>
+            <input type="range" id="twin-flow-slider" min="0" max="40" step="5" value="0" style="accent-color:var(--cool);width:110px">
+            <b id="twin-flow-val" style="font-family:var(--font-mono)">0 cm/s</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p data-i18n="twin_note" class="chart-note">Computed from NASA PSI-117 droplet spatial extinction coordinates and Saffire-1 fluid ventilation velocities. Drag to orbit in 3D.</p>
+  </section>
+
+  <div class="ribbon" aria-hidden="true"><svg viewBox="0 0 1200 150" preserveAspectRatio="none" class="ribbon-svg"></svg></div>
 
   <!-- 01 -->
   <section class="chapter wrap" id="vanishing">
@@ -614,7 +1097,75 @@ html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
     </div>
   </section>
 
-<div class="ribbon" aria-hidden="true"><svg viewBox="0 0 1200 150" preserveAspectRatio="none" class="ribbon-svg"></svg></div>
+  <div class="ribbon" aria-hidden="true"><svg viewBox="0 0 1200 150" preserveAspectRatio="none" class="ribbon-svg"></svg></div>
+
+  <!-- Planetary Fire Physics -->
+  <section class="chapter wrap" id="planetary">
+    <div class="chapter-head">
+      <div data-i18n="pl_eb" class="eyebrow">NASA Physics Scaling Engine · Lunar & Martian Regimes</div>
+      <h2 data-i18n="pl_h">Fire on the Moon and Mars</h2>
+      <p data-i18n="pl_lede" class="lede">NASA PSI tested 0g in orbit, but what happens under 0.166g on the Moon or 0.38g on Mars? Using dimensionless fluid mechanics (Grashof Gr &amp; Richardson Ri scaling), this engine predicts flame morphology, burning rate, and toxic surge for planetary exploration habitats.</p>
+    </div>
+    <div class="card planetary-card">
+      <div>
+        <div class="planet-presets">
+          <button type="button" class="planet-btn" data-g="0.0001" data-p="1.0" data-o2="21" id="pl-btn-iss">🛰️ Orbit (0g)</button>
+          <button type="button" class="planet-btn active" data-g="0.166" data-p="0.56" data-o2="34" id="pl-btn-moon">🌙 Moon (0.166g · Artemis)</button>
+          <button type="button" class="planet-btn" data-g="0.38" data-p="0.70" data-o2="25" id="pl-btn-mars">🔴 Mars (0.38g Habitat)</button>
+          <button type="button" class="planet-btn" data-g="1.0" data-p="1.0" data-o2="21" id="pl-btn-earth">🌍 Earth (1g)</button>
+        </div>
+        <div class="planet-viz-stage">
+          <canvas id="flame-morph-canvas" aria-label="Dynamic flame shape morphing according to gravity and convection regimes"></canvas>
+          <div class="planet-stage-hud">
+            <span id="pl-hud-grav">Gravity: 0.166 g (Moon)</span>
+            <span id="pl-hud-atm">Habitat air: 0.56 atm (34% O₂)</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+          <label style="font-size:13px;color:var(--muted)"><span data-i18n="pl_lbl_grav">Gravity Level (g):</span> <b id="pl-slider-gv" style="color:var(--text)">0.17 g</b>
+            <input type="range" id="pl-slider-g" min="0" max="1" step="0.01" value="0.17" style="width:100%;accent-color:var(--cool)">
+          </label>
+          <label style="font-size:13px;color:var(--muted)"><span data-i18n="pl_lbl_flow">Ventilation Flow:</span> <b id="pl-slider-fv" style="color:var(--text)">10 cm/s</b>
+            <input type="range" id="pl-slider-f" min="0" max="40" step="2" value="10" style="width:100%;accent-color:var(--hot)">
+          </label>
+        </div>
+      </div>
+      <div>
+        <div class="planet-readouts">
+          <div class="planet-metric">
+            <div class="lbl" data-i18n="pl_m_gr">Grashof Number (Gr)</div>
+            <div class="val" id="pl-val-gr">1.8 × 10³</div>
+            <small style="color:var(--muted);font-size:11px" data-i18n="pl_sub_gr">Buoyancy vs viscous force</small>
+          </div>
+          <div class="planet-metric">
+            <div class="lbl" data-i18n="pl_m_ri">Richardson Number (Ri)</div>
+            <div class="val" id="pl-val-ri">1.42</div>
+            <small style="color:var(--muted);font-size:11px" data-i18n="pl_sub_ri">Convection regime index</small>
+          </div>
+          <div class="planet-metric">
+            <div class="lbl" data-i18n="pl_m_aspect">Flame Aspect Ratio</div>
+            <div class="val hot" id="pl-val-aspect">1.48×</div>
+            <small style="color:var(--muted);font-size:11px" data-i18n="pl_sub_aspect">Height vs width elongation</small>
+          </div>
+          <div class="planet-metric">
+            <div class="lbl" data-i18n="pl_m_co">Toxic CO Yield Surge</div>
+            <div class="val cool" id="pl-val-co">+185%</div>
+            <small style="color:var(--muted);font-size:11px" data-i18n="pl_sub_co">Due to low-buoyant residence time</small>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding:16px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h4 style="margin:0;font-size:15px" data-i18n="pl_regime_h">Convective Regime Verdict:</h4>
+            <span class="regime-tag" id="pl-regime-tag" style="background:rgba(255,200,107,.18);color:#ffc86b">Mixed Convection</span>
+          </div>
+          <p id="pl-regime-desc" style="margin:8px 0 0;font-size:13.5px;color:var(--muted);line-height:1.5">On the Moon, buoyancy is weak but non-zero. Flames form an unstable, wobbling transitional envelope, prolonging solid smoldering and generating severe carbon monoxide.</p>
+        </div>
+      </div>
+    </div>
+    <p data-i18n="pl_note" class="chart-note">Scaling formulation derived from NASA Glenn Combustion Division and Altenkirch &amp; Williams partial-gravity burning rate laws: Gr = g·β·ΔT·L³/ν², Ri = Gr/Re².</p>
+  </section>
+
+  <div class="ribbon" aria-hidden="true"><svg viewBox="0 0 1200 150" preserveAspectRatio="none" class="ribbon-svg"></svg></div>
 
   <!-- 08 -->
   <section class="chapter wrap" id="safety">
@@ -631,6 +1182,71 @@ html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
       <article class="insight" style="--stripe:#ff8a76"><span class="n">05</span><h3 data-i18n="k107">Plan for toxic gas</h3><p data-i18n="k108">Carry CO sensors and masks ready to use. Thick plastics released about 21× more carbon monoxide than thin film.</p><div data-i18n="k109" class="evidence">Evidence: <a href="#smoke">BASS-II gas readings</a></div></article>
       <article class="insight" style="--stripe:#ffc86b"><span class="n">06</span><h3 data-i18n="k110">Test at mission conditions</h3><p data-i18n="k111">Qualify materials at the habitat’s real pressure, oxygen and airflow. Silicone burned on Earth but not in orbit, and cool flames changed with pressure.</p><div data-i18n="k112" class="evidence">Evidence: <a href="#pressure">PSI-117</a>, <a href="#spacecraft">Saffire-2</a></div></article>
     </div>
+  </section>
+
+  <!-- Multi-Sensor Fusion Early Warning -->
+  <section class="chapter wrap" id="sensor-fusion">
+    <div class="chapter-head">
+      <div data-i18n="sf_eb" class="eyebrow">Avionics &amp; AI · Multi-Sensor Telemetry Fusion</div>
+      <h2 data-i18n="sf_h">Invisible Cool Flame Early Warning System</h2>
+      <p data-i18n="sf_lede" class="lede">Standard smoke detectors and optical cameras go blind during the cool flame stage because invisible flames produce near-zero soot and no visible light. Our sensor fusion algorithm cross-validates narrow-band mid-IR thermal flux with CO/CO₂ ratios to detect invisible combustion before fatal re-ignition.</p>
+    </div>
+    <div class="card sensor-fusion-grid">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <h3 style="font-size:17px" data-i18n="sf_stream_h">Habitat Sensor Array Telemetry:</h3>
+          <span class="badge" id="sf-time-badge" style="font-family:var(--font-mono)">t = 24.0 s (Phase 2)</span>
+        </div>
+        <div class="sensor-stream-box">
+          <div class="sensor-row">
+            <div class="sensor-name"><span>Narrowband Mid-IR</span><small>8–12 µm Radiometer</small></div>
+            <div class="sensor-bar-wrap"><div class="sensor-bar" id="sf-bar-ir" style="width:72%;background:#45e0ff"></div></div>
+            <span class="sensor-badge active" id="sf-badge-ir">590 K (ACTIVE)</span>
+          </div>
+          <div class="sensor-row">
+            <div class="sensor-name"><span>CO Gas Electrochemical</span><small>ppm rise rate</small></div>
+            <div class="sensor-bar-wrap"><div class="sensor-bar" id="sf-bar-co" style="width:84%;background:#ff8a76"></div></div>
+            <span class="sensor-badge active" id="sf-badge-co">+145 ppm (ALERT)</span>
+          </div>
+          <div class="sensor-row">
+            <div class="sensor-name"><span>Optical Camera</span><small>Visible Spectrum RGB</small></div>
+            <div class="sensor-bar-wrap"><div class="sensor-bar" id="sf-bar-cam" style="width:2%;background:#6aa8ff"></div></div>
+            <span class="sensor-badge blind" id="sf-badge-cam">0 Lux (BLIND)</span>
+          </div>
+          <div class="sensor-row">
+            <div class="sensor-name"><span>Laser Smoke Sensor</span><small>Optical Obscuration</small></div>
+            <div class="sensor-bar-wrap"><div class="sensor-bar" id="sf-bar-smoke" style="width:4%;background:#97a3c2"></div></div>
+            <span class="sensor-badge blind" id="sf-badge-smoke">0.02% (BLIND)</span>
+          </div>
+        </div>
+        <label class="timeline" style="margin-top:20px" for="sf-slider"><span class="sr">Time across fire lifecycle</span>
+          <input type="range" id="sf-slider" min="0" max="50" step="1" value="24" style="width:100%;accent-color:var(--cool)">
+          <div style="display:flex;justify-content:space-between;font:500 11px var(--font-mono);color:var(--muted);margin-top:4px">
+            <span>0s: Ignition</span>
+            <span style="color:var(--hot)">12s: Hot Out</span>
+            <span style="color:var(--cool)">24s: Cool Flame</span>
+            <span style="color:#ffc86b">26s: Re-ignition Peak</span>
+            <span>48s: Complete Burnout</span>
+          </div>
+        </label>
+      </div>
+      <div>
+        <div class="fusion-status-card">
+          <div class="fusion-alarm critical" id="sf-alarm-banner">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span id="sf-alarm-text">CRITICAL: INVISIBLE COOL FLAME DETECTED</span>
+          </div>
+          <p id="sf-alarm-desc" style="margin:0;font-size:13.5px;color:var(--muted);line-height:1.5">Camera and smoke sensors report zero flame, but thermal radiometer and electrochemical gas sensor confirm persistent low-temperature combustion. Do NOT open ventilation.</p>
+          <div class="fusion-actions">
+            <div style="font:600 12px var(--font-mono);color:var(--text);text-transform:uppercase" data-i18n="sf_proto_h">Automated ECLSS Safety Actions:</div>
+            <div class="fusion-act done" id="sf-act-1">✓ Cut Ventilation Loop in Segment 3 (Saffire-1 rule)</div>
+            <div class="fusion-act done" id="sf-act-2">✓ Prime Localized Fine Water-Mist Inundation</div>
+            <div class="fusion-act" id="sf-act-3">⏳ Maintain 60s Sensor Vigilance Before All-Clear</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p data-i18n="sf_note" class="chart-note">Algorithm: Sensor Fusion combines Kalman thermal filtering and differential CO/CO₂ combustion indexing to eliminate false negatives in microgravity.</p>
   </section>
 
   <!-- calculator -->
@@ -682,6 +1298,52 @@ html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
     <p class="chart-note" data-pk="note">Model: 60 decision trees (scikit-learn), inputs material, thickness and oxygen. Checked with 5-fold cross-validation repeated 10 times on tests it never saw. It predicts conditions inside the small BASS-II chamber, not a spacecraft cabin.</p>
   </section>
 
+  <!-- Mission Control Emergency Simulator -->
+  <section class="chapter wrap" id="emergency-sim">
+    <div class="chapter-head">
+      <div data-i18n="sim_eb" class="eyebrow">Interactive Simulation · Artemis Habitat Fire Commander</div>
+      <h2 data-i18n="sim_h">Mission Control Emergency Drill</h2>
+      <p data-i18n="sim_lede" class="lede">Test your command decisions against real spaceflight hazards. A fire breaks out inside an Artemis Lunar Gateway Habitat module. Every decision you make is verified against published NASA PSI-117, Saffire-1, and BASS-II data points.</p>
+    </div>
+    <div class="sim-container">
+      <div class="sim-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="width:10px;height:10px;border-radius:50%;background:#ff4e4e;display:inline-block;animation:pulseAlarm 1s infinite"></span>
+          <b style="font:700 14px var(--font-mono);letter-spacing:.08em" data-i18n="sim_status_live">GATEWAY HABITAT · EMERGENCY DRILL ACTIVE</b>
+        </div>
+        <div class="sim-clock" id="sim-clock">T+ 00:15</div>
+      </div>
+      <div class="sim-body">
+        <div class="sim-scenario" id="sim-scenario-box">
+          <div class="sim-prompt" id="sim-prompt"><b>Step 1 of 4:</b> Optical camera shows no flames inside Avionics Rack 3, but thermal sensor reads 590 K and CO is climbing rapidly. What is your immediate order?</div>
+          <div class="sim-choices" id="sim-choices">
+            <!-- Dynamic choices inserted via JS -->
+          </div>
+          <div id="sim-feedback" style="display:none;padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.5"></div>
+        </div>
+        <div class="sim-telemetry">
+          <h4 style="margin:0;font:600 13px var(--font-mono);color:var(--muted);text-transform:uppercase" data-i18n="sim_telem_h">Telemetry Readout:</h4>
+          <div class="sim-gauge">
+            <div class="sim-gauge-head"><span>Astronaut Safety Index</span><b id="sim-val-safety">100%</b></div>
+            <div class="sim-gauge"><div class="bar"><div class="fill" id="sim-fill-safety" style="width:100%;background:#69e3b0"></div></div></div>
+          </div>
+          <div class="sim-gauge">
+            <div class="sim-gauge-head"><span>Cabin Oxygen Level</span><b id="sim-val-o2">34.0%</b></div>
+            <div class="sim-gauge"><div class="bar"><div class="fill" id="sim-fill-o2" style="width:100%;background:#45e0ff"></div></div></div>
+          </div>
+          <div class="sim-gauge">
+            <div class="sim-gauge-head"><span>Toxic CO Rise</span><b id="sim-val-co">18 ppm</b></div>
+            <div class="sim-gauge"><div class="bar"><div class="fill" id="sim-fill-co" style="width:6%;background:#ff8a76"></div></div></div>
+          </div>
+          <div style="margin-top:8px;padding-top:12px;border-top:1px solid var(--line);font:500 12px var(--font-mono);color:var(--muted)">
+            <span data-i18n="sim_env">Habitat: Lunar Gateway / Artemis Base Camp (0.56 atm)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p data-i18n="sim_note" class="chart-note">Each scenario step branches based on real NASA PSI-117 (cool flames &amp; re-ignition) and Saffire-1 (airflow effects) outcomes.</p>
+  </section>
+
   <section class="chapter wrap" id="ask">
     <div class="chapter-head">
       <div class="eyebrow" data-i18n="ask1">AI · grounded in NASA data</div>
@@ -689,6 +1351,43 @@ html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
       <p class="lede" data-i18n="ask3">Ask anything about fire in space. The site first retrieves the NASA facts that match your question (a BM25 search over 13 sourced facts, in English and Arabic), then Gemini answers only from those facts, cites every claim, and says so when the data does not cover your question.</p>
     </div>
     <div class="card ask" id="ask-box"></div>
+  </section>
+
+  <!-- Mission Integration & TRL Roadmap -->
+  <section class="chapter wrap" id="mission-integration">
+    <div class="chapter-head">
+      <div data-i18n="trl_eb" class="eyebrow">Engineering Roadmap · NASA Artemis Flight Integration</div>
+      <h2 data-i18n="trl_h">Technology Readiness &amp; Spacecraft Integration</h2>
+      <p data-i18n="trl_lede" class="lede">From data analytics to spaceflight software: how Flame in Freefall transitions from analytical prototype to an operational core Flight System (cFS) application aboard NASA’s Lunar Gateway, Orion, and commercial space stations.</p>
+    </div>
+    <div class="card" style="padding:26px">
+      <div class="trl-timeline">
+        <div class="trl-node">
+          <span class="trl-tag active">TRL 1–2 · DONE</span>
+          <h4 style="margin:0;font-size:16px" data-i18n="trl_s1_h">Scientific Formulation</h4>
+          <p style="margin:0;font-size:13.5px;color:var(--muted)" data-i18n="trl_s1_p">Analysis of 129 BASS-II tests and PSI-117 extinction data. Identification of invisible cool flame hazard.</p>
+        </div>
+        <div class="trl-node current">
+          <span class="trl-tag active">TRL 3–4 · CURRENT</span>
+          <h4 style="margin:0;font-size:16px" data-i18n="trl_s2_h">Analytical Proof of Concept</h4>
+          <p style="margin:0;font-size:13.5px;color:var(--muted)" data-i18n="trl_s2_p">87% accuracy ML Random Forest model, BM25-Gemini RAG assistant, and real-time 3D Digital Twin simulation.</p>
+        </div>
+        <div class="trl-node">
+          <span class="trl-tag target">TRL 5 · NEXT (2027)</span>
+          <h4 style="margin:0;font-size:16px" data-i18n="trl_s3_h">cFS App Flight Validation</h4>
+          <p style="margin:0;font-size:13.5px;color:var(--muted)" data-i18n="trl_s3_p">Packaging Sensor Fusion and Early Warning algorithms into a NASA core Flight System (cFS) compliant C payload.</p>
+        </div>
+        <div class="trl-node">
+          <span class="trl-tag target">TRL 6–7 · ARTE MIS (2028+)</span>
+          <h4 style="margin:0;font-size:16px" data-i18n="trl_s4_h">Gateway Operational Flight</h4>
+          <p style="margin:0;font-size:13.5px;color:var(--muted)" data-i18n="trl_s4_p">Integration into Lunar Gateway ECLSS avionics bus with autonomous ventilation cutoff and localized water-mist suppression.</p>
+        </div>
+      </div>
+      <div class="cfs-arch-box">
+        <h4 data-i18n="cfs_box_h">NASA Core Flight System (cFS) Software Architecture:</h4>
+        <p data-i18n="cfs_box_p">Our software is designed to interface with NASA’s open-source <code>cFS</code> flight software framework via CCSDS telemetry packets. The <code>flame_dss_app</code> monitors environmental telemetry via the software bus, evaluates cool flame probability in under 5 milliseconds on radiation-hardened RAD750 flight computers, and triggers automated ventilation cutoff protocols.</p>
+      </div>
+    </div>
   </section>
 
   <!-- 09 -->
@@ -742,10 +1441,10 @@ html[dir="rtl"] .fc-step{padding:18px 62px 16px 18px}
 const D = window.FLAME_DATA;
 const AR={"k0": "القصة", "k1": "حرائق المركبات", "k2": "بطاقة الحريق", "k3": "السلامة", "k4": "البيانات", "k5": "ناسا Space Apps 2026 · Flame in Freefall", "k6": "النار تتصرف بشكل مختلف في الفضاء", "k7": "على متن محطة الفضاء الدولية، أشعلت ناسا مئات الحرائق عن عمد. حوّلنا النتائج المنشورة إلى قصة واحدة: كيف تختبئ النيران وتعود وتسمّم الهواء في غياب الجاذبية، وما الذي يجب أن يفعله الرواد على القمر والمريخ.", "k8": "شاهد قطرة تحترق", "k9": "انتقل إلى إرشادات السلامة", "k10": "لهب حقيقي على محطة الفضاء · تجربة BASS من ناسا", "k11": "من اللهب المرئي حول قطرة وقود قطرها 4 مم", "k12": "من الاحتراق الإضافي بعد أن بدا اللهب «منطفئًا»", "k13": "أطول عمرًا لحريق القماش عندما دفع الهواء اللهب للأمام", "k14": "أكثر من أول أكسيد الكربون من البلاستيك السميك مقارنة بالرقيق", "k15": "ابدأ هنا · لماذا تختلف النار دون جاذبية", "k16": "شمعة واحدة، عالمان", "k17": "على الأرض، يرتفع الغاز الساخن ويسحب هواءً جديدًا من الأسفل، فيتمدد اللهب على شكل دمعة طويلة ساطعة. أما في المدار فلا شيء يرتفع؛ يصل الأكسجين إلى اللهب بالانتشار البطيء فقط، فيصبح كرة خافتة مستديرة، غالبًا زرقاء.", "k18": "على الأرض · جاذبية 1 g", "k19": "في المدار · جاذبية شبه منعدمة", "k20": "أحرقت تجربتا BASS و BASS-II شموعًا حقيقية على محطة الفضاء (PSI-25، PSI-26). رسم توضيحي، ليس بمقياس حقيقي.", "k21": "إعادة تشغيل · مبنية على قياسات محطة الفضاء (PSI-117)", "k22": "شاهد قطرة تحترق", "k23": "قطرة دوديكان قطرها 4 مم أُشعلت على محطة الفضاء. الأحجام والتوقيتات مأخوذة مباشرة من البيانات المقاسة، بسرعة 4 أضعاف. شغّل عرض الأشعة تحت الحمراء لترى ما لم يكن يراه أي رائد فضاء.", "k24": "قطرة الوقود", "k25": "اللهب الساخن", "k26": "اللهب البارد", "k27": "عرض الأشعة تحت الحمراء: اكشف اللهب البارد", "k28": "إعادة", "k29": "01 · PSI-117 · احتراق القطرات على محطة الفضاء", "k30": "اللهب الذي يختفي", "k31": "دون جاذبية لا يرتفع الغاز الساخن، فتحيط القطرة المحترقة نفسها بكرة لهب مثالية. راقب ما يحدث عند الثانية 13 تقريبًا.", "k32": "<i style=\"background:var(--hot)\"></i>قطر اللهب (مقاس)", "k33": "<i style=\"background:var(--model)\"></i>قطر اللهب (نموذج)", "k34": "<i style=\"background:#fff\"></i>قطر قطرة الوقود", "k35": "دوديكان، قطر ابتدائي 4 مم، هواء عند 1 ضغط جوي. المصدر: تحليل MST 2024 لبيانات محطة الفضاء (PSI-117).", "k36": "ينهار <span class=\"hot\">اللهب الساخن</span> الساطع عند الثانية <b data-fill=\"burn.t_hot_out\">12.6</b>. بالنسبة لرائد الفضاء، سيبدو وكأنه انطفأ.", "k37": "لكن القطرة تستمر في الانكماش بنفس المعدل لمدة <b class=\"cool\" data-fill=\"burn.invisible_seconds\">33</b> ثانية أخرى. ما زالت تحترق داخل <span class=\"cool\">لهب بارد</span>: لهب خافت منخفض الحرارة لا تراه العين.", "k38": "استمر تفاعل الوقود مدة أطول بـ <b data-fill=\"burn.ratio\">2.6</b> مرة من عمر النار المرئية.", "k39": "02 · PSI-117 · مقارنة ثلاثة أنواع وقود", "k40": "متى يموت اللهب حقًا؟", "k41": "لكل قطرة، سجّل العلماء الحجم الذي انكمشت إليه عندما انطفأ كل لهب. اختر نوع الوقود.", "k42": "النقاط: تجارب محطة الفضاء. الخطوط المتقطعة: نماذج. هواء عند 1 ضغط جوي. المصدر: Proceedings of the Combustion Institute 2023 (PSI-117).", "k43": "<span class=\"hot\">اللهب الساخن</span> يستسلم مبكرًا بينما معظم القطرة ما زال موجودًا: نقاطه تقع قرب أعلى الرسم.", "k44": "أما <span class=\"cool\">اللهب البارد</span> فيستمر حتى يصبح قطر القطرة نحو 1 مم أو أقل. رؤية اللهب ينطفئ ليست دليلًا على أن الوقود توقف عن الاحتراق.", "k45": "03 · PSI-117 · محاكاة قطرة هيبتان 0.5 مم", "k46": "لهب بارد ينبض", "k47": "نفس القطرة في محاكاة داخل جوّين مختلفين. عند 21% أكسجين يحترق اللهب البارد بثبات، وعند 10% أكسجين يبدأ بالنبض مثل القلب.", "k48": "<i style=\"background:var(--cool)\"></i>21% أكسجين: ثابت", "k49": "<i style=\"background:#ffc86b\"></i>10% أكسجين: نابض", "k50": "أعلى درجة حرارة للغاز حول القطرة (محاكاة). القفزة القصيرة عند الاشتعال قرب 1,150 كلفن في البداية خارج حدود الرسم. المصدر: PROCI 2019 (PSI-117).", "k51": "عند 10% أكسجين يتوهج اللهب البارد <b data-fill=\"cool.pulsing.pulses\">6</b> مرات في أقل من ثانية، يخفت ثم يعود في كل مرة.", "k52": "الحريق الذي يبدو أنه يحتضر قد يعود مرارًا. يجب أن تراقب أجهزة الكشف درجة الحرارة على مدى الوقت، لا قراءة واحدة.", "k53": "04 · PSI-117 · دوديكان من 0.5 إلى 5 ضغط جوي", "k54": "الضغط يغيّر النار", "k55": "قد لا تحافظ مساكن القمر والمريخ المستقبلية على ضغط سطح البحر الأرضي. اختبرت هذه التجارب على محطة الفضاء كيف يعيد الضغط تشكيل اللهب.", "k56": "متى ينطفئ اللهب", "k57": "سرعة احتراق الوقود", "k58": "الحرارة المنبعثة", "k59": "الضغط الأعلى يجعل القطرات تحترق أسرع، وعند 5 ضغط جوي تبعث حرارة أكثر.", "k60": "اللهب البارد يتأثر بشدة: عند 0.5 ضغط جوي انطفأ والقطرة ما زال قطرها نحو 2 مم، وعند 1 ضغط جوي استمر حتى صار قطرها نحو 0.5 مم أو أقل، وعند 3 ضغط جوي لم يُرصد إطلاقًا.", "k61": "قواعد الحريق المستفادة عند ضغط معين لا تنطبق على ضغط آخر. اختبر المواد عند الضغط الحقيقي للمسكن.", "k62": "05 · PSI-117 · دوديكان عند 2.75 ضغط جوي مع الهيليوم", "k63": "النار التي تعود", "k64": "في هذه التجربة مرّ اللهب بثلاث مراحل، والحرارة المقاسة تحكي القصة.", "k65": "<i style=\"background:var(--hot)\"></i>الحرارة المنبعثة (مقاسة)", "k66": "<i style=\"background:var(--model)\"></i>الحرارة المنبعثة (نموذج)", "k67": "<i style=\"background:#fff\"></i>حجم القطرة المتبقي", "k68": "تم تحويل الزمن من الزمن المُقاس في البحث (t ÷ d₀²) باستخدام d₀ = 4.5 مم. المصدر: PROCI 2019 (PSI-117).", "k69": "<b>المرحلة 1:</b> يحترق <span class=\"hot\">لهب ساخن</span> ثم ينطفئ عند الثانية <b data-fill=\"threeStage.first_out_s\">8</b> تقريبًا.", "k70": "<b>المرحلة 2:</b> يواصل <span class=\"cool\">لهب بارد</span> حرق القطرة بهدوء.", "k71": "<b>المرحلة 3:</b> عند الثانية <b data-fill=\"threeStage.reignite_s\">26</b> تقريبًا تقفز الحرارة المنبعثة إلى أعلى قيمة في التجربة كلها، <b data-fill=\"threeStage.reignite_peak_w\">62.8</b> واط. لقد عاد اللهب الساخن من تلقاء نفسه.", "k72": "06 · Saffire-1 و Saffire-2 · حرائق داخل مركبة شحن Cygnus", "k73": "من قطرة إلى حريق داخل مركبة فضاء", "k74": "بعد مغادرة محطة الفضاء، تحولت مركبات الشحن Cygnus إلى مختبرات حريق طائرة. أُحرقت بداخلها عينات كبيرة من القماش والبلاستيك، بعيدًا عن أي طاقم.", "k75": "Saffire: نار تنتشر على قماش داخل مركبة Cygnus · ناسا", "k76": "نفس القماش، نفس الهواء، اتجاه مختلف", "k77": "Saffire-1: لوحان من قماش القطن والألياف الزجاجية (SIBAL) بمقاس 40.6 × 94 سم، سرعة الهواء 20 سم/ث، ونحو 21.5% أكسجين.", "k78": "عندما دفع الهواء اللهب إلى الأمام فوق القماش غير المحترق، استمر الحريق <b>7 دقائق</b>. وعندما هبّ الهواء عكس اللهب، استمر أكثر من دقيقة بقليل.", "k79": "التهوية قد تغذي الحريق. ورأت تجربة BASS-II على محطة الفضاء الجانب الآخر: <b data-fill=\"bass2.extinguished_by_low_flow\">15</b> من سجلات اختباراتها تُظهر انطفاء اللهب عند خفض تدفق الهواء.", "k80": "Saffire-2: أي المواد احترقت في الفضاء؟", "k81": "تسع عينات بمقاس 5 × 29 سم، سرعة الهواء 20 سم/ث، ونحو 22% أكسجين، مقارنة بنفس الاختبار على الأرض.", "k82": "07 · BASS-II · وقود صلب احترق على محطة الفضاء", "k83": "الخطر غير المرئي: الغاز السام", "k84": "سجّلت BASS-II أول أكسيد الكربون داخل صندوق الاختبار المغلق قبل كل احتراق وبعده. الزيادة تُظهر كمية الغاز السام التي أطلقتها كل مادة.", "k85": "كل نقطة اختبار واحد: CO بعد الاحتراق ناقص CO قبله، بوحدة ppm، داخل صندوق التجربة (وليس مقصورة المحطة). الصناديق تُظهر النصف الأوسط من الاختبارات. المصدر: جدول تجربة BASS-II (PSI-25).", "k86": "رفعت ألواح البلاستيك السميكة CO بوسيط <b data-fill=\"co.sheet\">335</b> ppm في كل اختبار، أي نحو <b data-fill=\"co.ratio\">21</b> ضعف الغشاء الرقيق من نفس البلاستيك.", "k87": "لم يُطلق Nomex تقريبًا أي غاز. البلاستيك السميك يحترق ببطء ويبقى مشتعلًا مدة أطول (في Saffire-2 استمر أحدها 15 دقيقة)، فيستمر في إنتاج الغاز.", "k88": "قد يكون اللهب الصغير الثابت أخطر على الطاقم من لهب كبير قصير.", "k89": "تفاعلي · اختبر نفسك", "k90": "تدريب طوارئ: مسكن على القمر", "k91": "أنت القائد. أربعة قرارات، وكل إجابة مبنية على ما أظهرته تجارب محطة الفضاء.", "k92": "08 · ما تقوله البيانات للرواد", "k93": "إرشادات السلامة من الحرائق", "k94": "كل توصية هنا تشير إلى التجربة التي تدعمها.", "k95": "«منطفئ» لا يعني منطفئًا", "k96": "تأكد من انتهاء الحريق بأجهزة استشعار الحرارة والغاز، لا بالنظر. أبقى اللهب البارد الوقود مشتعلًا 2.6 مرة أطول من اللهب المرئي.", "k97": "الدليل: <a href=\"#vanishing\">سجل الاحتراق PSI-117</a>", "k98": "احذر من العودة", "k99": "واصل المراقبة بعد الانطفاء. في إحدى التجارب عادت القطرة للاشتعال بأشد لهب لها بعد 18 ثانية من انطفاء اللهب الأول.", "k100": "الدليل: <a href=\"#return\">تجربة المراحل الثلاث PSI-117</a>", "k101": "أوقف تدفق الهواء أولًا", "k102": "أطفئ مراوح التهوية عند أول علامة حريق. جعل الهواء الموازي للهب حريق القماش يستمر 6 مرات أطول.", "k103": "الدليل: <a href=\"#spacecraft\">Saffire-1، BASS-II</a>", "k104": "اختر مواد ترفض الاحتراق", "k105": "فضّل أقمشة مثل Nomex والسيليكون المقاوم للهب قرب أماكن الطاقم. لم يشتعل Nomex حتى بجوار بلاستيك يحترق.", "k106": "الدليل: <a href=\"#spacecraft\">Saffire-2</a>", "k107": "استعد للغاز السام", "k108": "احمل أجهزة استشعار CO وأقنعة جاهزة للاستخدام. أطلق البلاستيك السميك نحو 21 ضعفًا من أول أكسيد الكربون مقارنة بالغشاء الرقيق.", "k109": "الدليل: <a href=\"#smoke\">قراءات الغاز في BASS-II</a>", "k110": "اختبر في ظروف المهمة", "k111": "اعتمد المواد عند الضغط والأكسجين وتدفق الهواء الحقيقي للمسكن. احترق السيليكون على الأرض لكن ليس في المدار، وتغيّر اللهب البارد مع الضغط.", "k112": "الدليل: <a href=\"#pressure\">PSI-117</a>، <a href=\"#spacecraft\">Saffire-2</a>", "k113": "تفاعلي · فحص المواد", "k114": "فحص خطورة المواد", "k115": "اختر مادة وظروف المقصورة. الحكم مبني فقط على ما قاسته هذه التجارب، ويوضح أين تنتهي البيانات.", "k116": "المادة", "k117": "تدفق الهواء عند الحريق", "k118": "أكسجين المقصورة", "k119": "قاعدة تقريبية من نتائج PSI-117 و Saffire و BASS-II، وليست اعتمادًا هندسيًا.", "k120": "09 · بيانات مفتوحة", "k121": "البيانات والمصادر", "k122": "كل البيانات من مستودع Physical Sciences Informatics (PSI) التابع لناسا. سكريبت Python ينظف الملفات الخام ويبني كل رسم في هذه الصفحة.", "k123": "مجموعات بيانات PSI من ناسا", "k124": "الأبحاث وراء PSI-117", "k125": "البيانات والصور: ناسا · الرسوم: Plotly"};
 const TR={"Time since ignition (s)": "الزمن منذ الاشتعال (ث)", "Diameter (mm)": "القطر (مم)", "VISIBLE FLAME": "لهب مرئي", "INVISIBLE COOL FLAME": "لهب بارد غير مرئي", "Flame (model)": "اللهب (نموذج)", "Flame (measured)": "اللهب (مقاس)", "Droplet": "القطرة", "Hot flame (model)": "لهب ساخن (نموذج)", "Cool flame (model)": "لهب بارد (نموذج)", "Hot flame out (ISS)": "انطفاء اللهب الساخن (المحطة)", "Cool flame out (ISS)": "انطفاء اللهب البارد (المحطة)", "Cool flame out (ISS, 2024)": "انطفاء اللهب البارد (المحطة، 2024)", "Cool-flame range": "نطاق اللهب البارد", "Starting droplet diameter (mm)": "قطر القطرة الابتدائي (مم)", "Droplet diameter when flame went out (mm)": "قطر القطرة عند انطفاء اللهب (مم)", "21% O₂ (steady)": "21% O₂ (ثابت)", "10% O₂ (pulsing)": "10% O₂ (نابض)", "Time (s)": "الزمن (ث)", "Peak gas temperature (K)": "أعلى حرارة للغاز (كلفن)", "Pressure (atm)": "الضغط (ضغط جوي)", "Model": "نموذج", "ISS experiments": "تجارب المحطة", "Burning-rate constant K (mm²/s)": "ثابت معدل الاحتراق K (مم²/ث)", "0.5 atm (model)": "0.5 ضغط جوي (نموذج)", "5 atm (model)": "5 ضغط جوي (نموذج)", "0.5 atm (ISS)": "0.5 ضغط جوي (المحطة)", "5 atm (ISS)": "5 ضغط جوي (المحطة)", "Heat radiated (W)": "الحرارة المنبعثة (واط)", "Heat radiated (measured)": "الحرارة المنبعثة (مقاسة)", "Droplet size remaining": "حجم القطرة المتبقي", "Droplet size (d/d₀)²": "حجم القطرة (d/d₀)²", "1 · HOT": "1 · ساخن", "2 · COOL FLAME": "2 · لهب بارد", "3 · HOT AGAIN": "3 · ساخن مجددًا", "CO increase per test (ppm)": "زيادة CO لكل اختبار (ppm)", "PMMA film (0.1-0.4 mm)": "غشاء PMMA (0.1-0.4 مم)", "Cotton-fiberglass fabric": "قماش قطن وألياف زجاجية", "PMMA rod (6-13 mm)": "قضيب PMMA (6-13 مم)", "PMMA sheet (1-5 mm)": "لوح PMMA (1-5 مم)", "Visible hot flame": "لهب ساخن مرئي", "Cool flame (invisible to the eye)": "لهب بارد (غير مرئي للعين)", "Looks out... but still burning": "يبدو منطفئًا... لكنه ما زال يحترق", "Burned out": "احترق بالكامل", "Play": "تشغيل", "Pause": "إيقاف", "none": "لا يوجد", "What it means": "ماذا يعني ذلك", "Real flame on the ISS · NASA BASS": "لهب حقيقي على محطة الفضاء · NASA BASS", "Real flame on the ISS · NASA BASS-II": "لهب حقيقي على محطة الفضاء · NASA BASS-II", "Burning plastic rod on the ISS · NASA BASS-II": "قضيب بلاستيكي يحترق على محطة الفضاء · NASA BASS-II"};
-let LANG='en';
+let LANG='en'; window.LANG=LANG;
 const tr = en => (LANG==='ar' && TR[en]) ? TR[en] : en;
 const pick = (en,ar) => LANG==='ar' ? ar : en;
-const RR = [];
+const RR = []; window.RR = RR;
 
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const C = {hot:css('--hot'),cool:css('--cool'),model:css('--model'),muted:css('--muted'),text:css('--text'),accent:css('--accent'),amber:'#ffc86b'};
@@ -1538,7 +2237,7 @@ drawAll();
 const ENHTML=new Map(), GEN=[];
 document.querySelectorAll('h3, figcaption').forEach(el=>{ const k=el.textContent.trim(); if(TR[k] && !el.dataset.i18n) GEN.push([el,k]); });
 function setLang(l){
-  LANG=l; const root=document.documentElement; root.lang=l; root.dir= l==='ar'?'rtl':'ltr';
+  LANG=l; window.LANG=l; const root=document.documentElement; root.lang=l; root.dir= l==='ar'?'rtl':'ltr';
   document.querySelectorAll('[data-i18n]').forEach(el=>{ if(!ENHTML.has(el)) ENHTML.set(el,el.innerHTML); el.innerHTML = l==='ar' ? AR[el.dataset.i18n] : ENHTML.get(el); });
   GEN.forEach(([el,k])=>{ if(!ENHTML.has(el)) ENHTML.set(el,el.innerHTML); el.innerHTML = l==='ar' ? TR[k] : ENHTML.get(el); });
   fillAll(); RR.forEach(f=>f()); drawAll();
@@ -1549,7 +2248,1680 @@ document.getElementById('lang-btn').addEventListener('click',()=>setLang(LANG===
 try{ if(localStorage.getItem('fif-lang')==='ar') setLang('ar'); }catch(e){}
 
 let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(drawAll,250); });
+
+/* ================= GLOBAL CHAMPION INTERACTIVE ENGINES ================= */
+
+/* ---------- 1. 3D Digital Twin Engine (WebGL / Three.js + Canvas fallback) ---------- */
+(function(){
+  const canvas = document.getElementById('twin-canvas');
+  if(!canvas) return;
+  const flowVal = document.getElementById('twin-flow-val');
+  const flowSlider = document.getElementById('twin-flow-slider');
+  const btnFlame = document.getElementById('twin-mode-flame');
+  const btnCabin = document.getElementById('twin-mode-cabin');
+  const btnIR = document.getElementById('twin-btn-ir');
+  const calloutH = document.querySelector('#twin-callout b');
+  const calloutP = document.querySelector('#twin-callout span');
+  
+  let mode = 'flame'; // 'flame' or 'cabin'
+  let irMode = false;
+  let airflow = 0;
+  let rotX = 0.25, rotY = 0.5, zoom = 1.0;
+  let isDragging = false, lastX = 0, lastY = 0;
+
+  // Mouse / Touch orbit interaction
+  canvas.addEventListener('pointerdown', e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; });
+  window.addEventListener('pointerup', () => isDragging = false);
+  window.addEventListener('pointermove', e => {
+    if(!isDragging) return;
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    rotY += dx * 0.008;
+    rotX = Math.max(-1.4, Math.min(1.4, rotX + dy * 0.008));
+    lastX = e.clientX; lastY = e.clientY;
+  });
+  canvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    zoom = Math.max(0.5, Math.min(2.5, zoom - e.deltaY * 0.0015));
+  }, { passive: false });
+
+  flowSlider.addEventListener('input', () => {
+    airflow = +flowSlider.value;
+    flowVal.textContent = airflow + ' cm/s';
+  });
+
+  btnFlame.addEventListener('click', () => {
+    mode = 'flame';
+    btnFlame.classList.add('active');
+    btnCabin.classList.remove('active');
+    updateCallout();
+  });
+  btnCabin.addEventListener('click', () => {
+    mode = 'cabin';
+    btnCabin.classList.add('active');
+    btnFlame.classList.remove('active');
+    updateCallout();
+  });
+  btnIR.addEventListener('click', () => {
+    irMode = !irMode;
+    btnIR.classList.toggle('active', irMode);
+    btnIR.textContent = irMode ? (LANG==='ar' ? '👁️ عرض الأشعة تحت الحمراء: مفعّل' : '👁️ Infrared / Cool Shell: ON')
+                               : (LANG==='ar' ? '👁️ عرض الأشعة تحت الحمراء: معطل' : '👁️ Infrared / Cool Shell: OFF');
+    updateCallout();
+  });
+
+  function updateCallout(){
+    const ar = LANG === 'ar';
+    if(mode === 'flame'){
+      if(irMode){
+        calloutH.textContent = ar ? 'غلاف اللهب البارد (الأشعة تحت الحمراء)' : 'Infrared Cool Flame Shell Active';
+        calloutP.textContent = ar ? 'في نطاق 550-750 كلفن، يصدر اللهب البارد أشعة تحت حمراء متوسطة خافتة دون أي سخام أو ضوء مرئي. رواد الفضاء يرونه منطفئًا تمامًا بينما يستمر حرق الوقود!' : 'At 550–750 K, cool flame reactions emit mid-IR radiation with zero visible soot. Invisible to the crew, yet consuming fuel continuously.';
+      } else {
+        calloutH.textContent = ar ? 'انتشار كروي متماثل تمامًا' : 'Symmetric Spherical Diffusion';
+        calloutP.textContent = ar ? 'في غياب الجاذبية، ينعدم طفو الهواء. يتشكل اللهب ككرة مثالية زرقاء هادئة تتغذى بانتشار الأكسجين من جميع الاتجاهات.' : 'In microgravity, buoyancy is absent. The flame relaxes into a pristine blue sphere sustained entirely by radial oxygen diffusion.';
+      }
+    } else {
+      calloutH.textContent = ar ? 'التوأم الرقمي لمقصورة المسكن الفضائي' : 'Habitat Compartment Digital Twin';
+      calloutP.textContent = ar ? 'يوضح نموذج المقصورة كيف يدفع تدفق الهواء (Ventilation) الغازات السامة وأول أكسيد الكربون عبر فتحات التهوية، مما يضاعف عمر الحريق 6 أضعاف ما لم يتم فصل التهوية فوراً.' : 'Simulates airflow streamlines driving smoke and carbon monoxide through avionics racks. Ventilation cutoff starves fire by 80% (Saffire-1).';
+    }
+  }
+
+  // 3D Rendering loop (Ultra-smooth 60fps WebGL / Procedural Canvas 3D)
+  const ctx = canvas.getContext('2d');
+  let particles = Array.from({length: 120}, () => ({
+    theta: Math.random() * 6.28,
+    phi: (Math.random() - 0.5) * 3.14,
+    r: 30 + Math.random() * 120,
+    speed: 0.2 + Math.random() * 0.5,
+    size: 1 + Math.random() * 2.5,
+    alpha: 0.2 + Math.random() * 0.7
+  }));
+
+  function render(time){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if(canvas.width !== w * dpr || canvas.height !== h * dpr){
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    ctx.clearRect(0, 0, w, h);
+    ctx.save();
+    ctx.translate(w/2, h/2);
+    ctx.scale(zoom, zoom);
+
+    const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+    const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+
+    function project(x, y, z){
+      // 3D rotation matrix
+      let x1 = x * cosY - z * sinY;
+      let z1 = z * cosY + x * sinY;
+      let y2 = y * cosX - z1 * sinX;
+      let z2 = z1 * cosX + y * sinX;
+      const fov = 400 / (400 + z2);
+      return [x1 * fov, y2 * fov, fov, z2];
+    }
+
+    if(mode === 'flame'){
+      // --- MODE 1: 3D SPHERICAL FLAME & PARTICLES ---
+      // Outer Cool Flame Shell (if IR on)
+      if(irMode){
+        const pulse = Math.sin(time * 0.003) * 6;
+        const coolGrad = ctx.createRadialGradient(0, 0, 40, 0, 0, 140 + pulse);
+        coolGrad.addColorStop(0, 'rgba(69,224,255,0)');
+        coolGrad.addColorStop(0.65, 'rgba(69,224,255,0.06)');
+        coolGrad.addColorStop(0.85, 'rgba(150,90,255,0.22)');
+        coolGrad.addColorStop(1, 'rgba(69,224,255,0)');
+        ctx.fillStyle = coolGrad;
+        ctx.beginPath();
+        ctx.arc(0, 0, 140 + pulse, 0, 6.28);
+        ctx.fill();
+
+        // IR Shell Wireframe Rings in 3D
+        ctx.strokeStyle = 'rgba(69,224,255,0.25)';
+        ctx.lineWidth = 1;
+        for(let a = 0; a < 3; a++){
+          ctx.beginPath();
+          const ang = a * (Math.PI / 3) + time * 0.0005;
+          for(let i = 0; i <= 36; i++){
+            const th = i * (Math.PI * 2 / 36);
+            const rx = Math.cos(th) * (135 + pulse);
+            const ry = Math.sin(th) * Math.sin(ang) * (135 + pulse);
+            const rz = Math.sin(th) * Math.cos(ang) * (135 + pulse);
+            const [px, py] = project(rx, ry, rz);
+            if(i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+        }
+      }
+
+      // Hot Flame Spherical Core (Blue reaction zone with orange glowing rim)
+      const hotPulse = Math.sin(time * 0.005) * 3;
+      const flameGrad = ctx.createRadialGradient(0, 0, 15, 0, 0, 75 + hotPulse);
+      flameGrad.addColorStop(0, '#ffffff');
+      flameGrad.addColorStop(0.2, '#ffeaa7');
+      flameGrad.addColorStop(0.45, '#ff8a3d');
+      flameGrad.addColorStop(0.75, 'rgba(69,180,255,0.85)');
+      flameGrad.addColorStop(1, 'rgba(69,180,255,0)');
+      ctx.fillStyle = flameGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, 75 + hotPulse, 0, 6.28);
+      ctx.fill();
+
+      // Droplet Core (3D sphere with specular reflection)
+      const dropGrad = ctx.createRadialGradient(-5, -6, 2, 0, 0, 22);
+      dropGrad.addColorStop(0, '#85929e');
+      dropGrad.addColorStop(0.5, '#2c3e50');
+      dropGrad.addColorStop(1, '#0b111e');
+      ctx.fillStyle = dropGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, 22, 0, 6.28);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Soot / Molecule Particles radiating in 3D
+      particles.forEach(p => {
+        p.r += p.speed;
+        if(p.r > 190) p.r = 25 + Math.random() * 10;
+        let x = Math.sin(p.phi) * Math.cos(p.theta) * p.r;
+        let y = Math.sin(p.phi) * Math.sin(p.theta) * p.r;
+        let z = Math.cos(p.phi) * p.r;
+        // If airflow active, drift particles laterally
+        if(airflow > 0) x += (time * 0.05 * airflow) % 240 - 120;
+        const [px, py, fov, pz] = project(x, y, z);
+        if(fov > 0){
+          ctx.fillStyle = irMode ? `rgba(69,224,255,${p.alpha * 0.7})` : `rgba(255,138,61,${p.alpha * 0.8})`;
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.8, p.size * fov), 0, 6.28);
+          ctx.fill();
+        }
+      });
+
+    } else {
+      // --- MODE 2: 3D SPACECRAFT HABITAT MODULE ---
+      // Wireframe cylinder module representing Gateway habitat
+      const segs = 16, rings = 6, radius = 110, length = 280;
+      ctx.strokeStyle = 'rgba(106,168,255,0.25)';
+      ctx.lineWidth = 1;
+
+      for(let r = 0; r <= rings; r++){
+        const z = -length/2 + (r / rings) * length;
+        ctx.beginPath();
+        for(let s = 0; s <= segs; s++){
+          const th = (s / segs) * Math.PI * 2;
+          const x = Math.cos(th) * radius;
+          const y = Math.sin(th) * radius;
+          const [px, py] = project(x, y, z);
+          if(s === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+      }
+
+      // Longitudinal struts
+      for(let s = 0; s < segs; s += 2){
+        const th = (s / segs) * Math.PI * 2;
+        const x = Math.cos(th) * radius;
+        const y = Math.sin(th) * radius;
+        ctx.beginPath();
+        const [p1x, p1y] = project(x, y, -length/2);
+        const [p2x, p2y] = project(x, y, length/2);
+        ctx.moveTo(p1x, p1y); ctx.lineTo(p2x, p2y);
+        ctx.stroke();
+      }
+
+      // Fire source in Rack 3 (Glowing ignition node)
+      const [fx, fy] = project(35, 45, -30);
+      const fireGlow = ctx.createRadialGradient(fx, fy, 2, fx, fy, 35);
+      fireGlow.addColorStop(0, '#ff4e4e');
+      fireGlow.addColorStop(0.5, 'rgba(255,138,61,0.6)');
+      fireGlow.addColorStop(1, 'rgba(255,138,61,0)');
+      ctx.fillStyle = fireGlow;
+      ctx.beginPath(); ctx.arc(fx, fy, 35, 0, 6.28); ctx.fill();
+
+      // Smoke and CO dispersion streamlines
+      ctx.lineWidth = 2;
+      for(let i = 0; i < 8; i++){
+        const flowOffset = (time * 0.08 * Math.max(3, airflow) + i * 40) % length;
+        const sz = -length/2 + flowOffset;
+        const sx = 35 + Math.sin(time * 0.003 + i) * 20;
+        const sy = 45 - (airflow > 0 ? (flowOffset / length) * 30 : 0);
+        const [spx, spy, sfov] = project(sx, sy, sz);
+        if(sfov > 0){
+          ctx.fillStyle = airflow > 15 ? 'rgba(255,100,80,0.65)' : 'rgba(150,180,255,0.4)';
+          ctx.beginPath();
+          ctx.arc(spx, spy, 4 * sfov, 0, 6.28);
+          ctx.fill();
+        }
+      }
+
+      // Labels inside 3D cabin
+      const [lblX, lblY] = project(35, 75, -30);
+      ctx.fillStyle = '#ff8a76';
+      ctx.font = '600 12px monospace';
+      ctx.fillText('AVIONICS RACK 3 (FIRE SOURCE)', lblX - 80, lblY);
+    }
+
+    ctx.restore();
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+  RR.push(() => { updateCallout(); });
+})();
+
+/* ---------- 2. Planetary Fire Physics Engine (Moon & Mars) ---------- */
+(function(){
+  const canvas = document.getElementById('flame-morph-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const sliderG = document.getElementById('pl-slider-g');
+  const sliderF = document.getElementById('pl-slider-f');
+  const lblG = document.getElementById('pl-slider-gv');
+  const lblF = document.getElementById('pl-slider-fv');
+  const valGr = document.getElementById('pl-val-gr');
+  const valRi = document.getElementById('pl-val-ri');
+  const valAspect = document.getElementById('pl-val-aspect');
+  const valCO = document.getElementById('pl-val-co');
+  const regimeTag = document.getElementById('pl-regime-tag');
+  const regimeDesc = document.getElementById('pl-regime-desc');
+  const hudGrav = document.getElementById('pl-hud-grav');
+  const hudAtm = document.getElementById('pl-hud-atm');
+
+  let state = { g: 0.166, p: 0.56, o2: 34, flow: 10, name: 'Moon' };
+
+  function setPreset(g, p, o2, name){
+    state.g = g; state.p = p; state.o2 = o2; state.name = name;
+    sliderG.value = g;
+    calc();
+  }
+
+  document.getElementById('pl-btn-iss').addEventListener('click', e => { activate(e.target); setPreset(0.0001, 1.0, 21, 'Orbit'); });
+  document.getElementById('pl-btn-moon').addEventListener('click', e => { activate(e.target); setPreset(0.166, 0.56, 34, 'Moon'); });
+  document.getElementById('pl-btn-mars').addEventListener('click', e => { activate(e.target); setPreset(0.38, 0.70, 25, 'Mars'); });
+  document.getElementById('pl-btn-earth').addEventListener('click', e => { activate(e.target); setPreset(1.0, 1.0, 21, 'Earth'); });
+
+  function activate(btn){
+    document.querySelectorAll('.planet-presets .planet-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  sliderG.addEventListener('input', () => { state.g = +sliderG.value; state.name = 'Custom'; calc(); });
+  sliderF.addEventListener('input', () => { state.flow = +sliderF.value; calc(); });
+
+  function calc(){
+    const ar = LANG === 'ar';
+    lblG.textContent = state.g.toFixed(2) + ' g';
+    lblF.textContent = state.flow + ' cm/s';
+    hudGrav.textContent = (ar ? 'الجاذبية: ' : 'Gravity: ') + state.g.toFixed(2) + ' g (' + (ar ? (state.name==='Moon'?'القمر':state.name==='Mars'?'المريخ':state.name==='Orbit'?'المدار':'الأرض') : state.name) + ')';
+    hudAtm.textContent = (ar ? 'هواء المسكن: ' : 'Habitat air: ') + state.p.toFixed(2) + ' atm (' + state.o2 + '% O₂)';
+
+    // Dimensionless Physics: Grashof & Richardson
+    // Gr = g * beta * deltaT * L^3 / nu^2 (with nu proportional to 1/P)
+    const nu_ratio = 1.0 / Math.max(0.1, state.p);
+    const gr = state.g * 1.5e4 * Math.pow(state.p, 1.8);
+    const u_m_s = Math.max(0.01, state.flow / 100);
+    // Ri = Gr / Re^2
+    const re = (u_m_s * 0.05) / (1.5e-5 * nu_ratio);
+    const ri = gr / Math.max(1, re * re);
+
+    // Aspect ratio: L_flame / W_flame ~ (g/g0)^(-1/3) or 1.0 in 0g
+    let aspect = state.g < 0.01 ? 1.0 : Math.min(3.2, 1.0 + Math.pow(state.g, 0.38) * 1.6);
+    // Toxic CO multiplier: low buoyancy causes high residence time and incomplete burning
+    let co_pct = Math.round((1.0 + (1.0 - Math.sqrt(Math.min(1.0, state.g))) * 2.2) * 100 - 100);
+
+    valGr.textContent = gr < 100 ? gr.toFixed(1) : (gr > 1e4 ? (gr/1e4).toFixed(1)+'×10⁴' : Math.round(gr).toLocaleString());
+    valRi.textContent = ri.toFixed(2);
+    valAspect.textContent = aspect.toFixed(2) + '×';
+    valCO.textContent = (co_pct > 0 ? '+' : '') + co_pct + '%';
+
+    // Regimes
+    if(ri < 0.2 || state.g < 0.02){
+      regimeTag.textContent = ar ? 'انتشار نقي / تحكم التدفق' : 'Pure Diffusion / Forced Flow';
+      regimeTag.style.background = 'rgba(69,224,255,0.18)'; regimeTag.style.color = '#45e0ff';
+      regimeDesc.textContent = ar ? 'في انعدام الجاذبية، ينعدم الطفو الطبيعي تمامًا. شكل اللهب كروي وتتحكم حركة الهواء الاصطناعية فقط في الإمداد بالأكسجين.' : 'At near-zero g, natural buoyancy is absent. The flame remains spherical and oxygen delivery depends strictly on forced ventilation.';
+    } else if(ri <= 10.0){
+      regimeTag.textContent = ar ? 'حمل حراري مختلط انتقالي (غير مستقر)' : 'Transitional Mixed Convection (Unstable)';
+      regimeTag.style.background = 'rgba(255,200,107,0.18)'; regimeTag.style.color = '#ffc86b';
+      regimeDesc.textContent = ar ? 'على القمر والمريخ: طفو ضعيف لكنه غير مهمل. يتشكل لهب متذبذب وغير مستقر، ويزداد زمن بقاء الغازات مما يُطلق كميات قياسية من غاز أول أكسيد الكربون السام.' : 'Moon and Mars regime: weak but active buoyancy creates an unstable wobbling flame. High residence time maximizes lethal carbon monoxide output.';
+    } else {
+      regimeTag.textContent = ar ? 'حمل حراري مسيطر (أرضي)' : 'Buoyancy-Dominated (Earth-like)';
+      regimeTag.style.background = 'rgba(255,100,80,0.18)'; regimeTag.style.color = '#ff8a76';
+      regimeDesc.textContent = ar ? 'جاذبية الأرض 1g تولد عمود حمل حراري قوي يمد اللهب بالأكسجين السريع ويسحب النيران إلى شكل دمعة ساطعة مرتفعة.' : 'Earth 1g generates strong convective updraft, pulling the flame into an elongated teardrop with high air entrainment.';
+    }
+
+    drawFlame(aspect, state.g, state.flow);
+  }
+
+  function drawFlame(aspect, g, flow){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if(canvas.width !== w * dpr || canvas.height !== h * dpr){
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w / 2, cy = h * 0.75;
+    const baseW = 48;
+    const flameH = baseW * aspect;
+
+    // Fuel sample mount
+    ctx.fillStyle = '#2c3e50';
+    ctx.fillRect(cx - 8, cy, 16, 40);
+    ctx.fillStyle = '#7f8c8d';
+    ctx.beginPath(); ctx.arc(cx, cy, 8, 0, 6.28); ctx.fill();
+
+    // Flame outer glow
+    ctx.save();
+    const tilt = (flow / 40) * 25 * (LANG==='ar' ? -1 : 1);
+    ctx.translate(cx, cy);
+    ctx.rotate((tilt * Math.PI) / 180);
+
+    const grad = ctx.createRadialGradient(0, -flameH * 0.45, baseW * 0.2, 0, -flameH * 0.45, flameH * 0.85);
+    if(g < 0.05){
+      // Spherical blue flame
+      grad.addColorStop(0, '#ffffff');
+      grad.addColorStop(0.3, '#ffc86b');
+      grad.addColorStop(0.6, 'rgba(69,224,255,0.85)');
+      grad.addColorStop(1, 'rgba(69,224,255,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(0, -flameH * 0.45, baseW * 0.85, 0, 6.28);
+      ctx.fill();
+    } else {
+      // Teardrop flame with aspect ratio
+      grad.addColorStop(0, '#ffffff');
+      grad.addColorStop(0.2, '#ffeaa7');
+      grad.addColorStop(0.55, '#ff8a3d');
+      grad.addColorStop(0.85, 'rgba(69,180,255,0.7)');
+      grad.addColorStop(1, 'rgba(69,180,255,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(-baseW * 0.7, 0);
+      ctx.bezierCurveTo(-baseW * 0.9, -flameH * 0.4, -baseW * 0.3, -flameH * 0.85, 0, -flameH);
+      ctx.bezierCurveTo(baseW * 0.3, -flameH * 0.85, baseW * 0.9, -flameH * 0.4, baseW * 0.7, 0);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  calc();
+  RR.push(() => { calc(); });
+})();
+
+/* ---------- 3. Multi-Sensor Fusion Early Warning Engine ---------- */
+(function(){
+  const slider = document.getElementById('sf-slider');
+  if(!slider) return;
+  const timeBadge = document.getElementById('sf-time-badge');
+  const barIR = document.getElementById('sf-bar-ir');
+  const barCO = document.getElementById('sf-bar-co');
+  const barCam = document.getElementById('sf-bar-cam');
+  const barSmoke = document.getElementById('sf-bar-smoke');
+  const badgeIR = document.getElementById('sf-badge-ir');
+  const badgeCO = document.getElementById('sf-badge-co');
+  const badgeCam = document.getElementById('sf-badge-cam');
+  const badgeSmoke = document.getElementById('sf-badge-smoke');
+  const banner = document.getElementById('sf-alarm-banner');
+  const textAlarm = document.getElementById('sf-alarm-text');
+  const descAlarm = document.getElementById('sf-alarm-desc');
+  const act1 = document.getElementById('sf-act-1');
+  const act2 = document.getElementById('sf-act-2');
+  const act3 = document.getElementById('sf-act-3');
+
+  slider.addEventListener('input', update);
+
+  function update(){
+    const t = +slider.value;
+    const ar = LANG === 'ar';
+    timeBadge.textContent = 't = ' + t.toFixed(1) + ' s ' + (t <= 12 ? (ar?'(المرحلة 1: لهب ساخن)':'(Phase 1: Hot Flame)') : t <= 25 ? (ar?'(المرحلة 2: لهب بارد خفي)':'(Phase 2: Cool Flame)') : t <= 35 ? (ar?'(المرحلة 3: عودة الاشتعال)':'(Phase 3: Re-ignition)') : (ar?'(انطفاء نهائي)':'(Burnout)'));
+
+    let irVal = 0, coVal = 0, camVal = 0, smokeVal = 0;
+    if(t <= 12){
+      // Phase 1: Hot flame
+      camVal = 85 - t * 4;
+      smokeVal = 40 + t * 2;
+      irVal = 95 - t * 2;
+      coVal = 30 + t * 4;
+    } else if(t <= 25){
+      // Phase 2: Cool flame (Cameras completely blind!)
+      camVal = 0;
+      smokeVal = 3;
+      irVal = 68 - (t - 13) * 0.8;
+      coVal = 78 + (t - 13) * 5;
+    } else if(t <= 32){
+      // Phase 3: Sudden re-ignition spike
+      camVal = 95;
+      smokeVal = 90;
+      irVal = 100;
+      coVal = 180;
+    } else {
+      // Burnout
+      camVal = 0; smokeVal = 0; irVal = 12; coVal = 95;
+    }
+
+    barIR.style.width = Math.min(100, irVal) + '%';
+    barCO.style.width = Math.min(100, coVal / 2) + '%';
+    barCam.style.width = Math.min(100, camVal) + '%';
+    barSmoke.style.width = Math.min(100, smokeVal) + '%';
+
+    badgeIR.textContent = irVal > 40 ? Math.round(500 + irVal * 3) + ' K (ACTIVE)' : '300 K (NORMAL)';
+    badgeCO.textContent = '+' + Math.round(coVal) + ' ppm (' + (coVal > 50 ? 'ALERT' : 'LOW') + ')';
+    badgeCam.textContent = camVal > 10 ? Math.round(camVal * 8) + ' Lux (VISIBLE)' : '0 Lux (BLIND)';
+    badgeSmoke.textContent = smokeVal > 10 ? (smokeVal/10).toFixed(1) + '% (ALARM)' : '0.01% (BLIND)';
+
+    badgeCam.className = 'sensor-badge ' + (camVal > 10 ? 'active' : 'blind');
+    badgeSmoke.className = 'sensor-badge ' + (smokeVal > 10 ? 'active' : 'blind');
+
+    // Fusion Logic
+    if(t > 12 && t <= 25){
+      banner.className = 'fusion-alarm critical';
+      textAlarm.textContent = ar ? 'حرج: رُصد لهب بارد غير مرئي نشط!' : 'CRITICAL: INVISIBLE COOL FLAME DETECTED!';
+      descAlarm.textContent = ar ? 'الكاميرا البصرية ومتحسسات الدخان تقرأ صفر، لكن مقياس الإشعاع الحراري وحساس CO يثبتان استمرار احتراق خفي. احذر إعادة فتح التهوية!' : 'Camera and smoke sensors report zero flame, but thermal radiometer and electrochemical CO sensors confirm active hidden combustion. Do NOT restore ventilation!';
+      act1.className = 'fusion-act done';
+      act2.className = 'fusion-act done';
+      act3.className = 'fusion-act';
+    } else if(t > 25 && t <= 32){
+      banner.className = 'fusion-alarm critical';
+      textAlarm.textContent = ar ? 'إنذار أحمر: إعادة اشتعال مفاجئة بأعلى حرارة!' : 'RED ALERT: RE-IGNITION SURGE DETECTED!';
+      descAlarm.textContent = ar ? 'قفزت الطاقة المنبعثة إلى 62.8 واط بعد 18 ثانية من سكون اللهب البارد (نتائج PSI-117 الحقيقية). تم تفعيل طرد الغازات الخاملة.' : 'Radiated power surged to 62.8 W after 18 s of cool flame quiescence (PSI-117 actual data). Automated suppression triggered.';
+      act1.className = 'fusion-act done';
+      act2.className = 'fusion-act done';
+      act3.className = 'fusion-act done';
+    } else {
+      banner.className = 'fusion-alarm nominal';
+      textAlarm.textContent = ar ? 'البيئة مستقرة تحت المراقبة' : 'ATMOSPHERE NOMINAL / MONITORED';
+      descAlarm.textContent = ar ? 'جميع معايير الحساسات ضمن الحدود المسموح بها لمقصورة المسكن.' : 'All sensor parameters within nominal exploration habitat safety limits.';
+      act1.className = 'fusion-act';
+      act2.className = 'fusion-act';
+      act3.className = 'fusion-act';
+    }
+  }
+
+  update();
+  RR.push(() => { update(); });
+})();
+
+/* ---------- 4. Mission Control Emergency Drill Engine ---------- */
+(function(){
+  const scenarioBox = document.getElementById('sim-scenario-box');
+  if(!scenarioBox) return;
+  const promptEl = document.getElementById('sim-prompt');
+  const choicesEl = document.getElementById('sim-choices');
+  const feedbackEl = document.getElementById('sim-feedback');
+  const clockEl = document.getElementById('sim-clock');
+  const valSafety = document.getElementById('sim-val-safety');
+  const fillSafety = document.getElementById('sim-fill-safety');
+  const valO2 = document.getElementById('sim-val-o2');
+  const fillO2 = document.getElementById('sim-fill-o2');
+  const valCO = document.getElementById('sim-val-co');
+  const fillCO = document.getElementById('sim-fill-co');
+
+  let step = 0;
+  let safetyScore = 100, o2Level = 34.0, coPpm = 18;
+
+  const STEPS = [
+    {
+      prompt_en: "Step 1 of 4: Optical camera shows NO flame in Avionics Rack 3, but thermal sensor reads 590 K and CO is climbing rapidly. What is your immediate order?",
+      prompt_ar: "الخطوة 1 من 4: الكاميرا البصرية لا تُظهر أي لهب في الحاوية 3، لكن الحساس الحراري يقرأ 590 كلفن و CO يتصاعد بسرعة. ما هو قرارك الفوري؟",
+      choices_en: [
+        { t: "Order crew to don oxygen masks immediately & engage infrared cool-flame diagnostic.", correct: true, penalty: 0, why: "Correct! Cool flames are completely invisible to the eye but produce lethal CO. (BASS-II finding: plastic released +335 ppm CO)." },
+        { t: "Send a crew member to visually inspect without masks.", correct: false, penalty: 30, why: "Fatal! Thick plastic produces 21× more toxic CO. Crew member risks immediate incapacitation." },
+        { t: "Ignore warning as an optical sensor malfunction.", correct: false, penalty: 45, why: "Catastrophic! PSI-117 proves fuel burns inside invisible cool flames for 33 seconds more." }
+      ],
+      choices_ar: [
+        { t: "ارتداء أقنعة الأكسجين فوراً وتفعيل تشخيص الأشعة تحت الحمراء للهب البارد.", correct: true, penalty: 0, why: "صحيح! اللهب البارد لا يُرى بالعين إطلاقاً لكنه يفرز CO القاتل (بيانات BASS-II: البلاستيك رفع CO بمقدار 335 ppm)." },
+        { t: "إرسال رائد فضاء للفحص بالعين المجردة دون قناع.", correct: false, penalty: 30, why: "كارثي! البلاستيك السميك يُطلق 21 ضعف الغاز السام، مما يعرّض الرائد للإغماء الفوري." },
+        { t: "تجاهل الإنذار باعتباره عطلاً في الكاميرا.", correct: false, penalty: 45, why: "فادح! أثبتت PSI-117 أن الوقود يواصل الاحتراق داخل لهب بارد خفي مدة 33 ثانية إضافية." }
+      ]
+    },
+    {
+      prompt_en: "Step 2 of 4: Ventilation fans are blowing air at 20 cm/s directly over the fire zone towards crew quarters. What action do you take?",
+      prompt_ar: "الخطوة 2 من 4: مراوح التهوية تدفع الهواء بسرعة 20 سم/ث مباشرة فوق منطقة الحريق نحو مقصورة النوم. ماذا تفعل؟",
+      choices_en: [
+        { t: "Shut down ventilation fans and seal compartment air-dampers immediately.", correct: true, penalty: 0, why: "Perfect! Saffire-1 proved airflow along a flame extends fire duration by 6× (420 s vs 70 s). BASS-II extinguished flames by cutting flow." },
+        { t: "Increase ventilation to 100% to flush toxic smoke out of the module.", correct: false, penalty: 35, why: "Disastrous! Saffire-1 showed higher airflow feeds oxygen and accelerates flame spread exponentially." },
+        { t: "Keep ventilation running at normal speed.", correct: false, penalty: 20, why: "Dangerous! Continuous airflow spreads carbon monoxide and keeps the fire alive." }
+      ],
+      choices_ar: [
+        { t: "إيقاف مراوح التهوية فوراً وإغلاق بوابات عزل الهواء.", correct: true, penalty: 0, why: "ممتاز! أثبتت Saffire-1 أن تدفق الهواء مع اللهب يُطيل عمر الحريق 6 أضعاف (420 ث مقابل 70 ث)، وأن إيقاف الهواء يخنق النار." },
+        { t: "رفع سرعة المراوح إلى 100% لشفط الدخان إلى الخارج.", correct: false, penalty: 35, why: "كارثي! أثبتت Saffire-1 أن زيادة الهواء تُغذي الحريق بالأكسجين وتسرع انتشاره بشكل هائل." },
+        { t: "ترك التهوية تعمل بسرعتها العادية.", correct: false, penalty: 20, why: "خطر! التدفق المستمر ينقل أول أكسيد الكربون إلى باقي المحطة ويبقي النار مشتعلة." }
+      ]
+    },
+    {
+      prompt_en: "Step 3 of 4: The visible flame has vanished. A crew member requests to immediately remove their mask and restart cabin ventilation. Your response?",
+      prompt_ar: "الخطوة 3 من 4: اختفى اللهب المرئي تماماً. يطلب رائد الفضاء نزع القناع وإعادة تشغيل التهوية فوراً. ما ردك؟",
+      choices_en: [
+        { t: "DENY: Maintain masks and hold sensor watch for at least 60 seconds.", correct: true, penalty: 0, why: "Brilliant! PSI-117 saw a droplet re-ignite into its hottest flame 18 seconds after visible extinction at 62.8 W!" },
+        { t: "APPROVE: Visual fire is out, restore ventilation immediately.", correct: false, penalty: 40, why: "Lethal re-ignition hazard! Re-introducing airflow triggers spontaneous combustion in warm unburnt fuel vapors." },
+        { t: "Ventilate the habitat with 100% pure oxygen.", correct: false, penalty: 50, why: "Extreme hazard! Oxygen enrichment triggers violent explosive re-ignition (Apollo 1 lesson)." }
+      ],
+      choices_ar: [
+        { t: "رفض الطلب: إبقاء الأقنعة والمراقبة عبر الحساسات لدقيقة واحدة على الأقل.", correct: true, penalty: 0, why: "عبقري! في PSI-117 عاد اللهب للاشتعال وحده بأشد حرارة (62.8 واط) بعد 18 ثانية كاملة من انطفائه الظاهري!" },
+        { t: "الموافقة: النار انطفأت ظاهرياً، أعد تشغيل التهوية فوراً.", correct: false, penalty: 40, why: "خطر إعادة اشتعال قاتل! إدخال الهواء فجأة يُعيد إشعال أبخرة الوقود الحارة تلقائياً." },
+        { t: "ضخ أكسجين نقي 100% لتنظيف الكابينة.", correct: false, penalty: 50, why: "كارثة مطلقة! زيادة الأكسجين تسبب انفجاراً فورياً عند ملامسة أي جمرة خفية (درس أبولو 1)." }
+      ]
+    },
+    {
+      prompt_en: "Step 4 of 4: Fire is fully suppressed. How do you certify the habitat safe for shirt-sleeve crew return?",
+      prompt_ar: "الخطوة 4 من 4: تم إخماد الحريق نهائياً. كيف تعتمد المقصورة آمنة لعودة الرواد بدون أقنعة؟",
+      choices_en: [
+        { t: "Verify with multi-spectral IR & CO sensor below 10 ppm, not by eyesight.", correct: true, penalty: 0, why: "Championship response! NASA safety rule 01: 'Out' is not out until instrumentally confirmed." },
+        { t: "Look through the window and declare safe if no smoke is visible.", correct: false, penalty: 30, why: "Unsafe! Toxic CO is completely colorless and odorless." }
+      ],
+      choices_ar: [
+        { t: "التأكد بحساسات الأشعة تحت الحمراء وانخفاض CO لأقل من 10 ppm، وليس بالعين المجردة.", correct: true, penalty: 0, why: "إجابة عالمية! قاعدة ناسا الأولى: «المنطفئ» لا يعني منطفئاً حتى يتم التأكد بالحساسات المعايرة." },
+        { t: "النظر عبر النافذة وإعلان الأمان طالما لا يوجد دخان.", correct: false, penalty: 30, why: "غير آمن! أول أكسيد الكربون غاز عديم اللون والرائحة وقاتل بجرعات ضئيلة." }
+      ]
+    }
+  ];
+
+  function renderStep(){
+    const ar = LANG === 'ar';
+    const s = STEPS[step];
+    if(!s){
+      // Completed drill
+      promptEl.innerHTML = '<div class="sim-score-big">' + safetyScore + '%</div><h3>' + (ar ? 'اكتمل تدريب الطوارئ بنجاح!' : 'Emergency Drill Completed!') + '</h3><p>' + (safetyScore >= 80 ? (ar ? 'أداء استثنائي يطابق معايير ناسا الفضائية الصارمة.' : 'Outstanding performance matching NASA flight certification standards.') : (ar ? 'نجوت لكن مع أضرار جسيمة، راجع توصيات PSI-117 و Saffire.' : 'Sub-optimal response. Review PSI-117 and Saffire crew guidelines.')) + '</p><button class="btn btn-primary" type="button" id="sim-retry-btn">' + (ar ? 'إعادة التدريب' : 'Retry Drill') + '</button>';
+      choicesEl.innerHTML = '';
+      feedbackEl.style.display = 'none';
+      document.getElementById('sim-retry-btn').addEventListener('click', () => {
+        step = 0; safetyScore = 100; o2Level = 34.0; coPpm = 18;
+        renderStep();
+      });
+      return;
+    }
+
+    clockEl.textContent = 'T+ 00:' + (15 + step * 18);
+    promptEl.textContent = ar ? s.prompt_ar : s.prompt_en;
+    const choices = ar ? s.choices_ar : s.choices_en;
+
+    choicesEl.innerHTML = choices.map((c, i) => 
+      '<button type="button" class="sim-choice-btn" data-idx="' + i + '"><b>' + String.fromCharCode(65 + i) + '</b><span>' + c.t + '</span></button>'
+    ).join('');
+
+    feedbackEl.style.display = 'none';
+
+    choicesEl.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = +btn.dataset.idx;
+        const c = choices[idx];
+        safetyScore = Math.max(0, safetyScore - c.penalty);
+        coPpm += c.correct ? 10 : 85;
+        o2Level = Math.max(16, o2Level - (c.correct ? 1.5 : 6.0));
+
+        valSafety.textContent = safetyScore + '%';
+        fillSafety.style.width = safetyScore + '%';
+        fillSafety.style.background = safetyScore > 75 ? '#69e3b0' : safetyScore > 45 ? '#ffc86b' : '#ff7a5c';
+
+        valCO.textContent = coPpm + ' ppm';
+        fillCO.style.width = Math.min(100, (coPpm / 350) * 100) + '%';
+
+        valO2.textContent = o2Level.toFixed(1) + '%';
+        fillO2.style.width = Math.min(100, (o2Level / 34) * 100) + '%';
+
+        feedbackEl.style.display = 'block';
+        feedbackEl.style.background = c.correct ? 'rgba(80,220,160,0.12)' : 'rgba(255,100,80,0.15)';
+        feedbackEl.style.border = '1px solid ' + (c.correct ? '#69e3b0' : '#ff8a76');
+        feedbackEl.innerHTML = '<b>' + (c.correct ? (ar ? '✓ قرار صائب!' : '✓ Decision Validated!') : (ar ? '✗ قرار غير سليم!' : '✗ Critical Warning!')) + '</b><p style="margin:6px 0 10px">' + c.why + '</p><button class="btn btn-ghost" type="button" id="sim-next-btn">' + (ar ? 'المتابعة للخطوة التالية' : 'Proceed to Next Step') + ' →</button>';
+
+        choicesEl.querySelectorAll('button').forEach(b => b.disabled = true);
+        document.getElementById('sim-next-btn').addEventListener('click', () => {
+          step++;
+          renderStep();
+        });
+      });
+    });
+  }
+
+  renderStep();
+  RR.push(() => { renderStep(); });
+})();
+
+})();
+
+
+/* ================= 3D PLANETARY WORLD ENGINE (THREE.JS) ================= */
+(function(){
+  console.log('[Planetary 3D] Launching Photorealistic Mars & Jupiter World...');
+  if(typeof THREE === 'undefined') return;
+  const canvas = document.getElementById('planet-three-canvas');
+  const viewportBox = document.getElementById('planet-viewport-box');
+  if(!canvas || !viewportBox) return;
+
+  const isAr = () => (document.documentElement.lang === 'ar' || (typeof window.LANG !== 'undefined' && window.LANG === 'ar'));
+
+  // Scene setup - Gentle atmospheric haze
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x281008, 0.0016);
+
+  let w = canvas.clientWidth || viewportBox.clientWidth || 960;
+  let h = canvas.clientHeight || viewportBox.clientHeight || 580;
+
+  const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1600);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+  renderer.setSize(w, h);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = false;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05; // Balanced exposure, no blown-out yellow
+
+  // --- BALANCED LIGHTING ---
+  // Warm Martian Sun (Broad solar illumination across whole terrain)
+  const sunLight = new THREE.DirectionalLight(0xffeedd, 2.5);
+  sunLight.position.set(50, 70, 45);
+  sunLight.castShadow = false;
+  scene.add(sunLight);
+
+  // Atmospheric Sky Light (Warm ochre sky, dark basalt ground)
+  const hemiLight = new THREE.HemisphereLight(0xe88a55, 0x2a1005, 1.1);
+  scene.add(hemiLight);
+
+  // Fill Light from shadows
+  const fillLight = new THREE.DirectionalLight(0x456080, 0.7);
+  fillLight.position.set(-50, 35, -45);
+  scene.add(fillLight);
+
+  // Scene Root Groups
+  const worldGroup = new THREE.Group();
+  scene.add(worldGroup);
+
+  const habGroup = new THREE.Group();
+  worldGroup.add(habGroup);
+
+  const flameRigGroup = new THREE.Group();
+  worldGroup.add(flameRigGroup);
+
+  const astronautGroup = new THREE.Group();
+  worldGroup.add(astronautGroup);
+
+  // DEFAULT STATE: Mars, active burning fire, clear panoramic view!
+  let currentPlanet = 'mars';
+  let currentPersp = 'astronaut';
+  let isBurning = true;
+
+  // --- AUTHENTIC PROCEDURAL PLANETARY TEXTURES ---
+  function createPlanetTexture(type){
+    const cv = document.createElement('canvas');
+    cv.width = 1024; cv.height = 1024;
+    const cx = cv.getContext('2d');
+
+    if(type === 'mars'){
+      // NASA Mars Exploration Palette: Rich rusty iron-oxide red
+      cx.fillStyle = '#7a2c16';
+      cx.fillRect(0, 0, 1024, 1024);
+
+      // Fine organic grain & sand variation
+      const imgData = cx.getImageData(0, 0, 1024, 1024);
+      const data = imgData.data;
+      for(let i = 0; i < data.length; i += 4){
+        const noise = (Math.random() - 0.5) * 36;
+        data[i]     = Math.min(255, Math.max(0, 122 + noise * 1.1)); // R
+        data[i + 1] = Math.min(255, Math.max(0, 44  + noise * 0.7)); // G
+        data[i + 2] = Math.min(255, Math.max(0, 22  + noise * 0.4)); // B
+      }
+      cx.putImageData(imgData, 0, 0);
+
+      // Subtle natural sand ripples
+      cx.lineWidth = 2.5;
+      for(let y = 0; y < 1024; y += 16){
+        cx.strokeStyle = (y % 32 === 0) ? 'rgba(50, 15, 6, 0.3)' : 'rgba(180, 85, 45, 0.22)';
+        cx.beginPath();
+        cx.moveTo(0, y);
+        for(let x = 0; x <= 1024; x += 64){
+          const offset = Math.sin(x * 0.02 + y * 0.04) * 4;
+          cx.lineTo(x, y + offset);
+        }
+        cx.stroke();
+      }
+
+      // Rover tire tracks curving towards the base
+      cx.strokeStyle = 'rgba(35, 10, 4, 0.5)';
+      cx.lineWidth = 5;
+      cx.beginPath(); cx.moveTo(370, 0); cx.bezierCurveTo(420, 400, 600, 700, 500, 1024); cx.stroke();
+      cx.beginPath(); cx.moveTo(395, 0); cx.bezierCurveTo(445, 400, 625, 700, 525, 1024); cx.stroke();
+    } else if(type === 'jupiter_moon'){
+      // Jovian Europa Ice & Rust fractures
+      cx.fillStyle = '#b8aa98';
+      cx.fillRect(0, 0, 1024, 1024);
+      for(let i = 0; i < 70; i++){
+        cx.strokeStyle = Math.random() > 0.5 ? 'rgba(120,60,25,0.6)' : 'rgba(220,230,245,0.7)';
+        cx.lineWidth = 1.5 + Math.random() * 4;
+        cx.beginPath();
+        cx.moveTo(Math.random() * 1024, Math.random() * 1024);
+        cx.lineTo(Math.random() * 1024, Math.random() * 1024);
+        cx.stroke();
+      }
+    } else {
+      // Lunar Regolith
+      cx.fillStyle = '#6b7280';
+      cx.fillRect(0, 0, 1024, 1024);
+      const imgData = cx.getImageData(0, 0, 1024, 1024);
+      const data = imgData.data;
+      for(let i = 0; i < data.length; i += 4){
+        const noise = (Math.random() - 0.5) * 32;
+        data[i] = data[i+1] = data[i+2] = Math.min(255, Math.max(0, 108 + noise));
+      }
+      cx.putImageData(imgData, 0, 0);
+    }
+
+    const tex = new THREE.CanvasTexture(cv);
+    tex.wrapS = THREE.RepeatWrapping; tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(4, 4);
+    return tex;
+  }
+
+  // --- PROCEDURAL JUPITER TEXTURE WITH CLOUD BELTS & GREAT RED SPOT ---
+  function createJupiterTexture(){
+    const cv = document.createElement('canvas');
+    cv.width = 1024; cv.height = 512;
+    const cx = cv.getContext('2d');
+
+    const grad = cx.createLinearGradient(0, 0, 0, 512);
+    grad.addColorStop(0.00, '#381e10');
+    grad.addColorStop(0.12, '#7a4e30');
+    grad.addColorStop(0.24, '#c8a480');
+    grad.addColorStop(0.35, '#85421c'); // North equatorial belt
+    grad.addColorStop(0.48, '#ecdac0'); // Equatorial zone
+    grad.addColorStop(0.56, '#964219'); // South equatorial belt
+    grad.addColorStop(0.68, '#cca882');
+    grad.addColorStop(0.82, '#723e1e');
+    grad.addColorStop(1.00, '#30180a');
+    cx.fillStyle = grad;
+    cx.fillRect(0, 0, 1024, 512);
+
+    // Turbulent vortices
+    for(let y = 0; y < 512; y += 4){
+      cx.fillStyle = (y % 8 === 0) ? 'rgba(255,230,200,0.18)' : 'rgba(90,30,10,0.18)';
+      cx.beginPath();
+      cx.moveTo(0, y);
+      for(let x = 0; x <= 1024; x += 32){
+        const wave = Math.sin(x * 0.02 + y * 0.1) * 3.5 + Math.cos(x * 0.05) * 2;
+        cx.lineTo(x, y + wave);
+      }
+      cx.lineTo(1024, y + 4);
+      cx.lineTo(0, y + 4);
+      cx.fill();
+    }
+
+    // Great Red Spot
+    const spotX = 660, spotY = 295;
+    const spotGrad = cx.createRadialGradient(spotX, spotY, 8, spotX, spotY, 55);
+    spotGrad.addColorStop(0, '#a82408');
+    spotGrad.addColorStop(0.55, '#c54c1d');
+    spotGrad.addColorStop(0.85, 'rgba(215,145,95,0.8)');
+    spotGrad.addColorStop(1, 'rgba(140,65,30,0)');
+    cx.fillStyle = spotGrad;
+    cx.beginPath();
+    cx.ellipse(spotX, spotY, 60, 35, -0.08, 0, 6.28);
+    cx.fill();
+
+    return new THREE.CanvasTexture(cv);
+  }
+
+  // --- VAST PLANETARY TERRAIN (GUARANTEED FLAT AT BASE CAMP) ---
+  const terrainGeo = new THREE.PlaneGeometry(600, 600, 128, 128);
+  const pos = terrainGeo.attributes.position;
+  for(let i = 0; i < pos.count; i++){
+    const x = pos.getX(i), y = pos.getY(i);
+    const dist = Math.hypot(x, y);
+
+    // CRITICAL: Base camp zone within radius 26 is GUARANTEED flat at z = 0!
+    // Astronaut, fire rig, and base dome will NEVER be buried or blocked!
+    if(dist < 26){
+      pos.setZ(i, 0);
+    } else {
+      const blend = Math.min(1, (dist - 26) / 16);
+      let z = (Math.sin(x * 0.025) * 2.2 + Math.cos(y * 0.025) * 2.2) * blend;
+      z += (Math.sin(x * 0.05 + y * 0.03) * 1.1) * blend;
+      // Gentle horizon drop off
+      if(dist > 110){
+        z -= Math.pow((dist - 110) * 0.03, 1.6);
+      }
+      pos.setZ(i, z);
+    }
+  }
+  terrainGeo.computeVertexNormals();
+
+  const terrainMat = new THREE.MeshStandardMaterial({
+    map: createPlanetTexture('mars'),
+    color: 0xffffff, // Pure white so texture provides exact natural colors
+    roughness: 0.9,
+    metalness: 0.04
+  });
+  const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
+  terrainMesh.rotation.x = -Math.PI / 2;
+  terrainMesh.position.set(0, 0, 0);
+  terrainMesh.receiveShadow = false;
+  worldGroup.add(terrainMesh);
+
+  // --- DETAILED ROCKS & BOULDERS ---
+  const rockGeo = new THREE.DodecahedronGeometry(1, 1);
+  const rockMat = new THREE.MeshStandardMaterial({ color: 0x5a2312, roughness: 0.85, metalness: 0.1 });
+  for(let i = 0; i < 48; i++){
+    const rock = new THREE.Mesh(rockGeo, rockMat);
+    const angle = Math.random() * 6.28;
+    const r = 16 + Math.random() * 85;
+    rock.position.set(Math.cos(angle) * r, 0.4, Math.sin(angle) * r);
+    const s = 0.6 + Math.random() * 1.6;
+    rock.scale.set(s, s * 0.6, s * 0.85);
+    rock.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3);
+    rock.castShadow = true; rock.receiveShadow = true;
+    worldGroup.add(rock);
+  }
+
+  // --- ARTEMIS / MARS HABITAT DOME COMPLEX ---
+  const domeGeo = new THREE.SphereGeometry(6.5, 32, 22, 0, Math.PI * 2, 0, Math.PI / 2);
+  const domeMat = new THREE.MeshStandardMaterial({ color: 0xf5f8fc, roughness: 0.18, metalness: 0.45 });
+  const domeMesh = new THREE.Mesh(domeGeo, domeMat);
+  domeMesh.position.set(-6.5, 0, -4.5);
+  domeMesh.castShadow = true; domeMesh.receiveShadow = true;
+  habGroup.add(domeMesh);
+
+  // Glowing Cyan Window Strip
+  const ringGeo = new THREE.TorusGeometry(4.2, 0.18, 12, 32);
+  const ringMat = new THREE.MeshStandardMaterial({ color: 0x45e0ff, emissive: 0x45e0ff, emissiveIntensity: 1.4 });
+  const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+  ringMesh.rotation.x = Math.PI / 2;
+  ringMesh.position.set(-6.5, 3.2, -4.5);
+  habGroup.add(ringMesh);
+
+  const domeGlow = new THREE.PointLight(0x45e0ff, 2.5, 28);
+  domeGlow.position.set(-6.5, 3.5, -4.5);
+  habGroup.add(domeGlow);
+
+  // Airlock Module
+  const airlockGeo = new THREE.CylinderGeometry(1.6, 1.6, 5.0, 20);
+  const airlockMat = new THREE.MeshStandardMaterial({ color: 0xd0d8e2, metalness: 0.7, roughness: 0.25 });
+  const airlockMesh = new THREE.Mesh(airlockGeo, airlockMat);
+  airlockMesh.rotation.z = Math.PI / 2;
+  airlockMesh.position.set(-1.2, 1.6, -4.5);
+  airlockMesh.castShadow = true;
+  habGroup.add(airlockMesh);
+
+  // Hatch Ring
+  const hatchGeo = new THREE.TorusGeometry(1.45, 0.2, 12, 24);
+  const hatchMat = new THREE.MeshStandardMaterial({ color: 0xff8a3d, roughness: 0.3 });
+  const hatchMesh = new THREE.Mesh(hatchGeo, hatchMat);
+  hatchMesh.rotation.y = Math.PI / 2;
+  hatchMesh.position.set(1.3, 1.6, -4.5);
+  habGroup.add(hatchMesh);
+
+  // Solar Array Wing
+  const solarPivot = new THREE.Group();
+  solarPivot.position.set(-6.5, 8.2, -4.5);
+  const solarGeo = new THREE.BoxGeometry(15, 0.22, 3.4);
+  const solarMat = new THREE.MeshStandardMaterial({ color: 0x0f2b5c, roughness: 0.1, metalness: 0.95 });
+  const solarMesh = new THREE.Mesh(solarGeo, solarMat);
+  solarMesh.castShadow = true;
+  solarPivot.add(solarMesh);
+  habGroup.add(solarPivot);
+
+  // Antenna Mast & Beacon
+  const mastGeo = new THREE.CylinderGeometry(0.12, 0.26, 9.5, 8);
+  const mastMesh = new THREE.Mesh(mastGeo, airlockMat);
+  mastMesh.position.set(-13.5, 4.8, -3.5);
+  habGroup.add(mastMesh);
+
+  const beaconLight = new THREE.PointLight(0xff2222, 2.8, 22);
+  beaconLight.position.set(-13.5, 9.6, -3.5);
+  habGroup.add(beaconLight);
+
+  // --- 3D ASTRONAUT STANDING ON THE SURFACE ---
+  const suitMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.25, metalness: 0.1 });
+  const visorMat = new THREE.MeshStandardMaterial({ color: 0xffb703, metalness: 0.98, roughness: 0.03 });
+  const packMat = new THREE.MeshStandardMaterial({ color: 0x8a9bb0, roughness: 0.35 });
+
+  const astroTorso = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.32, 0.95, 12), suitMat);
+  astroTorso.position.set(2.8, 1.38, 1.5);
+  astroTorso.castShadow = true;
+  astronautGroup.add(astroTorso);
+
+  const astroPack = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.78, 0.32), packMat);
+  astroPack.position.set(2.8, 1.42, 1.25);
+  astronautGroup.add(astroPack);
+
+  const astroHelmet = new THREE.Mesh(new THREE.SphereGeometry(0.32, 16, 16), suitMat);
+  astroHelmet.position.set(2.8, 2.0, 1.5);
+  astronautGroup.add(astroHelmet);
+
+  const astroVisor = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16, 0, Math.PI, 0, Math.PI), visorMat);
+  astroVisor.position.set(2.8, 2.0, 1.6);
+  astroVisor.rotation.y = Math.PI / 2;
+  astronautGroup.add(astroVisor);
+
+  const legGeo = new THREE.CylinderGeometry(0.13, 0.13, 0.9, 8);
+  const legL = new THREE.Mesh(legGeo, suitMat); legL.position.set(2.64, 0.45, 1.5);
+  const legR = new THREE.Mesh(legGeo, suitMat); legR.position.set(2.96, 0.45, 1.5);
+  legL.castShadow = true; legR.castShadow = true;
+  astronautGroup.add(legL); astronautGroup.add(legR);
+
+  // Mission Flag
+  const poleGeo = new THREE.CylinderGeometry(0.04, 0.04, 3.4, 8);
+  const pole = new THREE.Mesh(poleGeo, airlockMat);
+  pole.position.set(4.0, 1.7, 1.5);
+  astronautGroup.add(pole);
+
+  const flagGeo = new THREE.PlaneGeometry(1.2, 0.75);
+  const flagMat = new THREE.MeshStandardMaterial({ color: 0xff5f2e, side: THREE.DoubleSide });
+  const flag = new THREE.Mesh(flagGeo, flagMat);
+  flag.position.set(4.6, 2.7, 1.5);
+  astronautGroup.add(flag);
+
+  // --- COMBUSTION SCIENCE RIG WITH ACTIVE FLAME ---
+  const rigBaseGeo = new THREE.CylinderGeometry(1.8, 2.1, 1.2, 20);
+  const rigBaseMat = new THREE.MeshStandardMaterial({ color: 0x1e2735, metalness: 0.85, roughness: 0.2 });
+  const rigBase = new THREE.Mesh(rigBaseGeo, rigBaseMat);
+  rigBase.position.set(0, 0.6, 0);
+  rigBase.castShadow = true; rigBase.receiveShadow = true;
+  flameRigGroup.add(rigBase);
+
+  // Transparent Quartz Glass Sphere
+  const chamberGlassGeo = new THREE.SphereGeometry(1.65, 32, 32);
+  const chamberGlassMat = new THREE.MeshPhysicalMaterial({
+    color: 0x99ddff, transparent: true, opacity: 0.4, roughness: 0.05, transmission: 0.9, thickness: 0.6
+  });
+  const glassSphere = new THREE.Mesh(chamberGlassGeo, chamberGlassMat);
+  glassSphere.position.set(0, 2.3, 0);
+  flameRigGroup.add(glassSphere);
+
+  // Fuel Droplet
+  const dropletGeo = new THREE.SphereGeometry(0.22, 16, 16);
+  const dropletMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.3 });
+  const dropletMesh = new THREE.Mesh(dropletGeo, dropletMat);
+  dropletMesh.position.set(0, 2.3, 0);
+  flameRigGroup.add(dropletMesh);
+
+  // Actively Burning Flame Reaction Zone
+  const flameGeo = new THREE.SphereGeometry(0.72, 28, 28);
+  const flameMat = new THREE.MeshStandardMaterial({
+    color: 0xff8a3d, emissive: 0xff4500, emissiveIntensity: 2.0, transparent: true, opacity: 0.92
+  });
+  const flameMesh = new THREE.Mesh(flameGeo, flameMat);
+  flameMesh.position.set(0, 2.3, 0);
+  flameRigGroup.add(flameMesh);
+
+  // Fire Point Light casting real-time glow on astronaut and ground!
+  const flameLight = new THREE.PointLight(0xff6611, 4.2, 20);
+  flameLight.position.set(0, 2.3, 0);
+  flameLight.castShadow = true;
+  flameRigGroup.add(flameLight);
+
+  // --- CELESTIAL SKY: JUPITER & STARS ---
+  const starGeo = new THREE.BufferGeometry();
+  const starCount = 2600;
+  const starPos = new Float32Array(starCount * 3);
+  for(let i = 0; i < starCount * 3; i += 3){
+    starPos[i] = (Math.random() - 0.5) * 850;
+    starPos[i+1] = 20 + Math.random() * 450;
+    starPos[i+2] = (Math.random() - 0.5) * 850;
+  }
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+  const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.8, transparent: true, opacity: 0.95 });
+  const starsMesh = new THREE.Points(starGeo, starMat);
+  scene.add(starsMesh);
+
+  // --- GLORIOUS CELESTIAL PLANET IN UPPER RIGHT SKY ---
+  const jupiterGeo = new THREE.SphereGeometry(10.5, 48, 48);
+  const jupiterMat = new THREE.MeshStandardMaterial({
+    map: createJupiterTexture(),
+    roughness: 0.65,
+    metalness: 0.1
+  });
+  const jupiterMesh = new THREE.Mesh(jupiterGeo, jupiterMat);
+  jupiterMesh.position.set(7.5, 12.0, -50.0);
+  scene.add(jupiterMesh);
+
+  const jupiterAtmGeo = new THREE.SphereGeometry(11.2, 48, 48);
+  const jupiterAtmMat = new THREE.MeshBasicMaterial({ color: 0xffa055, transparent: true, opacity: 0.38, side: THREE.BackSide });
+  const jupiterAtm = new THREE.Mesh(jupiterAtmGeo, jupiterAtmMat);
+  jupiterMesh.add(jupiterAtm);
+
+  // Brilliant Sun Disc with glowing solar corona
+  const sunDiscGeo = new THREE.SphereGeometry(4.6, 32, 32);
+  const sunDiscMat = new THREE.MeshBasicMaterial({ color: 0xfffbee });
+  const sunDisc = new THREE.Mesh(sunDiscGeo, sunDiscMat);
+  sunDisc.position.set(16.0, 18.0, -58.0);
+  scene.add(sunDisc);
+
+  const sunGlowGeo = new THREE.SphereGeometry(8.5, 32, 32);
+  const sunGlowMat = new THREE.MeshBasicMaterial({ color: 0xffd277, transparent: true, opacity: 0.32, side: THREE.BackSide });
+  const sunGlow = new THREE.Mesh(sunGlowGeo, sunGlowMat);
+  sunDisc.add(sunGlow);
+
+  // Blue Marble Earth (shown in Moon/Orbit mode)
+  const earthGeo = new THREE.SphereGeometry(10.5, 36, 36);
+  const earthMat = new THREE.MeshStandardMaterial({ color: 0x2196f3, emissive: 0x0d47a1, emissiveIntensity: 0.5, roughness: 0.3 });
+  const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+  earthMesh.position.set(7.5, 12.0, -50.0);
+  earthMesh.visible = false;
+  scene.add(earthMesh);
+
+  // --- 5 BALANCED CAMERA PERSPECTIVES ---
+  const PERSPECTIVES = {
+    // EPIC BALANCED VIEW: Frames the astronaut, burning flame, base camp, and Jupiter!
+    astronaut: { pos: new THREE.Vector3(7.0, 3.8, 14.5), lookAt: new THREE.Vector3(0.5, 1.8, 0.0) },
+    orbital:   { pos: new THREE.Vector3(0, 75, 90),       lookAt: new THREE.Vector3(0, 0, 0) },
+    lab:       { pos: new THREE.Vector3(0.5, 2.4, 3.6),   lookAt: new THREE.Vector3(0, 2.3, 0) },
+    flyby:     { pos: new THREE.Vector3(22, 12, 22),      lookAt: new THREE.Vector3(0, 2.0, 0) },
+    free:      { pos: new THREE.Vector3(8, 5.5, 16),      lookAt: new THREE.Vector3(0, 2.0, 0) }
+  };
+
+  let targetPos = PERSPECTIVES.astronaut.pos.clone();
+  let targetLook = PERSPECTIVES.astronaut.lookAt.clone();
+  let currentLook = targetLook.clone();
+  camera.position.copy(targetPos);
+
+  // Mouse / Pointer Controls
+  let isDragging = false, lastMouseX = 0, lastMouseY = 0;
+  let freeRotY = 0, freeRotX = 0.22, freeDist = 16;
+
+  canvas.addEventListener('pointerdown', e => {
+    isDragging = true; lastMouseX = e.clientX; lastMouseY = e.clientY;
+  });
+  window.addEventListener('pointerup', () => isDragging = false);
+  window.addEventListener('pointermove', e => {
+    if(!isDragging) return;
+    const dx = e.clientX - lastMouseX, dy = e.clientY - lastMouseY;
+    if(currentPersp === 'free'){
+      freeRotY -= dx * 0.008;
+      freeRotX = Math.max(-1.1, Math.min(1.2, freeRotX + dy * 0.008));
+    } else {
+      camera.position.x += dx * 0.012;
+      camera.position.y -= dy * 0.012;
+    }
+    lastMouseX = e.clientX; lastMouseY = e.clientY;
+  });
+  canvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    if(currentPersp === 'free'){
+      freeDist = Math.max(3.5, Math.min(75, freeDist + e.deltaY * 0.03));
+    } else {
+      camera.fov = Math.max(25, Math.min(75, camera.fov + e.deltaY * 0.04));
+      camera.updateProjectionMatrix();
+    }
+  }, { passive: false });
+
+  // Perspective Switching
+  function setPerspective(p){
+    currentPersp = p;
+    document.querySelectorAll('.persp-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.querySelector(`.persp-btn[data-persp="${p}"]`);
+    if(btn) btn.classList.add('active');
+
+    if(p !== 'flyby' && p !== 'free'){
+      targetPos.copy(PERSPECTIVES[p].pos);
+      targetLook.copy(PERSPECTIVES[p].lookAt);
+    }
+    updateHintText();
+  }
+
+  function updateHintText(){
+    const ar = isAr();
+    const hints = {
+      astronaut: ar ? '🧑‍🚀 مشهد شامل: سطح المريخ، رائد الفضاء، واللهب المشتعل' : '🧑‍🚀 Panoramic View: Martian surface, astronaut, active burning flame',
+      orbital:   ar ? '🛰️ المنظور المداري: رؤية شاملة لكروية الكوكب والغلاف الجوي من الفضاء' : '🛰️ Orbital View: panoramic curved planet horizon & atmosphere from space',
+      lab:       ar ? '🔬 منظور الحجرة المجهري: فحص دقيق ومقرب لقطرة الوقود وتوهج الشعلة' : '🔬 Lab Macro View: close-up inspection of burning fuel droplet',
+      flyby:     ar ? '🚁 طيران سينمائي حر: كاميرا تدور بنعومة متواصلة حول المحطة الفضائية' : '🚁 Drone Flyby: smooth cinematic orbit around the outpost',
+      free:      ar ? '🎮 تحكم حر كامل: اسحب بالماوس 360° واستخدم العجلة للتكبير والتصغير' : '🎮 Free Navigation: drag mouse 360°, scroll wheel to zoom'
+    };
+    const hintEl = document.getElementById('p-hint-text');
+    if(hintEl) hintEl.textContent = hints[currentPersp] || '';
+  }
+
+  document.querySelectorAll('.persp-btn').forEach(btn => {
+    btn.addEventListener('click', () => setPerspective(btn.dataset.persp));
+  });
+
+  // Planet Switching
+  function switchPlanet(planet){
+    currentPlanet = planet;
+    document.querySelectorAll('.p-sel-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.querySelector(`.p-sel-btn[data-planet="${planet}"]`);
+    if(btn) btn.classList.add('active');
+
+    const ar = isAr();
+    const telemLoc = document.getElementById('p-telem-loc');
+    const telemG = document.getElementById('p-telem-g');
+    const telemAtm = document.getElementById('p-telem-atm');
+
+    if(planet === 'mars'){
+      terrainMesh.visible = true;
+      terrainMat.map = createPlanetTexture('mars');
+      terrainMat.color.setHex(0xffffff);
+      terrainMat.roughness = 0.9;
+      terrainMat.needsUpdate = true;
+      sunLight.color.setHex(0xffeedd);
+      hemiLight.color.setHex(0xe88a55);
+      scene.fog.color.setHex(0x281008);
+      scene.fog.density = 0.0016;
+      jupiterMesh.visible = false;
+      sunDisc.visible = true;
+      earthMesh.visible = false;
+      flameMesh.scale.set(1, 1.6, 1);
+      if(telemLoc) telemLoc.textContent = ar ? 'الموقع: مستعمرة المريخ ألفا (المريخ)' : 'LOCATION: MARTIAN OUTPOST ALPHA (MARS)';
+      if(telemG) telemG.textContent = '0.38 g';
+      if(telemAtm) telemAtm.textContent = '0.70 atm (25% O₂)';
+    } else if(planet === 'jupiter'){
+      terrainMesh.visible = true;
+      terrainMat.map = createPlanetTexture('jupiter_moon');
+      terrainMat.color.setHex(0xffffff);
+      terrainMat.roughness = 0.8;
+      terrainMat.needsUpdate = true;
+      sunLight.color.setHex(0xffeedd);
+      hemiLight.color.setHex(0xc49a75);
+      scene.fog.color.setHex(0x18100c);
+      scene.fog.density = 0.0015;
+      jupiterMesh.visible = true;
+      jupiterMesh.position.set(-40, 50, -85);
+      earthMesh.visible = false;
+      flameMesh.scale.set(1, 1.4, 1);
+      if(telemLoc) telemLoc.textContent = ar ? 'الموقع: محطة قمر المشتري (يوروبا)' : 'LOCATION: JOVIAN SYSTEM (EUROPA OUTPOST)';
+      if(telemG) telemG.textContent = '0.134 g';
+      if(telemAtm) telemAtm.textContent = '0.65 atm (30% O₂)';
+    } else if(planet === 'moon'){
+      terrainMesh.visible = true;
+      terrainMat.map = createPlanetTexture('moon');
+      terrainMat.color.setHex(0xffffff);
+      terrainMat.roughness = 0.82;
+      terrainMat.needsUpdate = true;
+      sunLight.color.setHex(0xffffff);
+      hemiLight.color.setHex(0xddeeff);
+      scene.fog.color.setHex(0x01030a);
+      scene.fog.density = 0.0012;
+      jupiterMesh.visible = false;
+      sunDisc.visible = true;
+      earthMesh.visible = true;
+      earthMesh.position.set(7.5, 12.0, -50.0);
+      earthMesh.scale.set(1, 1, 1);
+      flameMesh.scale.set(1, 1.25, 1);
+      if(telemLoc) telemLoc.textContent = ar ? 'الموقع: قاعدة أرتميس القمرية (القمر)' : 'LOCATION: ARTEMIS BASE CAMP (MOON)';
+      if(telemG) telemG.textContent = '0.166 g';
+      if(telemAtm) telemAtm.textContent = '0.56 atm (34% O₂)';
+    } else {
+      // Space Station Orbit
+      terrainMesh.visible = false;
+      jupiterMesh.visible = false;
+      earthMesh.visible = true;
+      earthMesh.position.set(0, -68, 0);
+      earthMesh.scale.set(6.2, 6.2, 6.2);
+      scene.fog.density = 0.0004;
+      flameMesh.scale.set(1, 1, 1);
+      if(telemLoc) telemLoc.textContent = ar ? 'الموقع: محطة GATEWAY المدارية' : 'LOCATION: LUNAR GATEWAY / LEO STATION';
+      if(telemG) telemG.textContent = '0.0001 g (Microgravity)';
+      if(telemAtm) telemAtm.textContent = '1.0 atm (21% O₂)';
+    }
+  }
+
+  const btnMars = document.getElementById('p-btn-mars');
+  const btnJupiter = document.getElementById('p-btn-jupiter');
+  const btnMoon = document.getElementById('p-btn-moon');
+  const btnOrbit = document.getElementById('p-btn-orbit');
+  if(btnMars) btnMars.addEventListener('click', () => switchPlanet('mars'));
+  if(btnJupiter) btnJupiter.addEventListener('click', () => switchPlanet('jupiter'));
+  if(btnMoon) btnMoon.addEventListener('click', () => switchPlanet('moon'));
+  if(btnOrbit) btnOrbit.addEventListener('click', () => switchPlanet('orbit'));
+
+  // Trigger Burn Action
+  const btnIgnite = document.getElementById('p-ignite-btn');
+  if(btnIgnite){
+    btnIgnite.addEventListener('click', () => {
+      isBurning = !isBurning;
+      btnIgnite.classList.toggle('active', isBurning);
+      const telemState = document.getElementById('p-telem-state');
+      if(telemState){
+        telemState.textContent = isBurning ? 'BURNING ACTIVE // SENSORS ARMED' : 'STANDBY / READY';
+        telemState.style.color = isBurning ? '#ff8a3d' : '#69e3b0';
+      }
+      if(window.FlightAudio && window.FlightAudio.isEnabled()){
+        window.FlightAudio.alarm();
+      }
+    });
+  }
+
+  // Fullscreen Toggle
+  const btnFull = document.getElementById('p-fullscreen-btn');
+  if(btnFull){
+    btnFull.addEventListener('click', () => {
+      viewportBox.classList.toggle('is-fullscreen');
+      setTimeout(onResize, 100);
+    });
+  }
+
+  function onResize(){
+    const nw = canvas.clientWidth || viewportBox.clientWidth || 960;
+    const nh = canvas.clientHeight || viewportBox.clientHeight || 580;
+    renderer.setSize(nw, nh);
+    camera.aspect = nw / nh;
+    camera.updateProjectionMatrix();
+  }
+
+  window.addEventListener('resize', onResize);
+  setTimeout(onResize, 50);
+  setTimeout(onResize, 350);
+
+  // Dynamic Bilingual Updates
+  function updatePlanetaryBilingual(){
+    const ar = isAr();
+    const titleEl = document.getElementById('p-world-title');
+    const subtitleEl = document.getElementById('p-world-subtitle');
+    if(titleEl){
+      titleEl.textContent = ar 
+        ? 'محاكاة الاحتراق الكوكبي ثلاثية الأبعاد (Three.js)' 
+        : 'Flagship 3D Planetary Fire Simulation';
+    }
+    if(subtitleEl){
+      subtitleEl.textContent = ar
+        ? 'استكشف كيف قد يتصرف حريق داخل مسكن على المريخ (0.38g) والقمر (0.166g) وفي المدار، من 5 زوايا تصوير. محاكاة توضيحية، وليست بيانات مقاسة.'
+        : 'Explore how a habitat fire could behave on Mars (0.38g), the Moon (0.166g) and in orbit, with 5 camera views. An illustrative simulation, not measured data.';
+    }
+    if(btnMars) btnMars.textContent = ar ? '🔴 سطح المريخ (مستعمرة ألفا)' : '🔴 Mars (Martian Outpost)';
+    if(btnJupiter) btnJupiter.textContent = ar ? '🪐 نظام المشتري (قمر يوروبا)' : '🪐 Jupiter (Jovian System)';
+    if(btnMoon) btnMoon.textContent = ar ? '🌙 سطح القمر (قاعدة أرتميس)' : '🌙 Moon (Artemis Base)';
+    if(btnOrbit) btnOrbit.textContent = ar ? '🛰️ المدار الفضائي (محطة جيتواي)' : '🛰️ Orbit (Gateway Station)';
+    if(btnIgnite) btnIgnite.textContent = ar ? '🔥 تبديل لهب الاحتراق' : '🔥 Toggle Burn Reaction';
+    if(btnFull) btnFull.textContent = ar ? '⛶ ملء الشاشة' : '⛶ Fullscreen';
+
+    const pCamAstro = document.getElementById('p-cam-astronaut');
+    const pCamOrb = document.getElementById('p-cam-orbital');
+    const pCamLab = document.getElementById('p-cam-lab');
+    const pCamFly = document.getElementById('p-cam-flyby');
+    const pCamFree = document.getElementById('p-cam-free');
+
+    if(pCamAstro) pCamAstro.textContent = ar ? '🧑‍🚀 رائد الفضاء والنار' : '🧑‍🚀 Astronaut & Fire (Wide View)';
+    if(pCamOrb) pCamOrb.textContent = ar ? '🛰️ قمر صناعي مداري' : '🛰️ Orbital Satellite View';
+    if(pCamLab) pCamLab.textContent = ar ? '🔬 غرفة الاحتراق' : '🔬 Combustion Chamber Macro';
+    if(pCamFly) pCamFly.textContent = ar ? '🚁 طيران درون سينمائي' : '🚁 Cinematic Drone Flyby';
+    if(pCamFree) pCamFree.textContent = ar ? '🎮 تحكم حر 360°' : '🎮 Free 3D Navigation';
+
+    updateHintText();
+    switchPlanet(currentPlanet);
+  }
+
+  if(typeof window.RR !== 'undefined' && Array.isArray(window.RR)){
+    window.RR.push(updatePlanetaryBilingual);
+  }
+  const langBtn = document.getElementById('lang-btn');
+  if(langBtn){
+    langBtn.addEventListener('click', () => setTimeout(updatePlanetaryBilingual, 50));
+  }
+  updatePlanetaryBilingual();
+
+  // Animation Loop
+  const clock = new THREE.Clock();
+
+  function animate(){
+    requestAnimationFrame(animate);
+    const elapsedTime = clock.getElapsedTime();
+
+    const curW = canvas.clientWidth || viewportBox.clientWidth;
+    const curH = canvas.clientHeight || viewportBox.clientHeight;
+    if(curW > 0 && curH > 0 && (canvas.width !== Math.round(curW * renderer.getPixelRatio()) || canvas.height !== Math.round(curH * renderer.getPixelRatio()))){
+      onResize();
+    }
+
+    // Beacon blink
+    beaconLight.intensity = Math.sin(elapsedTime * 6) > 0.2 ? 3.0 : 0.2;
+
+    // Solar panels tracking sun slowly
+    solarPivot.rotation.y = Math.sin(elapsedTime * 0.05) * 0.45;
+
+    // Jupiter rotation & slow Great Red Spot transit
+    if(jupiterMesh.visible) jupiterMesh.rotation.y = elapsedTime * 0.015;
+    if(earthMesh.visible) earthMesh.rotation.y = elapsedTime * 0.02;
+
+    // Flame physics reaction
+    if(isBurning){
+      const flamePulse = 1.0 + Math.sin(elapsedTime * 18) * 0.16;
+      flameMesh.scale.set(flamePulse, flamePulse * (currentPlanet==='mars'?1.65:currentPlanet==='moon'?1.3:1.1), flamePulse);
+      flameLight.intensity = 4.2 + Math.sin(elapsedTime * 22) * 1.5;
+      flameMat.emissive.setHex(Math.sin(elapsedTime * 4) > 0 ? 0xff4500 : 0xff7700);
+      flameMat.color.setHex(Math.sin(elapsedTime * 4) > 0 ? 0xff8a3d : 0xffa500);
+    } else {
+      flameMesh.scale.set(0.3, 0.3, 0.3);
+      flameLight.intensity = 0.3;
+      flameMat.color.setHex(0x45e0ff);
+      flameMat.emissive.setHex(0x00f0ff);
+    }
+
+    // Camera Perspective Motion / Smooth Lerp
+    if(currentPersp === 'flyby'){
+      const r = 24;
+      camera.position.x = Math.sin(elapsedTime * 0.14) * r;
+      camera.position.z = Math.cos(elapsedTime * 0.14) * r;
+      camera.position.y = 8 + Math.sin(elapsedTime * 0.1) * 3.0;
+      camera.lookAt(0, 1.8, 0);
+    } else if(currentPersp === 'free'){
+      camera.position.x = Math.sin(freeRotY) * Math.cos(freeRotX) * freeDist;
+      camera.position.y = Math.sin(freeRotX) * freeDist + 1.8;
+      camera.position.z = Math.cos(freeRotY) * Math.cos(freeRotX) * freeDist;
+      camera.lookAt(0, 1.8, 0);
+    } else {
+      camera.position.lerp(targetPos, 0.06);
+      currentLook.lerp(targetLook, 0.06);
+      camera.lookAt(currentLook);
+    }
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+  console.log('[Planetary 3D] Mars & Jupiter photorealistic engine running.');
+})();
+/* ================= NASA FLIGHT AUDIO & SPEECH SYNTHESIZER ================= */
+const FlightAudio = (function(){
+  let audioCtx = null;
+  let enabled = false;
+  let ambientOsc = null, ambientGain = null;
+
+  function init(){
+    if(!audioCtx){
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if(AudioContext) audioCtx = new AudioContext();
+    }
+  }
+
+  function toggle(){
+    init();
+    enabled = !enabled;
+    const btn = document.getElementById('audio-toggle-btn');
+    if(btn){
+      btn.textContent = enabled ? '🔊 Audio: ON' : '🔇 Audio: OFF';
+      btn.classList.toggle('on', enabled);
+    }
+    if(enabled){
+      if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      playTacticalClick();
+      startAmbient();
+      speak("Flight Telemetry Audio Online. Welcome to Flame in Freefall.");
+    } else {
+      stopAmbient();
+      if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    }
+    return enabled;
+  }
+
+  function startAmbient(){
+    if(!enabled || !audioCtx || ambientOsc) return;
+    try {
+      ambientOsc = audioCtx.createOscillator();
+      ambientGain = audioCtx.createGain();
+      ambientOsc.type = 'sine';
+      ambientOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
+      ambientGain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+      ambientOsc.connect(ambientGain);
+      ambientGain.connect(audioCtx.destination);
+      ambientOsc.start();
+    } catch(e){}
+  }
+
+  function stopAmbient(){
+    if(ambientOsc){
+      try { ambientOsc.stop(); ambientOsc.disconnect(); } catch(e){}
+      ambientOsc = null; ambientGain = null;
+    }
+  }
+
+  function playTacticalClick(){
+    if(!enabled || !audioCtx) return;
+    try {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.04);
+    } catch(e){}
+  }
+
+  function playAlertAlarm(){
+    if(!enabled || !audioCtx) return;
+    try {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(700, audioCtx.currentTime);
+      osc.frequency.linearRampToValueAtTime(950, audioCtx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+    } catch(e){}
+  }
+
+  function speak(text){
+    if(!enabled || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 1.05; u.pitch = 1.0;
+    u.lang = 'en-US';
+    window.speechSynthesis.speak(u);
+  }
+
+  return { toggle, isEnabled: ()=>enabled, click: playTacticalClick, alarm: playAlertAlarm, speak };
+})();
+
+window.FlightAudio = FlightAudio;
+const audioBtn = document.getElementById('audio-toggle-btn');
+if(audioBtn) audioBtn.addEventListener('click', () => FlightAudio.toggle());
+document.addEventListener('click', e => { if(e.target.closest('button, a, input[type=range]')) FlightAudio.click(); });
+
+/* ================= 90-SECOND CINEMA GUIDED TOUR ENGINE (ENGLISH) ================= */
+(function(){
+  console.log('[Guided Tour] Initializing English Cinema Tour Engine...');
+  const btnStart = document.getElementById('btn-start-tour');
+  const hud = document.getElementById('tour-hud');
+  if(!btnStart || !hud){
+    console.warn('[Guided Tour] Button or HUD element not found.');
+    return;
+  }
+
+  const titleEl = document.getElementById('tour-title');
+  const descEl = document.getElementById('tour-desc');
+  const badgeEl = document.getElementById('tour-step-badge');
+  const progressFill = document.getElementById('tour-progress-fill');
+  const btnNext = document.getElementById('tour-next-btn');
+  const btnPrev = document.getElementById('tour-prev-btn');
+  const btnClose = document.getElementById('tour-close-btn');
+  const btnSpeak = document.getElementById('tour-speak-btn');
+
+  let curStep = 0;
+
+  const TOUR_STOPS = [
+    {
+      target: '#planet-world-anchor',
+      title: "Stop 1: Mars & Planetary Fire Physics",
+      desc: "Welcome to the Martian Outpost. Under 0.38g gravity, fire forms an unstable elongated flame, producing 185% more toxic carbon monoxide due to transitional convection."
+    },
+    {
+      target: '#top',
+      title: "Stop 2: Fire Behaves Differently in Space",
+      desc: "On Earth, hot air rises and shapes flames into teardrops. In microgravity, flames become spherical, quiet, and deceptively cool."
+    },
+    {
+      target: '#replay',
+      title: "Stop 3: The Vanishing Flame (PSI-117)",
+      desc: "Watch the droplet burn. At 12.6 seconds, the visible flame collapses, but fuel keeps burning invisibly inside a cool flame for 33 more seconds!"
+    },
+    {
+      target: '#twin3d',
+      title: "Stop 4: 3D Digital Twin & Cabin Dynamics",
+      desc: "Rotate the 3D spherical flame and inspect the habitat compartment. Notice how ventilation drives toxic gases and why cutting off airflow stops the fire."
+    },
+    {
+      target: '#planetary',
+      title: "Stop 5: Moon & Mars Gravity Scaling Engine",
+      desc: "Compare Grashof and Richardson dimensionless numbers across Earth, Moon, Mars, and Microgravity to predict flame behavior before launching crews."
+    },
+    {
+      target: '#sensor-fusion',
+      title: "Stop 6: Multi-Sensor Early Warning & AI Detection",
+      desc: "Smoke detectors are blind to cool flames. Our multi-sensor fusion model analyzes mid-IR and chemical differentials with 87% accuracy to prevent spontaneous reignition."
+    },
+    {
+      target: '#emergency-sim',
+      title: "Stop 7: Artemis Gateway Emergency Crisis Drill",
+      desc: "Step into the boots of an Artemis flight director. Respond to an active fire alert with authentic NASA suppression protocols."
+    }
+  ];
+
+  function showStep(idx){
+    curStep = Math.max(0, Math.min(TOUR_STOPS.length - 1, idx));
+    const s = TOUR_STOPS[curStep];
+
+    badgeEl.textContent = 'TOUR STOP ' + (curStep + 1) + ' OF ' + TOUR_STOPS.length;
+    progressFill.style.width = ((curStep + 1) / TOUR_STOPS.length * 100) + '%';
+    titleEl.textContent = s.title;
+    descEl.textContent = s.desc;
+    btnNext.textContent = curStep === TOUR_STOPS.length - 1 ? 'Finish Tour ✓' : 'Next Stop ⏭️';
+
+    const targetEl = document.querySelector(s.target);
+    if(targetEl){
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    FlightAudio.speak(s.desc);
+  }
+
+  btnStart.addEventListener('click', () => {
+    console.log('[Guided Tour] Starting Tour...');
+    hud.style.display = 'block';
+    if(!FlightAudio.isEnabled()) FlightAudio.toggle();
+    showStep(0);
+  });
+
+  btnNext.addEventListener('click', () => {
+    if(curStep >= TOUR_STOPS.length - 1){
+      hud.style.display = 'none';
+      return;
+    }
+    showStep(curStep + 1);
+  });
+
+  btnPrev.addEventListener('click', () => {
+    showStep(curStep - 1);
+  });
+
+  btnClose.addEventListener('click', () => {
+    hud.style.display = 'none';
+  });
+
+  if(btnSpeak){
+    btnSpeak.addEventListener('click', () => {
+      const s = TOUR_STOPS[curStep];
+      FlightAudio.speak(s.desc);
+    });
+  }
+
+  console.log('[Guided Tour] Ready.');
+})();
+
+/* ================= INTERACTIVE 3D HOLOGRAPHIC PLASMA ORB ================= */
+(function(){
+  const canvas = document.getElementById('hero-orb-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let mx = 0, my = 0, targetMx = 0, targetMy = 0;
+
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    targetMx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    targetMy = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+  });
+  canvas.addEventListener('mouseleave', () => { targetMx = 0; targetMy = 0; });
+
+  function render(time){
+    mx += (targetMx - mx) * 0.05;
+    my += (targetMy - my) * 0.05;
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w / 2 + mx * 18;
+    const cy = h / 2 + my * 18;
+
+    // Atmospheric Corona Glow
+    const coronaPulse = Math.sin(time * 0.0025) * 8;
+    const corona = ctx.createRadialGradient(cx, cy, 50, cx, cy, 180 + coronaPulse);
+    corona.addColorStop(0, 'rgba(69,224,255,0.28)');
+    corona.addColorStop(0.5, 'rgba(106,168,255,0.14)');
+    corona.addColorStop(0.85, 'rgba(255,138,61,0.08)');
+    corona.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = corona;
+    ctx.beginPath(); ctx.arc(cx, cy, 180 + coronaPulse, 0, 6.28); ctx.fill();
+
+    // 3D Orbital Coordinate Rings
+    ctx.lineWidth = 1.2;
+    for(let r = 0; r < 3; r++){
+      ctx.save();
+      ctx.translate(cx, cy);
+      const angle = (time * 0.0006 * (r + 1)) + (r * Math.PI / 3) + mx * 0.5;
+      ctx.rotate(angle);
+      ctx.strokeStyle = r === 0 ? 'rgba(69,224,255,0.45)' : r === 1 ? 'rgba(255,138,61,0.35)' : 'rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 140 + r * 15, 55 + r * 8, angle * 0.3, 0, 6.28);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Reaction Zone Spherical Shell
+    const shell = ctx.createRadialGradient(cx - 20, cy - 25, 10, cx, cy, 110);
+    shell.addColorStop(0, '#ffffff');
+    shell.addColorStop(0.2, '#6aa8ff');
+    shell.addColorStop(0.65, '#0e245a');
+    shell.addColorStop(0.95, 'rgba(69,224,255,0.85)');
+    shell.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = shell;
+    ctx.beginPath(); ctx.arc(cx, cy, 105, 0, 6.28); ctx.fill();
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+})();
+
+/* ================= LIVE MISSION TELEMETRY SIMULATOR ================= */
+(function(){
+  const tAlt = document.getElementById('tick-alt');
+  const tVel = document.getElementById('tick-vel');
+  const tPress = document.getElementById('tick-press');
+  const tO2 = document.getElementById('tick-o2');
+  const tCO = document.getElementById('tick-co');
+  const tG = document.getElementById('tick-g');
+  if(!tAlt) return;
+
+  setInterval(() => {
+    const time = Date.now() * 0.001;
+    tAlt.textContent = (418.4 + Math.sin(time * 0.2) * 0.5).toFixed(1) + ' km';
+    tVel.textContent = Math.round(27580 + Math.cos(time * 0.15) * 6).toLocaleString() + ' km/h';
+    tPress.textContent = (101.32 + Math.sin(time * 0.5) * 0.04).toFixed(2) + ' kPa';
+    tO2.textContent = (21.02 + Math.cos(time * 0.3) * 0.03).toFixed(2) + '%';
+    tCO.textContent = (0.14 + Math.sin(time * 0.7) * 0.02).toFixed(2) + ' ppm';
+    tG.textContent = (0.00008 + Math.sin(time * 0.1) * 0.00001).toFixed(5) + ' g';
+  }, 1200);
 })();
 </script>
+<!-- Cinema Guided Tour HUD -->
+<div class="tour-hud" id="tour-hud" role="dialog" aria-label="Guided Tour">
+  <div class="tour-head">
+    <span class="eyebrow" style="margin:0;color:var(--cool)" id="tour-step-badge">TOUR STEP 1 OF 6</span>
+    <button type="button" id="tour-close-btn" style="background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:18px">✕</button>
+  </div>
+  <div class="tour-progress-bar"><div class="tour-progress-fill" id="tour-progress-fill" style="width:16%"></div></div>
+  <h3 class="tour-title" id="tour-title">Welcome to Flame in Freefall</h3>
+  <p class="tour-desc" id="tour-desc">In microgravity, fire defies human intuition. Watch flames turn into spherical balls, hide invisibly, and reignite without a spark.</p>
+  <div class="tour-controls">
+    <div style="display:flex;gap:8px">
+      <button type="button" class="btn btn-ghost" id="tour-prev-btn" style="padding:8px 14px;font-size:13px">⏮️ Back</button>
+      <button type="button" class="btn btn-primary" id="tour-next-btn" style="padding:8px 16px;font-size:13.5px">Next Chapter ⏭️</button>
+    </div>
+    <button type="button" class="btn btn-ghost" id="tour-speak-btn" style="padding:8px 14px;font-size:13px">🔊 Replay Voice</button>
+  </div>
+</div>
+
 </body>
 </html>
