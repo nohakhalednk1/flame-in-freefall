@@ -749,6 +749,24 @@ html[dir="rtl"] .sim-choice-btn:hover:not(:disabled){transform:translateX(-3px)}
   </nav>
 </header>
 
+<div class="tour-hud" id="tour-hud" role="dialog" aria-label="Guided Tour">
+  <div class="tour-head">
+    <span class="eyebrow" style="margin:0;color:var(--cool)" id="tour-step-badge">TOUR STEP 1 OF 6</span>
+    <button type="button" id="tour-close-btn" style="background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:18px">✕</button>
+  </div>
+  <div class="tour-progress-bar"><div class="tour-progress-fill" id="tour-progress-fill" style="width:16%"></div></div>
+  <h3 class="tour-title" id="tour-title">Welcome to Flame in Freefall</h3>
+  <p class="tour-desc" id="tour-desc">In microgravity, fire defies human intuition. Watch flames turn into spherical balls, hide invisibly, and reignite without a spark.</p>
+  <div class="tour-controls">
+    <div style="display:flex;gap:8px">
+      <button type="button" class="btn btn-ghost" id="tour-prev-btn" style="padding:8px 14px;font-size:13px">⏮️ Back</button>
+      <button type="button" class="btn btn-primary" id="tour-next-btn" style="padding:8px 16px;font-size:13.5px">Next Chapter ⏭️</button>
+    </div>
+    <button type="button" class="btn btn-ghost" id="tour-speak-btn" style="padding:8px 14px;font-size:13px">🔊 Replay Voice</button>
+  </div>
+</div>
+
+
 <main id="top">
   <div class="wrap">
     <section class="hero">
@@ -779,70 +797,6 @@ html[dir="rtl"] .sim-choice-btn:hover:not(:disabled){transform:translateX(-3px)}
       <div class="stat"><div class="num cool" data-key="invisible">33 s</div><div data-i18n="k12" class="lab">more burning after that flame looked “out”</div><div class="src">PSI-117 · ISS</div></div>
       <div class="stat"><div class="num" data-key="saffire">6×</div><div data-i18n="k13" class="lab">longer fabric fire when airflow pushed the flame forward</div><div class="src">Saffire-1 · Cygnus</div></div>
       <div class="stat"><div class="num" data-key="co">21×</div><div data-i18n="k14" class="lab">more carbon monoxide from thick plastic than thin film</div><div class="src">BASS-II · ISS</div></div>
-    </div>
-    <!-- Flagship 3D Planetary Surface World (Three.js) -->
-    <div class="planet-world-section" id="planet-world-anchor" style="margin-top:28px">
-      <!-- Section Header for Absolute Clarity -->
-      <div class="planet-header-bar">
-        <div>
-          <div style="display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap">
-            <span class="badge" style="background:rgba(69,224,255,.2);color:#45e0ff;border-color:rgba(69,224,255,.5);font-weight:700">SIMULATION · INSPIRED BY NASA ARTEMIS</span>
-            <span class="badge" style="background:rgba(255,138,61,.2);color:#ff9e59;border-color:rgba(255,138,61,.5);font-weight:700">WebGL / Three.js 3D Interactive World</span>
-          </div>
-          <h2 style="font-family:var(--font-display);font-size:clamp(1.25rem,2.4vw,1.9rem);color:#ffffff;margin:0 0 6px;letter-spacing:0.04em;text-shadow:0 0 25px rgba(69,224,255,.4)" id="p-world-title">
-            Flagship 3D Planetary Fire Simulation
-          </h2>
-          <p style="color:#b8cbef;font-size:14.5px;margin:0;max-width:780px;line-height:1.5" id="p-world-subtitle">
-            Explore how a habitat fire could behave on Mars (0.38g), the Moon (0.166g) and in orbit, with 5 camera views. An illustrative simulation, not measured data.
-          </p>
-        </div>
-        <div style="display:flex;gap:10px;align-items:center">
-          <span class="p-hint-pill" style="font-size:12px;font-family:var(--font-mono)">
-            <span class="pulse-dot"></span> <span id="p-status-fps">SIMULATION ENGINE: 60 FPS NOMINAL</span>
-          </span>
-        </div>
-      </div>
-
-      <div class="planet-viewport" id="planet-viewport-box">
-        <canvas id="planet-three-canvas" aria-label="3D Interactive Planetary Surface Simulation"></canvas>
-        
-        <!-- Top HUD: Planet Selection & Controls -->
-        <div class="planet-hud-top">
-          <div class="planet-selector-group">
-            <button type="button" class="p-sel-btn active" id="p-btn-mars" data-planet="mars">🔴 Mars (Martian Outpost)</button>
-            <button type="button" class="p-sel-btn" id="p-btn-jupiter" data-planet="jupiter" hidden style="display:none">🪐 Jupiter (Jovian System)</button>
-            <button type="button" class="p-sel-btn" id="p-btn-moon" data-planet="moon">🌙 Moon (Artemis Base)</button>
-            <button type="button" class="p-sel-btn" id="p-btn-orbit" data-planet="orbit">🛰️ Orbit (Gateway Station)</button>
-          </div>
-          <div style="display:flex;gap:8px">
-            <button type="button" class="p-action-btn" id="p-ignite-btn">🔥 Trigger Test Burn</button>
-            <button type="button" class="p-action-btn" id="p-fullscreen-btn" title="Toggle Fullscreen">⛶ Fullscreen</button>
-          </div>
-        </div>
-
-        <!-- Telemetry Floating Card -->
-        <div class="planet-live-telemetry" id="p-telemetry-card">
-          <div class="status-row"><span class="pulse-dot"></span><b id="p-telem-loc">LOCATION: ARTEMIS BASE CAMP (MOON)</b></div>
-          <div>SURFACE GRAVITY: <b id="p-telem-g">0.166 g</b></div>
-          <div>HABITAT AIR: <b id="p-telem-atm">0.56 atm (34% O₂)</b></div>
-          <div>SOLAR ILLUMINATION: <b id="p-telem-sun">SURFACE NOON</b></div>
-          <div>COMBUSTION CHAMBER: <b id="p-telem-state" style="color:#69e3b0">STANDBY / READY</b></div>
-        </div>
-
-        <!-- Bottom HUD: 5 Camera Perspectives -->
-        <div class="planet-hud-bottom">
-          <div class="persp-selector-group" id="persp-group">
-            <button type="button" class="persp-btn active" data-persp="astronaut" id="p-cam-astronaut">🧑‍🚀 Astronaut Surface View</button>
-            <button type="button" class="persp-btn" data-persp="orbital" id="p-cam-orbital">🛰️ Orbital Satellite View</button>
-            <button type="button" class="persp-btn" data-persp="lab" id="p-cam-lab">🔬 Combustion Chamber Macro</button>
-            <button type="button" class="persp-btn" data-persp="flyby" id="p-cam-flyby">🚁 Cinematic Drone Flyby</button>
-            <button type="button" class="persp-btn" data-persp="free" id="p-cam-free">🎮 Free 3D Navigation</button>
-          </div>
-          <div class="twin-badge" style="backdrop-filter:blur(8px);background:rgba(4,9,24,.85)">
-            <span id="p-hint-text">🖱️ Drag to pan/orbit · Scroll to zoom</span>
-          </div>
-        </div>
-      </div>
     </div>
 
 
@@ -1103,6 +1057,73 @@ html[dir="rtl"] .sim-choice-btn:hover:not(:disabled){transform:translateX(-3px)}
   <div class="ribbon" aria-hidden="true"><svg viewBox="0 0 1200 150" preserveAspectRatio="none" class="ribbon-svg"></svg></div>
 
   <!-- Planetary Fire Physics -->
+  <section class="chapter wrap" id="sim3d">
+    <!-- Flagship 3D Planetary Surface World (Three.js) -->
+    <div class="planet-world-section" id="planet-world-anchor" >
+      <!-- Section Header for Absolute Clarity -->
+      <div class="planet-header-bar">
+        <div>
+          <div style="display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+            <span class="badge" style="background:rgba(69,224,255,.2);color:#45e0ff;border-color:rgba(69,224,255,.5);font-weight:700">SIMULATION · INSPIRED BY NASA ARTEMIS</span>
+            <span class="badge" style="background:rgba(255,138,61,.2);color:#ff9e59;border-color:rgba(255,138,61,.5);font-weight:700">WebGL / Three.js 3D Interactive World</span>
+          </div>
+          <h2 style="font-family:var(--font-display);font-size:clamp(1.25rem,2.4vw,1.9rem);color:#ffffff;margin:0 0 6px;letter-spacing:0.04em;text-shadow:0 0 25px rgba(69,224,255,.4)" id="p-world-title">
+            Flagship 3D Planetary Fire Simulation
+          </h2>
+          <p style="color:#b8cbef;font-size:14.5px;margin:0;max-width:780px;line-height:1.5" id="p-world-subtitle">
+            Explore how a habitat fire could behave on Mars (0.38g), the Moon (0.166g) and in orbit, with 5 camera views. An illustrative simulation, not measured data.
+          </p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="p-hint-pill" style="font-size:12px;font-family:var(--font-mono)">
+            <span class="pulse-dot"></span> <span id="p-status-fps">SIMULATION ENGINE: 60 FPS NOMINAL</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="planet-viewport" id="planet-viewport-box">
+        <canvas id="planet-three-canvas" aria-label="3D Interactive Planetary Surface Simulation"></canvas>
+        
+        <!-- Top HUD: Planet Selection & Controls -->
+        <div class="planet-hud-top">
+          <div class="planet-selector-group">
+            <button type="button" class="p-sel-btn active" id="p-btn-mars" data-planet="mars">🔴 Mars (Martian Outpost)</button>
+            <button type="button" class="p-sel-btn" id="p-btn-jupiter" data-planet="jupiter" hidden style="display:none">🪐 Jupiter (Jovian System)</button>
+            <button type="button" class="p-sel-btn" id="p-btn-moon" data-planet="moon">🌙 Moon (Artemis Base)</button>
+            <button type="button" class="p-sel-btn" id="p-btn-orbit" data-planet="orbit">🛰️ Orbit (Gateway Station)</button>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button type="button" class="p-action-btn" id="p-ignite-btn">🔥 Trigger Test Burn</button>
+            <button type="button" class="p-action-btn" id="p-fullscreen-btn" title="Toggle Fullscreen">⛶ Fullscreen</button>
+          </div>
+        </div>
+
+        <!-- Telemetry Floating Card -->
+        <div class="planet-live-telemetry" id="p-telemetry-card">
+          <div class="status-row"><span class="pulse-dot"></span><b id="p-telem-loc">LOCATION: ARTEMIS BASE CAMP (MOON)</b></div>
+          <div>SURFACE GRAVITY: <b id="p-telem-g">0.166 g</b></div>
+          <div>HABITAT AIR: <b id="p-telem-atm">0.56 atm (34% O₂)</b></div>
+          <div>SOLAR ILLUMINATION: <b id="p-telem-sun">SURFACE NOON</b></div>
+          <div>COMBUSTION CHAMBER: <b id="p-telem-state" style="color:#69e3b0">STANDBY / READY</b></div>
+        </div>
+
+        <!-- Bottom HUD: 5 Camera Perspectives -->
+        <div class="planet-hud-bottom">
+          <div class="persp-selector-group" id="persp-group">
+            <button type="button" class="persp-btn active" data-persp="astronaut" id="p-cam-astronaut">🧑‍🚀 Astronaut Surface View</button>
+            <button type="button" class="persp-btn" data-persp="orbital" id="p-cam-orbital">🛰️ Orbital Satellite View</button>
+            <button type="button" class="persp-btn" data-persp="lab" id="p-cam-lab">🔬 Combustion Chamber Macro</button>
+            <button type="button" class="persp-btn" data-persp="flyby" id="p-cam-flyby">🚁 Cinematic Drone Flyby</button>
+            <button type="button" class="persp-btn" data-persp="free" id="p-cam-free">🎮 Free 3D Navigation</button>
+          </div>
+          <div class="twin-badge" style="backdrop-filter:blur(8px);background:rgba(4,9,24,.85)">
+            <span id="p-hint-text">🖱️ Drag to pan/orbit · Scroll to zoom</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="chapter wrap" id="planetary">
     <div class="chapter-head">
       <div data-i18n="pl_eb" class="eyebrow">NASA Physics Scaling Engine · Lunar & Martian Regimes</div>
@@ -3738,25 +3759,26 @@ document.addEventListener('click', e => { if(e.target.closest('button, a, input[
   let curStep = 0;
 
   const TOUR_STOPS = [
-    {
-      target: '#planet-world-anchor',
-      title: "Stop 1: Mars & Planetary Fire Physics",
-      desc: "Welcome to the Martian Outpost. Under 0.38g gravity, fire forms an unstable elongated flame, producing 185% more toxic carbon monoxide due to transitional convection."
-    },
+    
     {
       target: '#top',
-      title: "Stop 2: Fire Behaves Differently in Space",
+      title: "Stop 1: Fire Behaves Differently in Space",
       desc: "On Earth, hot air rises and shapes flames into teardrops. In microgravity, flames become spherical, quiet, and deceptively cool."
     },
     {
       target: '#replay',
-      title: "Stop 3: The Vanishing Flame (PSI-117)",
+      title: "Stop 2: The Vanishing Flame (PSI-117)",
       desc: "Watch the droplet burn. At 12.6 seconds, the visible flame collapses, but fuel keeps burning invisibly inside a cool flame for 33 more seconds!"
     },
     {
       target: '#twin3d',
-      title: "Stop 4: 3D Digital Twin & Cabin Dynamics",
+      title: "Stop 3: 3D Digital Twin & Cabin Dynamics",
       desc: "Rotate the 3D spherical flame and inspect the habitat compartment. Notice how ventilation drives toxic gases and why cutting off airflow stops the fire."
+    },
+    {
+      target: '#planet-world-anchor',
+      title: "Stop 4: Mars & Planetary Fire Physics",
+      desc: "Welcome to the Martian Outpost. This 3D scene imagines how a habitat fire might look on Mars (0.38g), the Moon and in orbit. It is an illustration; the measured NASA data comes next."
     },
     {
       target: '#planetary',
@@ -3766,12 +3788,12 @@ document.addEventListener('click', e => { if(e.target.closest('button, a, input[
     {
       target: '#sensor-fusion',
       title: "Stop 6: Multi-Sensor Early Warning & AI Detection",
-      desc: "Smoke detectors are blind to cool flames. Our multi-sensor fusion model analyzes mid-IR and chemical differentials with 87% accuracy to prevent spontaneous reignition."
+      desc: "Smoke detectors can miss cool flames. This concept combines heat and CO/CO₂ readings to catch invisible burning before it re-ignites. A simulated idea, not flight-tested."
     },
     {
       target: '#emergency-sim',
       title: "Stop 7: Artemis Gateway Emergency Crisis Drill",
-      desc: "Step into the boots of an Artemis flight director. Respond to an active fire alert with authentic NASA suppression protocols."
+      desc: "Step into the boots of an Artemis flight director. Respond to a fire alert; each choice is explained with NASA test results."
     }
   ];
 
@@ -3909,26 +3931,9 @@ document.addEventListener('click', e => { if(e.target.closest('button, a, input[
 })();
 </script>
 <!-- Cinema Guided Tour HUD -->
-<div class="tour-hud" id="tour-hud" role="dialog" aria-label="Guided Tour">
-  <div class="tour-head">
-    <span class="eyebrow" style="margin:0;color:var(--cool)" id="tour-step-badge">TOUR STEP 1 OF 6</span>
-    <button type="button" id="tour-close-btn" style="background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:18px">✕</button>
-  </div>
-  <div class="tour-progress-bar"><div class="tour-progress-fill" id="tour-progress-fill" style="width:16%"></div></div>
-  <h3 class="tour-title" id="tour-title">Welcome to Flame in Freefall</h3>
-  <p class="tour-desc" id="tour-desc">In microgravity, fire defies human intuition. Watch flames turn into spherical balls, hide invisibly, and reignite without a spark.</p>
-  <div class="tour-controls">
-    <div style="display:flex;gap:8px">
-      <button type="button" class="btn btn-ghost" id="tour-prev-btn" style="padding:8px 14px;font-size:13px">⏮️ Back</button>
-      <button type="button" class="btn btn-primary" id="tour-next-btn" style="padding:8px 16px;font-size:13.5px">Next Chapter ⏭️</button>
-    </div>
-    <button type="button" class="btn btn-ghost" id="tour-speak-btn" style="padding:8px 14px;font-size:13px">🔊 Replay Voice</button>
-  </div>
-</div>
-
 <script>
 /* if the 3D library cannot load, hide the 3D block instead of showing a broken black box */
-window.addEventListener('load',function(){ if(!window.THREE){ var a=document.getElementById('planet-world-anchor'); if(a) a.style.display='none'; console.warn('3D hidden: THREE.js did not load'); } });
+window.addEventListener('load',function(){ if(!window.THREE){ var a=document.getElementById('planet-world-anchor'); if(a){ var sec=a.closest('section')||a; sec.style.display='none'; } console.warn('3D hidden: THREE.js did not load'); } });
 </script>
 <script>
 /* Fullscreen for the 3D viewport (works with or without the 3D engine) */
