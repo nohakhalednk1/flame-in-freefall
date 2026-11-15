@@ -3942,7 +3942,9 @@ window.addEventListener('load',function(){ if(!window.THREE){ var a=document.get
     if(isFs()){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
     else { var f=box.requestFullscreen||box.webkitRequestFullscreen; if(f) f.call(box); } },true);
   ['fullscreenchange','webkitfullscreenchange'].forEach(function(ev){ document.addEventListener(ev,function(){
-    label(); setTimeout(function(){ window.dispatchEvent(new Event('resize')); },60); }); });
+    label(); var c=document.getElementById('planet-three-canvas');
+    function fit(){ if(c){ c.style.width='100%'; c.style.height='100%'; } window.dispatchEvent(new Event('resize')); }
+    fit(); setTimeout(fit,80); setTimeout(fit,350); }); });
   var lb=document.getElementById('lang-btn'); if(lb) lb.addEventListener('click',function(){ setTimeout(label,50); });
 })();
 </script>
